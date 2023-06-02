@@ -1,0 +1,24 @@
+{
+  "entryFile": "src/server.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/**/*Controller.ts"],
+  "spec": {
+    "outputDirectory": "generated",
+    "specVersion": 3,
+    "securityDefinitions": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "Bearer authentication - give access to the bearer of this token",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "routes": {
+    "routesDir": "generated",
+    "authenticationModule": "src/authentication"
+  },
+  "ignore": [
+    "**/node_modules/**"
+  ]
+}

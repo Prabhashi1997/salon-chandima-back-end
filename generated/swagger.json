@@ -1,0 +1,8406 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"SelectValue": {
+				"properties": {
+					"type": {
+						"type": "string"
+					},
+					"value": {
+						"type": "string"
+					},
+					"id": {
+						"anyOf": [
+							{
+								"type": "number",
+								"format": "double"
+							},
+							{
+								"type": "string"
+							}
+						]
+					}
+				},
+				"required": [
+					"value",
+					"id"
+				],
+				"type": "object"
+			},
+			"SelectValueResponse": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/SelectValue"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object"
+			},
+			"ConfigData": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"key": {
+						"type": "string"
+					},
+					"value": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"key",
+					"value"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CriteriaData": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"type": "number",
+						"format": "double"
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"type",
+					"description"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Criteria": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"type": {
+						"type": "number",
+						"format": "double"
+					},
+					"criteriaSets": {
+						"items": {
+							"$ref": "#/components/schemas/CriteriaSet"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"description",
+					"type",
+					"criteriaSets"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CriteriaSet": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"criterias": {
+						"items": {
+							"$ref": "#/components/schemas/Criteria"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"criterias"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DataTableResponse_Criteria_": {
+				"properties": {
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/Criteria"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"total",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EmailTemplateData": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"template": {}
+				},
+				"required": [
+					"name",
+					"template"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GoalCreationParams": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"startDate": {
+						"type": "string"
+					},
+					"endDate": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"owner": {
+						"type": "number",
+						"format": "double"
+					},
+					"parent": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"performanceCycle": {
+						"type": "number",
+						"format": "double"
+					},
+					"completed": {
+						"type": "number",
+						"format": "double"
+					},
+					"reusable": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"title",
+					"owner"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"KeyResultCreationParams": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"value": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"type": "string"
+					},
+					"completed": {
+						"type": "number",
+						"format": "double"
+					},
+					"currentValue": {
+						"type": "number",
+						"format": "double"
+					},
+					"progress": {
+						"properties": {
+							"thresholdType": {
+								"type": "string"
+							},
+							"threshold": {
+								"type": "number",
+								"format": "double"
+							},
+							"endValue": {
+								"type": "number",
+								"format": "double"
+							},
+							"startValue": {
+								"type": "number",
+								"format": "double"
+							},
+							"type": {
+								"type": "string"
+							},
+							"unit": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"type": "object"
+					}
+				},
+				"required": [
+					"title",
+					"progress"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Goal": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"description": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"completed": {
+						"type": "number",
+						"format": "double"
+					},
+					"children": {
+						"items": {
+							"$ref": "#/components/schemas/Goal"
+						},
+						"type": "array"
+					},
+					"parent": {
+						"$ref": "#/components/schemas/Goal"
+					},
+					"owner": {
+						"$ref": "#/components/schemas/GoalSummery"
+					},
+					"ownerId": {
+						"type": "number",
+						"format": "double"
+					},
+					"goalType": {
+						"$ref": "#/components/schemas/GoalType"
+					},
+					"startDate": {
+						"type": "string"
+					},
+					"endDate": {
+						"type": "string"
+					},
+					"weight": {
+						"type": "number",
+						"format": "double"
+					},
+					"teamWeight": {
+						"type": "number",
+						"format": "double"
+					},
+					"currentValue": {
+						"type": "number",
+						"format": "double"
+					},
+					"goalMark": {
+						"$ref": "#/components/schemas/GoalMark"
+					},
+					"progress": {
+						"$ref": "#/components/schemas/Progress"
+					},
+					"reusable": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"title",
+					"id",
+					"description",
+					"status",
+					"children",
+					"parent",
+					"owner",
+					"goalType",
+					"startDate",
+					"endDate",
+					"goalMark",
+					"progress"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GoalSummery": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"cycle": {
+						"$ref": "#/components/schemas/PerformanceCycle"
+					},
+					"cycleId": {
+						"type": "number",
+						"format": "double"
+					},
+					"owner": {
+						"$ref": "#/components/schemas/GoalHolder"
+					},
+					"goalsAvailability": {
+						"type": "boolean"
+					},
+					"ownerId": {
+						"type": "number",
+						"format": "double"
+					},
+					"goals": {
+						"items": {
+							"$ref": "#/components/schemas/Goal"
+						},
+						"type": "array"
+					},
+					"approvalStatus": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"completed": {
+						"type": "number",
+						"format": "double"
+					},
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"duration": {
+						"items": {
+							"$ref": "#/components/schemas/TimeDuration"
+						},
+						"type": "array"
+					},
+					"team": {
+						"$ref": "#/components/schemas/Team"
+					},
+					"teamId": {
+						"type": "number",
+						"format": "double"
+					},
+					"teamLeader": {
+						"type": "boolean"
+					},
+					"peerReview": {
+						"items": {
+							"$ref": "#/components/schemas/PeerReview"
+						},
+						"type": "array"
+					},
+					"subordinateReviews": {
+						"items": {
+							"$ref": "#/components/schemas/SubordinateReview"
+						},
+						"type": "array"
+					},
+					"criteriaSet": {
+						"$ref": "#/components/schemas/CriteriaSet"
+					},
+					"criteriaSetId": {
+						"type": "number",
+						"format": "double"
+					},
+					"configurations": {
+						"items": {
+							"$ref": "#/components/schemas/TeamConfiguration"
+						},
+						"type": "array"
+					},
+					"leadConfigurations": {
+						"items": {
+							"$ref": "#/components/schemas/TeamConfiguration"
+						},
+						"type": "array"
+					},
+					"internalCustomers": {
+						"items": {
+							"$ref": "#/components/schemas/InternalCustomer"
+						},
+						"type": "array"
+					},
+					"comment": {
+						"$ref": "#/components/schemas/SupervisorAnalysis"
+					},
+					"internalCustomerApprover": {
+						"type": "number",
+						"format": "double"
+					},
+					"publishForPeers": {
+						"type": "boolean"
+					},
+					"publishForLeaderPeers": {
+						"type": "boolean"
+					},
+					"publishForInternalCustomers": {
+						"type": "boolean"
+					},
+					"cycleClose": {
+						"type": "boolean"
+					},
+					"finalCommentSubmit": {
+						"type": "boolean"
+					},
+					"approvedInternalCustomers": {
+						"type": "number",
+						"format": "double"
+					},
+					"internalCustomerMarks": {
+						"type": "number",
+						"format": "double"
+					},
+					"internalCustomerLeaderMarks": {
+						"type": "number",
+						"format": "double"
+					},
+					"internalCustomerCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"internalCustomerWeight": {
+						"type": "number",
+						"format": "double"
+					},
+					"internalCustomerLeaderWeight": {
+						"type": "number",
+						"format": "double"
+					},
+					"approvedPeerReview": {
+						"type": "number",
+						"format": "double"
+					},
+					"peerReviewMarks": {
+						"type": "number",
+						"format": "double"
+					},
+					"peerReviewCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"peerReviewWeight": {
+						"type": "number",
+						"format": "double"
+					},
+					"teamPerformanceWeight": {
+						"type": "number",
+						"format": "double"
+					},
+					"approvedTeamPerformance": {
+						"type": "number",
+						"format": "double"
+					},
+					"teamPerformanceCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"teamPerformanceMarks": {
+						"type": "number",
+						"format": "double"
+					},
+					"supervisorFeedBackWeight": {
+						"type": "number",
+						"format": "double"
+					},
+					"approvedSupervisorFeedBack": {
+						"type": "number",
+						"format": "double"
+					},
+					"supervisorFeedBackCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"supervisorFeedBackMarks": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"cycle",
+					"owner",
+					"goalsAvailability",
+					"goals",
+					"duration",
+					"team",
+					"peerReview",
+					"subordinateReviews",
+					"criteriaSet",
+					"configurations",
+					"leadConfigurations",
+					"internalCustomers",
+					"comment",
+					"cycleClose",
+					"finalCommentSubmit"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PerformanceCycle": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"startDate": {
+						"type": "string"
+					},
+					"endDate": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"goalSummaries": {
+						"items": {
+							"$ref": "#/components/schemas/GoalSummery"
+						},
+						"type": "array"
+					},
+					"cycleNotifications": {
+						"items": {
+							"$ref": "#/components/schemas/CycleNotification"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"startDate",
+					"endDate",
+					"status",
+					"goalSummaries",
+					"cycleNotifications"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CycleNotification": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"title": {
+						"type": "string"
+					},
+					"notification": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"status": {
+						"type": "boolean"
+					},
+					"PerformanceCycle": {
+						"$ref": "#/components/schemas/PerformanceCycle"
+					}
+				},
+				"required": [
+					"id",
+					"title",
+					"notification",
+					"date",
+					"PerformanceCycle"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Team": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"teamType": {
+						"$ref": "#/components/schemas/TeamType"
+					},
+					"teamTypeId": {
+						"type": "number",
+						"format": "double"
+					},
+					"description": {
+						"type": "string"
+					},
+					"leads": {
+						"items": {
+							"$ref": "#/components/schemas/User"
+						},
+						"type": "array"
+					},
+					"teams": {
+						"items": {
+							"$ref": "#/components/schemas/Team"
+						},
+						"type": "array"
+					},
+					"children": {
+						"items": {
+							"$ref": "#/components/schemas/Team"
+						},
+						"type": "array"
+					},
+					"parent": {
+						"$ref": "#/components/schemas/Team"
+					},
+					"parentId": {
+						"type": "number",
+						"format": "double"
+					},
+					"members": {
+						"items": {
+							"$ref": "#/components/schemas/User"
+						},
+						"type": "array"
+					},
+					"userGroupMembers": {
+						"items": {
+							"$ref": "#/components/schemas/UserGroupMember"
+						},
+						"type": "array"
+					},
+					"userGroupMembers1": {
+						"items": {
+							"$ref": "#/components/schemas/UserGroupMember"
+						},
+						"type": "array"
+					},
+					"image": {
+						"type": "string"
+					},
+					"goalHolder": {
+						"$ref": "#/components/schemas/GoalHolder"
+					},
+					"goalHolderId": {
+						"type": "number",
+						"format": "double"
+					},
+					"memberCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"cycle": {
+						"$ref": "#/components/schemas/PerformanceCycle"
+					},
+					"cycleId": {
+						"type": "number",
+						"format": "double"
+					},
+					"previous": {
+						"$ref": "#/components/schemas/Team"
+					},
+					"previousId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"teamType",
+					"leads",
+					"teams",
+					"children",
+					"members",
+					"goalHolder",
+					"memberCount",
+					"cycle",
+					"previous"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TeamType": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					},
+					"teams": {
+						"items": {
+							"$ref": "#/components/schemas/Team"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"color",
+					"teams"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"User": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"employeeId": {
+						"type": "string"
+					},
+					"epfNo": {
+						"type": "number",
+						"format": "double"
+					},
+					"designation": {
+						"$ref": "#/components/schemas/Designation"
+					},
+					"supervisor": {
+						"$ref": "#/components/schemas/User"
+					},
+					"email": {
+						"type": "string"
+					},
+					"image": {
+						"type": "string"
+					},
+					"doj": {
+						"type": "string"
+					},
+					"roles": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"password": {
+						"items": {
+							"$ref": "#/components/schemas/Password"
+						},
+						"type": "array"
+					},
+					"goalHolder": {
+						"$ref": "#/components/schemas/GoalHolder"
+					},
+					"goalsAvailability": {
+						"type": "boolean"
+					},
+					"goalHolderId": {
+						"type": "number",
+						"format": "double"
+					},
+					"teams": {
+						"items": {
+							"$ref": "#/components/schemas/Team"
+						},
+						"type": "array"
+					},
+					"teams1": {
+						"items": {
+							"$ref": "#/components/schemas/Team"
+						},
+						"type": "array"
+					},
+					"userGroupMembers": {
+						"items": {
+							"$ref": "#/components/schemas/UserGroupMember"
+						},
+						"type": "array"
+					},
+					"notifications": {
+						"items": {
+							"$ref": "#/components/schemas/Notification"
+						},
+						"type": "array"
+					},
+					"delete": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"id",
+					"firstName",
+					"lastName",
+					"name",
+					"employeeId",
+					"epfNo",
+					"designation",
+					"email",
+					"password",
+					"goalHolder",
+					"goalsAvailability",
+					"teams",
+					"teams1",
+					"notifications",
+					"delete"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Designation": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"value": {
+						"type": "string"
+					},
+					"user": {
+						"items": {
+							"$ref": "#/components/schemas/User"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"value",
+					"user"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Password": {
+				"properties": {
+					"password": {
+						"type": "string"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"user": {
+						"$ref": "#/components/schemas/User"
+					}
+				},
+				"required": [
+					"password",
+					"id",
+					"user"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GoalHolder": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"image": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"goalsAvailability": {
+						"type": "boolean"
+					},
+					"team": {
+						"$ref": "#/components/schemas/Team"
+					},
+					"teamId": {
+						"type": "number",
+						"format": "double"
+					},
+					"user": {
+						"$ref": "#/components/schemas/User"
+					},
+					"userId": {
+						"type": "number",
+						"format": "double"
+					},
+					"goalSummaries": {
+						"items": {
+							"$ref": "#/components/schemas/GoalSummery"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"type",
+					"goalsAvailability",
+					"goalSummaries"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserGroupMember": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"user": {
+						"$ref": "#/components/schemas/User"
+					},
+					"userId": {
+						"type": "number",
+						"format": "double"
+					},
+					"team": {
+						"$ref": "#/components/schemas/Team"
+					},
+					"teamId": {
+						"type": "number",
+						"format": "double"
+					},
+					"teamLeads": {
+						"$ref": "#/components/schemas/Team"
+					},
+					"teamLeadsId": {
+						"type": "number",
+						"format": "double"
+					},
+					"userGroup": {
+						"$ref": "#/components/schemas/UserGroup"
+					},
+					"userGroupId": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"user",
+							"teamMember",
+							"teamLead"
+						]
+					}
+				},
+				"required": [
+					"id",
+					"user",
+					"team",
+					"teamLeads",
+					"userGroup",
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserGroup": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"userGroupMembers": {
+						"items": {
+							"$ref": "#/components/schemas/UserGroupMember"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"userGroupMembers"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Notification": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"image": {
+						"type": "string"
+					},
+					"time": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"url": {
+						"type": "string"
+					},
+					"read": {
+						"type": "boolean"
+					},
+					"userId": {
+						"type": "number",
+						"format": "double"
+					},
+					"user": {
+						"$ref": "#/components/schemas/User"
+					}
+				},
+				"required": [
+					"id",
+					"title",
+					"description",
+					"image",
+					"time",
+					"url",
+					"read",
+					"userId",
+					"user"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TimeDuration": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"from": {
+						"type": "string"
+					},
+					"to": {
+						"type": "string"
+					},
+					"goalSummery": {
+						"$ref": "#/components/schemas/GoalSummery"
+					},
+					"goalSummeryId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"from",
+					"to",
+					"goalSummery"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PeerReview": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"user": {
+						"type": "number",
+						"format": "double"
+					},
+					"userGoalSummery": {
+						"$ref": "#/components/schemas/GoalSummery"
+					},
+					"userGoalSummeryId": {
+						"type": "number",
+						"format": "double"
+					},
+					"reviewer": {
+						"type": "number",
+						"format": "double"
+					},
+					"leader": {
+						"type": "boolean"
+					},
+					"goalSummery": {
+						"$ref": "#/components/schemas/GoalSummery"
+					},
+					"goalSummeryId": {
+						"type": "number",
+						"format": "double"
+					},
+					"peerReviewAnswer": {
+						"items": {
+							"$ref": "#/components/schemas/PeerReviewAnswer"
+						},
+						"type": "array"
+					},
+					"peerReviewHistory": {
+						"items": {
+							"$ref": "#/components/schemas/PeerReviewHistory"
+						},
+						"type": "array"
+					},
+					"overallComment": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"user",
+					"userGoalSummery",
+					"reviewer",
+					"goalSummery",
+					"peerReviewAnswer",
+					"peerReviewHistory",
+					"overallComment",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PeerReviewAnswer": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"answer": {
+						"type": "number",
+						"format": "double"
+					},
+					"comment": {
+						"type": "string"
+					},
+					"criteria": {
+						"$ref": "#/components/schemas/Criteria"
+					},
+					"criteriaId": {
+						"type": "number",
+						"format": "double"
+					},
+					"peerReview": {
+						"$ref": "#/components/schemas/PeerReview"
+					},
+					"peerReviewId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"answer",
+					"criteria",
+					"peerReview"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PeerReviewHistory": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"editBy": {
+						"type": "number",
+						"format": "double"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"peerReview": {
+						"$ref": "#/components/schemas/PeerReview"
+					},
+					"peerReviewId": {
+						"type": "number",
+						"format": "double"
+					},
+					"peerReviewAnswer": {
+						"items": {
+							"$ref": "#/components/schemas/PeerReviewAnswerHistory"
+						},
+						"type": "array"
+					},
+					"overallComment": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"editBy",
+					"timestamp",
+					"peerReview",
+					"peerReviewAnswer",
+					"overallComment",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PeerReviewAnswerHistory": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"answer": {
+						"type": "number",
+						"format": "double"
+					},
+					"comment": {
+						"type": "string"
+					},
+					"criteria": {
+						"$ref": "#/components/schemas/Criteria"
+					},
+					"criteriaId": {
+						"type": "number",
+						"format": "double"
+					},
+					"peerReviewHistory": {
+						"$ref": "#/components/schemas/PeerReviewHistory"
+					},
+					"peerReviewHistoryId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"answer",
+					"criteria",
+					"peerReviewHistory"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SubordinateReview": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"user": {
+						"type": "number",
+						"format": "double"
+					},
+					"userGoalSummery": {
+						"$ref": "#/components/schemas/GoalSummery"
+					},
+					"userGoalSummeryId": {
+						"type": "number",
+						"format": "double"
+					},
+					"goalSummery": {
+						"$ref": "#/components/schemas/GoalSummery"
+					},
+					"goalSummeryId": {
+						"type": "number",
+						"format": "double"
+					},
+					"reviewer": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string"
+					},
+					"reviewType": {
+						"type": "string"
+					},
+					"weight": {
+						"type": "number",
+						"format": "double"
+					},
+					"subordinateReviewAnswer": {
+						"items": {
+							"$ref": "#/components/schemas/SubordinateReviewAnswer"
+						},
+						"type": "array"
+					},
+					"subordinateReviewHistory": {
+						"items": {
+							"$ref": "#/components/schemas/SubordinateReviewHistory"
+						},
+						"type": "array"
+					},
+					"overallComment": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"subordinateReviewCriteriaSet": {
+						"$ref": "#/components/schemas/CriteriaSet"
+					},
+					"subordinateReviewCriteriaSetId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"user",
+					"userGoalSummery",
+					"goalSummery",
+					"reviewer",
+					"type",
+					"reviewType",
+					"weight",
+					"subordinateReviewAnswer",
+					"subordinateReviewHistory",
+					"overallComment",
+					"status",
+					"subordinateReviewCriteriaSet"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SubordinateReviewAnswer": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"answer": {
+						"type": "number",
+						"format": "double"
+					},
+					"comment": {
+						"type": "string"
+					},
+					"criteria": {
+						"$ref": "#/components/schemas/Criteria"
+					},
+					"criteriaId": {
+						"type": "number",
+						"format": "double"
+					},
+					"subordinateReview": {
+						"$ref": "#/components/schemas/SubordinateReview"
+					},
+					"subordinateReviewId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"answer",
+					"comment",
+					"criteria",
+					"subordinateReview"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SubordinateReviewHistory": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"editBy": {
+						"type": "number",
+						"format": "double"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"subordinateReview": {
+						"$ref": "#/components/schemas/SubordinateReview"
+					},
+					"subordinateReviewId": {
+						"type": "number",
+						"format": "double"
+					},
+					"subordinateReviewAnswer": {
+						"items": {
+							"$ref": "#/components/schemas/SubordinateReviewAnswerHistory"
+						},
+						"type": "array"
+					},
+					"overallComment": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"editBy",
+					"timestamp",
+					"subordinateReview",
+					"subordinateReviewAnswer",
+					"overallComment",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SubordinateReviewAnswerHistory": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"answer": {
+						"type": "number",
+						"format": "double"
+					},
+					"comment": {
+						"type": "string"
+					},
+					"criteria": {
+						"$ref": "#/components/schemas/Criteria"
+					},
+					"criteriaId": {
+						"type": "number",
+						"format": "double"
+					},
+					"subordinateReviewHistory": {
+						"$ref": "#/components/schemas/SubordinateReviewHistory"
+					},
+					"subordinateReviewHistoryId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"answer",
+					"comment",
+					"criteria",
+					"subordinateReviewHistory"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TeamConfiguration": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string"
+					},
+					"weight": {
+						"type": "number",
+						"format": "double"
+					},
+					"percentage": {
+						"type": "number",
+						"format": "double"
+					},
+					"checked": {
+						"type": "boolean"
+					},
+					"goalSummery": {
+						"$ref": "#/components/schemas/GoalSummery"
+					},
+					"goalSummeryId": {
+						"type": "number",
+						"format": "double"
+					},
+					"goalSummeryForLead": {
+						"$ref": "#/components/schemas/GoalSummery"
+					},
+					"goalSummeryForLeadId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"goalSummery",
+					"goalSummeryForLead"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InternalCustomer": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"team": {
+						"type": "number",
+						"format": "double"
+					},
+					"teamGoalSummery": {
+						"$ref": "#/components/schemas/GoalSummery"
+					},
+					"teamGoalSummeryId": {
+						"type": "number",
+						"format": "double"
+					},
+					"reviewer": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string"
+					},
+					"reviewType": {
+						"type": "string"
+					},
+					"weight": {
+						"type": "number",
+						"format": "double"
+					},
+					"leaderWeight": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"type": "string"
+					},
+					"internalCustomerAnswer": {
+						"items": {
+							"$ref": "#/components/schemas/InternalCustomerAnswer"
+						},
+						"type": "array"
+					},
+					"internalCustomerHistory": {
+						"items": {
+							"$ref": "#/components/schemas/InternalCustomerHistory"
+						},
+						"type": "array"
+					},
+					"overallComment": {
+						"type": "string"
+					},
+					"internalCustomerCriteriaSet": {
+						"$ref": "#/components/schemas/CriteriaSet"
+					},
+					"internalCustomerCriteriaSetId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"team",
+					"teamGoalSummery",
+					"reviewer",
+					"type",
+					"reviewType",
+					"weight",
+					"leaderWeight",
+					"status",
+					"internalCustomerAnswer",
+					"internalCustomerHistory",
+					"overallComment",
+					"internalCustomerCriteriaSet"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InternalCustomerAnswer": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"answer": {
+						"type": "number",
+						"format": "double"
+					},
+					"comment": {
+						"type": "string"
+					},
+					"criteria": {
+						"$ref": "#/components/schemas/Criteria"
+					},
+					"criteriaId": {
+						"type": "number",
+						"format": "double"
+					},
+					"internalCustomer": {
+						"$ref": "#/components/schemas/InternalCustomer"
+					},
+					"internalCustomerId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"answer",
+					"criteria",
+					"internalCustomer"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InternalCustomerHistory": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"editBy": {
+						"type": "number",
+						"format": "double"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"internalCustomer": {
+						"$ref": "#/components/schemas/InternalCustomer"
+					},
+					"internalCustomerId": {
+						"type": "number",
+						"format": "double"
+					},
+					"internalCustomerAnswer": {
+						"items": {
+							"$ref": "#/components/schemas/InternalCustomerAnswerHistory"
+						},
+						"type": "array"
+					},
+					"overallComment": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"editBy",
+					"timestamp",
+					"internalCustomer",
+					"internalCustomerAnswer",
+					"overallComment",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InternalCustomerAnswerHistory": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"answer": {
+						"type": "number",
+						"format": "double"
+					},
+					"comment": {
+						"type": "string"
+					},
+					"criteria": {
+						"$ref": "#/components/schemas/Criteria"
+					},
+					"criteriaId": {
+						"type": "number",
+						"format": "double"
+					},
+					"internalCustomerHistory": {
+						"$ref": "#/components/schemas/InternalCustomerHistory"
+					},
+					"internalCustomerHistoryId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"answer",
+					"criteria",
+					"internalCustomerHistory"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SupervisorAnalysis": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"strengthsOfThEmployee": {
+						"type": "string"
+					},
+					"areasNeededToBeImproved": {
+						"type": "string"
+					},
+					"individualDevelopmentPlan": {
+						"type": "string"
+					},
+					"overallCommentsBySupervisor": {
+						"type": "string"
+					},
+					"grade": {
+						"type": "string"
+					},
+					"userFeedback": {
+						"type": "string"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"goalSummery": {
+						"$ref": "#/components/schemas/GoalSummery"
+					}
+				},
+				"required": [
+					"id",
+					"timestamp",
+					"goalSummery"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GoalType": {
+				"type": "string",
+				"enum": [
+					"objective",
+					"keyResult"
+				]
+			},
+			"GoalMark": {
+				"properties": {
+					"userMark": {
+						"type": "number",
+						"format": "double"
+					},
+					"supervisorMark": {
+						"type": "number",
+						"format": "double"
+					},
+					"userComment": {
+						"type": "string"
+					},
+					"supervisorComment": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Progress": {
+				"properties": {
+					"startValue": {
+						"type": "number",
+						"format": "double"
+					},
+					"endValue": {
+						"type": "number",
+						"format": "double"
+					},
+					"threshold": {
+						"type": "number",
+						"format": "double"
+					},
+					"thresholdType": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"unit": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DataTableResponse_GoalSummery_": {
+				"properties": {
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/GoalSummery"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"total",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Responses": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"NotificationData": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"time": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"url": {
+						"type": "string"
+					},
+					"read": {
+						"type": "boolean"
+					},
+					"user": {
+						"type": "number",
+						"format": "double"
+					},
+					"image": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"title",
+					"description",
+					"url",
+					"user"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PerformanceCycleData": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"startDate": {
+						"type": "string"
+					},
+					"endDate": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"notification": {}
+				},
+				"required": [
+					"name",
+					"startDate",
+					"endDate",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SelectValues": {
+				"items": {
+					"$ref": "#/components/schemas/SelectValue"
+				},
+				"type": "array"
+			},
+			"ControllerResponse_SelectValues_": {
+				"properties": {
+					"statusCode": {
+						"type": "number",
+						"format": "double"
+					},
+					"body": {
+						"$ref": "#/components/schemas/SelectValues"
+					},
+					"mask": {}
+				},
+				"required": [
+					"statusCode",
+					"body"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DataTableResponse_Team_": {
+				"properties": {
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/Team"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"total",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TeamCreationParams": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"cycleId": {
+						"type": "number",
+						"format": "double"
+					},
+					"description": {
+						"type": "string"
+					},
+					"leads": {
+						"items": {
+							"type": "number",
+							"format": "double"
+						},
+						"type": "array"
+					},
+					"teamTypeId": {
+						"type": "number",
+						"format": "double"
+					},
+					"members": {
+						"items": {
+							"type": "number",
+							"format": "double"
+						},
+						"type": "array"
+					},
+					"parentId": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"image": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"cycleId",
+					"description",
+					"teamTypeId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TeamEditParams": {
+				"properties": {
+					"image": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"leads": {
+						"items": {
+							"type": "number",
+							"format": "double"
+						},
+						"type": "array"
+					},
+					"teamTypeId": {
+						"type": "number",
+						"format": "double"
+					},
+					"members": {
+						"items": {
+							"type": "number",
+							"format": "double"
+						},
+						"type": "array"
+					},
+					"parentId": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					}
+				},
+				"required": [
+					"name",
+					"description",
+					"teamTypeId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TeamConfigurationData": {
+				"properties": {
+					"type": {
+						"type": "string"
+					},
+					"weight": {
+						"type": "number",
+						"format": "double"
+					},
+					"percentage": {
+						"type": "number",
+						"format": "double"
+					},
+					"checked": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserGroupData": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EditUserGroupData": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"team": {
+						"items": {
+							"type": "number",
+							"format": "double"
+						},
+						"type": "array"
+					},
+					"user": {
+						"items": {
+							"type": "number",
+							"format": "double"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ErrorJson": {
+				"properties": {
+					"code": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"body": {}
+				},
+				"required": [
+					"code",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserCreationParams": {
+				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"epfNo": {
+						"type": "number",
+						"format": "double"
+					},
+					"designation": {},
+					"supervisor": {},
+					"email": {
+						"type": "string"
+					},
+					"image": {
+						"type": "string"
+					},
+					"doj": {
+						"type": "string"
+					},
+					"goalsAvailability": {
+						"type": "boolean"
+					},
+					"roles": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"firstName",
+					"lastName",
+					"epfNo",
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DataTableResponse_User_": {
+				"properties": {
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/User"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"total",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ValueChangeParams": {
+				"properties": {
+					"time": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string"
+					},
+					"keyResultId": {
+						"type": "number",
+						"format": "double"
+					},
+					"goalId": {
+						"type": "number",
+						"format": "double"
+					},
+					"beforeValue": {
+						"type": "string"
+					},
+					"updatedValue": {
+						"type": "string"
+					},
+					"beforeStatus": {
+						"type": "string"
+					},
+					"updatedStatus": {
+						"type": "string"
+					},
+					"unit": {
+						"type": "string"
+					},
+					"comment": {
+						"type": "string"
+					},
+					"keyResultType": {
+						"type": "string"
+					},
+					"mode": {
+						"type": "string",
+						"enum": [
+							"hidden",
+							"not-hidden"
+						]
+					},
+					"valueChangeType": {
+						"type": "string",
+						"enum": [
+							"History",
+							"Comments",
+							"Updates",
+							"Evaluations"
+						]
+					}
+				},
+				"required": [
+					"time",
+					"date",
+					"userId",
+					"type",
+					"goalId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EnumTypeData": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"description"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EnumValueData": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"enumType": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"value": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"enumType",
+					"name",
+					"value"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {
+			"bearerAuth": {
+				"type": "http",
+				"description": "Bearer authentication - give access to the bearer of this token",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		}
+	},
+	"info": {
+		"title": "pms-backend",
+		"description": "Performance Management System Backend",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {
+			"name": "Tharindu vindula"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/api/v1/common/select/{source}": {
+			"get": {
+				"operationId": "GetSelectValues",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SelectValueResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr",
+							"user",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "source",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/common/uploadFile": {
+			"post": {
+				"operationId": "UploadFile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/v1/common/user/{id}/{teamId}/{cycle}": {
+			"get": {
+				"operationId": "GetSupervisor",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "teamId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "cycle",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/common/team/{id}/{teamId}/{cycle}": {
+			"get": {
+				"operationId": "GetSupervisorAndLeads",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "teamId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "cycle",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/config": {
+			"get": {
+				"operationId": "GetConfig",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "AddConfig",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ConfigData"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/config/{id}": {
+			"patch": {
+				"operationId": "EditConfig",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ConfigData"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteConfig",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/criteria": {
+			"post": {
+				"operationId": "CreateCriteria",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"criteria": {
+										"$ref": "#/components/schemas/CriteriaData"
+									}
+								},
+								"required": [
+									"criteria"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetCriterias",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataTableResponse_Criteria_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "criteriaSet",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/criteria/{id}": {
+			"patch": {
+				"operationId": "EditCriteria",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"criteria": {
+										"$ref": "#/components/schemas/CriteriaData"
+									}
+								},
+								"required": [
+									"criteria"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteCriteria",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/criteria/criteriaSet": {
+			"get": {
+				"operationId": "GetCriteriaSets",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataTableResponse_Criteria_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateCriteriaSet",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"criteriaIds": {
+										"items": {
+											"type": "number",
+											"format": "double"
+										},
+										"type": "array"
+									},
+									"name": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"criteriaIds",
+									"name"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/criteria/criteriaSet/{id}": {
+			"patch": {
+				"operationId": "EditCriteriaSet",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"criteriaSet": {
+										"properties": {
+											"criterias": {
+												"items": {
+													"type": "number",
+													"format": "double"
+												},
+												"type": "array"
+											},
+											"name": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"criterias",
+											"name"
+										],
+										"type": "object"
+									}
+								},
+								"required": [
+									"criteriaSet"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteCriteriaSet",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/email/email-template": {
+			"post": {
+				"operationId": "AddTemplate",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EmailTemplateData"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetTemplate",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/email/email-template/{id}": {
+			"delete": {
+				"operationId": "DeleteTemplate",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "EditTemplate",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EmailTemplateData"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals": {
+			"post": {
+				"operationId": "CreateGoal",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"keyResults": {
+										"items": {
+											"$ref": "#/components/schemas/KeyResultCreationParams"
+										},
+										"type": "array"
+									},
+									"goal": {
+										"$ref": "#/components/schemas/GoalCreationParams"
+									}
+								},
+								"required": [
+									"goal"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/common": {
+			"post": {
+				"operationId": "CreateGoalFromCommonGoal",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"goalSummeryId": {
+										"type": "number",
+										"format": "double"
+									},
+									"goalId": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"goalSummeryId",
+									"goalId"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/key-result": {
+			"post": {
+				"operationId": "CreateKeyResult",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"keyResult": {
+										"$ref": "#/components/schemas/KeyResultCreationParams"
+									},
+									"goalId": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"keyResult",
+									"goalId"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/tree/get/{id}/{cycle}": {
+			"get": {
+				"operationId": "GetGoalsTree",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"properties": {
+											"goalSummaryOwner": {
+												"type": "number",
+												"format": "double"
+											},
+											"teamId": {
+												"type": "number",
+												"format": "double"
+											},
+											"teamName": {
+												"type": "string"
+											},
+											"goalSummaryId": {
+												"type": "number",
+												"format": "double"
+											},
+											"approvalStatus": {
+												"type": "string"
+											},
+											"parentTeams": {
+												"type": "number",
+												"format": "double"
+											},
+											"goals": {
+												"items": {
+													"$ref": "#/components/schemas/Goal"
+												},
+												"type": "array"
+											},
+											"total": {
+												"type": "number",
+												"format": "double"
+											}
+										},
+										"required": [
+											"teamName",
+											"goalSummaryId",
+											"approvalStatus",
+											"parentTeams",
+											"goals",
+											"total"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "cycle",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/tree/get/{cycle}": {
+			"get": {
+				"operationId": "GetGoalsTree1",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"properties": {
+											"goalSummaryOwner": {
+												"type": "number",
+												"format": "double"
+											},
+											"teamId": {
+												"type": "number",
+												"format": "double"
+											},
+											"teamName": {
+												"type": "string"
+											},
+											"goalSummaryId": {
+												"type": "number",
+												"format": "double"
+											},
+											"approvalStatus": {
+												"type": "string"
+											},
+											"parentTeams": {
+												"type": "number",
+												"format": "double"
+											},
+											"goals": {
+												"items": {
+													"$ref": "#/components/schemas/Goal"
+												},
+												"type": "array"
+											},
+											"total": {
+												"type": "number",
+												"format": "double"
+											}
+										},
+										"required": [
+											"teamName",
+											"goalSummaryId",
+											"approvalStatus",
+											"parentTeams",
+											"goals",
+											"total"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "cycle",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/{goalId}": {
+			"patch": {
+				"operationId": "EditGoal",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "goalId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"goal": {
+										"$ref": "#/components/schemas/GoalCreationParams"
+									}
+								},
+								"required": [
+									"goal"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteGoal",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "goalId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/keyResult/{keyId}": {
+			"patch": {
+				"operationId": "EditKeyResult",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "keyId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"keyResult": {
+										"$ref": "#/components/schemas/KeyResultCreationParams"
+									}
+								},
+								"required": [
+									"keyResult"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteKeyResult",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "keyId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/weight/{goalId}": {
+			"post": {
+				"operationId": "SetGoalWeight",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "goalId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"weight": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"weight"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/team-weight/{goalId}": {
+			"post": {
+				"operationId": "SetGoalTeamWeight",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "goalId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"weight": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"weight"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/{type}/goal-mark/{goalId}": {
+			"patch": {
+				"operationId": "SetGoalMark",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "goalId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "type",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"supervisorComment": {
+										"type": "string"
+									},
+									"userComment": {
+										"type": "string"
+									},
+									"supervisorMark": {
+										"type": "number",
+										"format": "double"
+									},
+									"userMark": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/{type}/goal-mark/{goalId}/values": {
+			"get": {
+				"operationId": "GetGoalMark",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "type",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "goalId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/{type}/{id}": {
+			"get": {
+				"operationId": "GetSingleGoal",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {
+											"$ref": "#/components/schemas/Goal"
+										}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "type",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"objective",
+								"keyResult"
+							]
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/goalSummary/{id}": {
+			"patch": {
+				"operationId": "GoalSummaryStateChange",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"receiver": {
+										"items": {
+											"type": "number",
+											"format": "double"
+										},
+										"type": "array"
+									},
+									"state": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"receiver",
+									"state"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/getTeamGoalSummary/{id}/{cycleId}": {
+			"get": {
+				"operationId": "GetTeamGoalSummary",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataTableResponse_GoalSummery_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/review/user/{cycleId}": {
+			"get": {
+				"operationId": "GetReviewUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Responses"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/review/user/approve/{cycleId}": {
+			"get": {
+				"operationId": "ReviewingUsersApprove",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataTableResponse_GoalSummery_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/review/user/approve/{cycleId}/{filterUser}": {
+			"get": {
+				"operationId": "ReviewingUsersApprove1",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataTableResponse_GoalSummery_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "filterUser",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/review/user/{userId}/{cycleId}": {
+			"get": {
+				"operationId": "GetReviewUserForHR",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Responses"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/internal-customer/{id}/{cycleId}": {
+			"get": {
+				"operationId": "GetInternalCustomers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataTableResponse_GoalSummery_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/internal-customers/{cycleId}/approve": {
+			"get": {
+				"operationId": "GetInternalCustomersToApprove",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataTableResponse_GoalSummery_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/internal-customers/{cycleId}/{teamId}": {
+			"get": {
+				"operationId": "GetInternalCustomersForHR",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataTableResponse_GoalSummery_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "teamId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/timeline/user/{userId}": {
+			"get": {
+				"operationId": "GetUserTimeLine",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/internal-customers/{id}/approve": {
+			"patch": {
+				"operationId": "ApproveInternalCustomerAnswer",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"overallComment": {
+										"type": "string"
+									},
+									"answers": {
+										"items": {
+											"properties": {
+												"comment": {
+													"type": "string"
+												},
+												"answer": {
+													"type": "number",
+													"format": "double"
+												},
+												"id": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"answer",
+												"id"
+											],
+											"type": "object"
+										},
+										"type": "array"
+									}
+								},
+								"required": [
+									"overallComment",
+									"answers"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/setCriteriaSet/{id}/{criteriaSetId}": {
+			"patch": {
+				"operationId": "SetCriteriaSetForGoalSummery",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "criteriaSetId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/setLeaderCriteria/{goalSummeryId}": {
+			"patch": {
+				"operationId": "SetLeaderCriteriaSetForGoalSummery",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "goalSummeryId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"userId": {
+										"type": "number",
+										"format": "double"
+									},
+									"reviewers": {
+										"items": {
+											"properties": {
+												"user": {
+													"type": "number",
+													"format": "double"
+												},
+												"reviewType": {
+													"type": "string",
+													"enum": [
+														"all",
+														"lead",
+														"member"
+													]
+												},
+												"weight": {
+													"type": "number",
+													"format": "double"
+												},
+												"type": {
+													"type": "string",
+													"enum": [
+														"user",
+														"team"
+													]
+												},
+												"criteriaSetId": {
+													"type": "number",
+													"format": "double"
+												},
+												"entityId": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"user",
+												"reviewType",
+												"weight",
+												"type",
+												"criteriaSetId",
+												"entityId"
+											],
+											"type": "object"
+										},
+										"type": "array"
+									}
+								},
+								"required": [
+									"userId",
+									"reviewers"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/internalCustomer/{goalSummeryId}": {
+			"patch": {
+				"operationId": "SetInternalCustomer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "goalSummeryId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"teamId": {
+										"type": "number",
+										"format": "double"
+									},
+									"reviewers": {
+										"items": {
+											"properties": {
+												"reviewType": {
+													"type": "string",
+													"enum": [
+														"all",
+														"lead",
+														"member"
+													]
+												},
+												"weight": {
+													"type": "number",
+													"format": "double"
+												},
+												"type": {
+													"type": "string",
+													"enum": [
+														"user",
+														"team"
+													]
+												},
+												"criteriaSetId": {
+													"type": "number",
+													"format": "double"
+												},
+												"entityId": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"reviewType",
+												"weight",
+												"type",
+												"criteriaSetId",
+												"entityId"
+											],
+											"type": "object"
+										},
+										"type": "array"
+									}
+								},
+								"required": [
+									"teamId",
+									"reviewers"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/leader-internal-customer/{goalSummeryId}": {
+			"patch": {
+				"operationId": "SetLeaderInternalCustomer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "goalSummeryId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"teamId": {
+										"type": "number",
+										"format": "double"
+									},
+									"reviewers": {
+										"items": {
+											"properties": {
+												"reviewType": {
+													"type": "string",
+													"enum": [
+														"all",
+														"lead",
+														"member"
+													]
+												},
+												"weight": {
+													"type": "number",
+													"format": "double"
+												},
+												"type": {
+													"type": "string",
+													"enum": [
+														"user",
+														"team"
+													]
+												},
+												"criteriaSetId": {
+													"type": "number",
+													"format": "double"
+												},
+												"entityId": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"reviewType",
+												"weight",
+												"type",
+												"criteriaSetId",
+												"entityId"
+											],
+											"type": "object"
+										},
+										"type": "array"
+									}
+								},
+								"required": [
+									"teamId",
+									"reviewers"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/peer_review/answer/{id}": {
+			"patch": {
+				"operationId": "SetPeerReviewAnswer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"peerReviewType": {
+										"type": "boolean"
+									},
+									"overallComment": {
+										"type": "string"
+									},
+									"answers": {
+										"items": {
+											"properties": {
+												"comment": {
+													"type": "string"
+												},
+												"answer": {
+													"type": "number",
+													"format": "double"
+												},
+												"id": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"answer",
+												"id"
+											],
+											"type": "object"
+										},
+										"type": "array"
+									}
+								},
+								"required": [
+									"peerReviewType",
+									"overallComment",
+									"answers"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/internal_review/answer/draft/{id}": {
+			"patch": {
+				"operationId": "DraftInternalCustomerAnswer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"overallComment": {
+										"type": "string"
+									},
+									"answers": {
+										"items": {
+											"properties": {
+												"comment": {
+													"type": "string"
+												},
+												"answer": {
+													"type": "number",
+													"format": "double"
+												},
+												"id": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"id"
+											],
+											"type": "object"
+										},
+										"type": "array"
+									}
+								},
+								"required": [
+									"answers"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/peer_review/answer/draft/{id}": {
+			"patch": {
+				"operationId": "DraftPeerReviewAnswer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"overallComment": {
+										"type": "string"
+									},
+									"peerReviewType": {
+										"type": "boolean"
+									},
+									"answers": {
+										"items": {
+											"properties": {
+												"comment": {
+													"type": "string"
+												},
+												"answer": {
+													"type": "number",
+													"format": "double"
+												},
+												"id": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"id"
+											],
+											"type": "object"
+										},
+										"type": "array"
+									}
+								},
+								"required": [
+									"peerReviewType",
+									"answers"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/publish/{type}/{id}": {
+			"patch": {
+				"operationId": "PublishForReview",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "type",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"Peers",
+								"LeaderPeers",
+								"InternalCustomers"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals/review/user/approve/{id}": {
+			"patch": {
+				"operationId": "ApprovePeerReviewAnswer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"peerReviewType": {
+										"type": "boolean"
+									},
+									"overallComment": {
+										"type": "string"
+									},
+									"answers": {
+										"items": {
+											"properties": {
+												"comment": {
+													"type": "string"
+												},
+												"answer": {
+													"type": "number",
+													"format": "double"
+												},
+												"id": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"answer",
+												"id"
+											],
+											"type": "object"
+										},
+										"type": "array"
+									}
+								},
+								"required": [
+									"peerReviewType",
+									"overallComment",
+									"answers"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/review/user/reject/{id}": {
+			"patch": {
+				"operationId": "RejectPeerReviewAnswer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"peerReviewType": {
+										"type": "boolean"
+									}
+								},
+								"required": [
+									"peerReviewType"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/xx/xx/xx": {
+			"get": {
+				"operationId": "UpdateGoals",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/v1/goals/internalReviewAnswer/{id}": {
+			"patch": {
+				"operationId": "SetInternalReviewAnswer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"userId": {
+										"type": "number",
+										"format": "double"
+									},
+									"overallComment": {
+										"type": "string"
+									},
+									"answers": {
+										"items": {
+											"properties": {
+												"comment": {
+													"type": "string"
+												},
+												"answer": {
+													"type": "number",
+													"format": "double"
+												},
+												"id": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"answer",
+												"id"
+											],
+											"type": "object"
+										},
+										"type": "array"
+									}
+								},
+								"required": [
+									"userId",
+									"overallComment",
+									"answers"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals/setPeers/{goalSummeryId}/{user}": {
+			"patch": {
+				"operationId": "SetPeers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "goalSummeryId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "user",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"leader": {
+										"type": "boolean"
+									},
+									"teamId": {
+										"type": "number",
+										"format": "double"
+									},
+									"cycleId": {
+										"type": "number",
+										"format": "double"
+									},
+									"reviewers": {
+										"items": {
+											"type": "number",
+											"format": "double"
+										},
+										"type": "array"
+									}
+								},
+								"required": [
+									"leader",
+									"teamId",
+									"cycleId",
+									"reviewers"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals-summary/cycle-closure/{goalSummeryId}": {
+			"patch": {
+				"operationId": "CycleClosure",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "goalSummeryId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"teamId": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"teamId"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals-summary/submit-comment/{cycleId}": {
+			"patch": {
+				"operationId": "SubmitComment",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/goals-summary/feedback/{goalSummeryId}": {
+			"patch": {
+				"operationId": "SaveFeedback",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "goalSummeryId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/goals-summary/approver/{id}/{userId}": {
+			"patch": {
+				"operationId": "SetInternalCustomerApprover",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/health": {
+			"get": {
+				"operationId": "GetUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Responses"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/v1/notification": {
+			"post": {
+				"operationId": "CreateNotification",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NotificationData"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetNotification",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "date",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/notification/{userId}": {
+			"patch": {
+				"operationId": "MarkAsRead",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"all": {
+										"type": "boolean"
+									},
+									"notificationId": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"notificationId"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/cycles": {
+			"get": {
+				"operationId": "GetCycle",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"manager",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "AddCycle",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PerformanceCycleData"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/cycles/notifications": {
+			"get": {
+				"operationId": "SendCycleNotification",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"manager",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "time",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/cycles/{id}": {
+			"patch": {
+				"operationId": "EditCycle",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PerformanceCycleData"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteCycle",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/select-values/users": {
+			"get": {
+				"operationId": "GetUsers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ControllerResponse_SelectValues_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "ids",
+						"required": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "number",
+								"format": "double"
+							}
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/select-values/teams/{cycleId}": {
+			"get": {
+				"operationId": "GetTeams",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ControllerResponse_SelectValues_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/select-values/designations": {
+			"get": {
+				"operationId": "GetDesignations",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SelectValues"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/v1/select-values/team-types": {
+			"get": {
+				"operationId": "GetTeamTypes",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ControllerResponse_SelectValues_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/v1/teams/{teamId}": {
+			"get": {
+				"operationId": "GetTeam",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Team"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "teamId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateTeam",
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "teamId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TeamEditParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/teams": {
+			"get": {
+				"operationId": "GetTeams",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataTableResponse_Team_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "teamName",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "lead",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateTeam",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TeamCreationParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/teams/tree/get/{cycleId}": {
+			"get": {
+				"operationId": "GetTeamsTree",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"teams": {
+											"items": {
+												"$ref": "#/components/schemas/Team"
+											},
+											"type": "array"
+										},
+										"total": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"teams",
+										"total"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/teams/{id}": {
+			"delete": {
+				"operationId": "DeleteTeam",
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/teams/{id}/configuration": {
+			"post": {
+				"operationId": "AddConfiguration",
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"type": {
+										"type": "string",
+										"enum": [
+											"team",
+											"lead"
+										]
+									},
+									"cycleId": {
+										"type": "number",
+										"format": "double"
+									},
+									"configurations": {
+										"items": {
+											"$ref": "#/components/schemas/TeamConfigurationData"
+										},
+										"type": "array"
+									}
+								},
+								"required": [
+									"type",
+									"cycleId"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/user-group": {
+			"post": {
+				"operationId": "CreateUserGroup",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"userGroup": {
+										"$ref": "#/components/schemas/UserGroupData"
+									}
+								},
+								"required": [
+									"userGroup"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetUserGroups",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataTableResponse_Criteria_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/user-group/{id}": {
+			"patch": {
+				"operationId": "EditUserGroup",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"userGroup": {
+										"$ref": "#/components/schemas/EditUserGroupData"
+									}
+								},
+								"required": [
+									"userGroup"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetUserGroup",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteUserGroup",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/user-group/{id}/members": {
+			"patch": {
+				"operationId": "SetUsers",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"users": {
+										"items": {
+											"properties": {
+												"type": {
+													"type": "string",
+													"enum": [
+														"user",
+														"teamMember",
+														"teamLead"
+													]
+												},
+												"entityId": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"type",
+												"entityId"
+											],
+											"type": "object"
+										},
+										"type": "array"
+									}
+								},
+								"required": [
+									"users"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/users/{userId}": {
+			"get": {
+				"operationId": "GetUser",
+				"responses": {
+					"200": {
+						"description": "ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Responses"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"id": 2,
+											"email": "jane@doe.com",
+											"name": "Jane Doe",
+											"phoneNumbers": []
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorJson"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"code": "401",
+											"message": "JsonWebTokenError: invalid token || No token provided || JWT does not contain required scope.",
+											"body": {}
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "notFound",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorJson"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"code": "404",
+											"message": "error",
+											"body": {}
+										}
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorJson"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"code": "500",
+											"message": "internal server error",
+											"body": {}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserCreationParams"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "EditUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"user": {
+										"$ref": "#/components/schemas/UserCreationParams"
+									}
+								},
+								"required": [
+									"user"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/users/request-password-reset": {
+			"post": {
+				"operationId": "RequestPasswordReset",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserCreationParams"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"email": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"email"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/users/password-reset": {
+			"post": {
+				"operationId": "ResetPasswordFromToken",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserCreationParams"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"token": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"token",
+									"password"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/users": {
+			"get": {
+				"operationId": "GetUsers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataTableResponse_User_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "email",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "employeeId",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "epfNumber",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateUser",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserCreationParams"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"password": {
+										"type": "string"
+									},
+									"user": {
+										"$ref": "#/components/schemas/UserCreationParams"
+									}
+								},
+								"required": [
+									"password",
+									"user"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/users/all/performance/{cycleId}": {
+			"get": {
+				"operationId": "GetUsersPerformance",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DataTableResponse_User_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "email",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "employeeId",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "epfNumber",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "exportValue",
+						"required": false,
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/users/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"201": {
+						"description": "Created"
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorJson"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"code": "500",
+											"message": "internal server error",
+											"body": {}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"password": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"password",
+									"email"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/users/refresh-token/{userId}": {
+			"get": {
+				"operationId": "RefreshToken",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/users/overall-score/cycle": {
+			"get": {
+				"operationId": "GetDashBoardData",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "cycle",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/users/overall-score/user/{employId}/cycle": {
+			"get": {
+				"operationId": "GetDashBoardDataForEmploy",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "employId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "cycle",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/users/overall-score/{userId}/{cycleId}": {
+			"get": {
+				"operationId": "GetDashBoardDataForHR",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/users/password-change/{userId}": {
+			"patch": {
+				"operationId": "ChangePassword",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"newPassword": {
+										"type": "string"
+									},
+									"currentPassword": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"newPassword",
+									"currentPassword"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/users/password-reset/{userId}": {
+			"patch": {
+				"operationId": "ResetPassword",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"newPassword": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"newPassword"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/users/teams/{userId}/{cycle}": {
+			"get": {
+				"operationId": "GetTeams",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "cycle",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/users/{userId}/{cycleId}/goal-selection": {
+			"get": {
+				"operationId": "GetGoalSelection",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Responses"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "path",
+						"name": "cycleId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/users/internal-customer/approve": {
+			"get": {
+				"operationId": "IsInternalCustomerApprover",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Responses"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/v1/value-change": {
+			"post": {
+				"operationId": "CreateValueChange",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"data": {
+										"$ref": "#/components/schemas/ValueChangeParams"
+									}
+								},
+								"required": [
+									"data"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteValueChange",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"id": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"id"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/value-change/{type}/{id}": {
+			"get": {
+				"operationId": "GetValueChanges",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"hr",
+							"manger"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "type",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"objective",
+								"keyResult"
+							]
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "valueChangeType",
+						"required": false,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"All",
+								"History",
+								"Comments",
+								"Updates",
+								"Evaluations"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/admin/enum": {
+			"post": {
+				"operationId": "CreateEnum",
+				"responses": {
+					"200": {
+						"description": "ok"
+					},
+					"401": {
+						"description": "unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorJson"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"code": "401",
+											"message": "JsonWebTokenError: invalid token || No token provided || JWT does not contain required scope.",
+											"body": {}
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "notFound",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorJson"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"code": "404",
+											"message": "error",
+											"body": {}
+										}
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorJson"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"code": "500",
+											"message": "internal server error",
+											"body": {}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EnumTypeData"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetEnums",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"enumData": {
+											"items": {
+												"$ref": "#/components/schemas/EnumTypeData"
+											},
+											"type": "array"
+										},
+										"total": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"enumData",
+										"total"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/admin/enum/{enumId}": {
+			"delete": {
+				"operationId": "DeleteEnum",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "enumId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "EditEnum",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EnumTypeData"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "enumId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EnumTypeData"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/admin/enum-value": {
+			"post": {
+				"operationId": "CreateEnumValue",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EnumValueData"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/admin/enum-value/{enumType}": {
+			"get": {
+				"operationId": "GetEnumValue",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/EnumValueData"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"manager",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "enumType",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/admin/enum-value/{enumValueId}": {
+			"delete": {
+				"operationId": "DeleteEnumValue",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "enumValueId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "EditEnumValue",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EnumValueData"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "enumValueId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EnumValueData"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/admin/designation": {
+			"get": {
+				"operationId": "GetDesignation",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"designationData": {
+											"items": {
+												"properties": {
+													"value": {
+														"type": "string"
+													},
+													"id": {
+														"type": "number",
+														"format": "double"
+													}
+												},
+												"required": [
+													"value",
+													"id"
+												],
+												"type": "object"
+											},
+											"type": "array"
+										},
+										"total": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"designationData",
+										"total"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"user",
+							"manager",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "AddDesignation",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"value": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"value"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/admin/designation/{id}": {
+			"patch": {
+				"operationId": "EditDesignation",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"value": {
+											"type": "string"
+										},
+										"id": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"value",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"value": {
+										"type": "string"
+									},
+									"id": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"value",
+									"id"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteDesignation",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"id": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"hr"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

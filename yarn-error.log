@@ -1,0 +1,104 @@
+Arguments: 
+  D:\Program Files\node.exe C:\Users\Samith Dulshan\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js install
+
+PATH: 
+  C:\Python39\Scripts\;C:\Python39\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;D:\Git\cmd;D:\Program Files\;C:\ProgramData\chocolatey\bin;C:\Users\Samith Dulshan\AppData\Local\Microsoft\WindowsApps;;D:\Microsoft VS Code\bin;C:\Users\Samith Dulshan\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  14.17.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: EPERM: operation not permitted, unlink 'C:\Users\Samith Dulshan\AppData\Local\Yarn\Cache\v6\npm-date-fns-2.22.1-1e5af959831ebb1d82992bf67b765052d8f0efc4-integrity\node_modules\date-fns\.yarn-tarball.tgz'
+
+npm manifest: 
+  {
+    "name": "pms-backend",
+    "version": "1.0.0",
+    "description": "Performance Management System Backend",
+    "main": "build/src/server.js",
+    "scripts": {
+      "build": "yarn run swagger-gen && yarn run routes-gen && tsc --outDir build",
+      "start": "tsc --outDir build && node build/src/server.js",
+      "build-start": "yarn run build && node build/src/server.js",
+      "lint": "tsc --noEmit && eslint ./src/**/*.{js,ts} --max-warnings 0 --fix",
+      "lint-ci": "tsc --noEmit && eslint ./src/**/*.{js,ts} --max-warnings 0 --no-error-on-unmatched-pattern",
+      "clean": "rimraf build",
+      "swagger-gen": "tsoa spec",
+      "routes-gen": "tsoa routes",
+      "tsoa": "tsoa",
+      "sls": "yarn run build && sls offline",
+      "sls-deploy": "yarn run build && sls deploy",
+      "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
+      "deploy-qa": "node --max-old-space-size=4096 node_modules/serverless/bin/serverless deploy --force"
+    },
+    "author": "Tharindu vindula",
+    "license": "MIT",
+    "devDependencies": {
+      "@types/bcryptjs": "^2.4.2",
+      "@types/body-parser": "^1.19.0",
+      "@types/express": "^4.17.12",
+      "@types/jest": "^26.0.19",
+      "@types/multer": "^1.4.5",
+      "@types/node": "^15.6.1",
+      "@types/swagger-ui-express": "^4.1.2",
+      "@typescript-eslint/eslint-plugin": "^4.26.1",
+      "@typescript-eslint/parser": "^4.26.1",
+      "concurrently": "^6.2.0",
+      "eslint": "^7.28.0",
+      "eslint-config-prettier": "^8.3.0",
+      "eslint-plugin-prettier": "^3.3.0",
+      "fork-ts-checker-webpack-plugin": "^6.2.10",
+      "jest": "^27.0.4",
+      "jest-dynalite": "^3.2.3",
+      "nodemon": "^2.0.7",
+      "npm-check": "^5.9.2",
+      "pg": "^8.4.1",
+      "prettier": "^2.3.1",
+      "serverless": "^2.45.0",
+      "serverless-dotenv-plugin": "^3.9.0",
+      "serverless-offline": "^7.0.0",
+      "ts-jest": "^27.0.3",
+      "ts-loader": "^9.2.3",
+      "ts-node": "^10.0.0",
+      "typescript": "^4.3.2"
+    },
+    "dependencies": {
+      "@types/nodemailer": "^6.4.2",
+      "aws-serverless-express": "^3.4.0",
+      "axios": "^0.21.1",
+      "bcryptjs": "^2.4.3",
+      "body-parser": "^1.19.0",
+      "compression": "^1.7.4",
+      "cookie-parser": "^1.4.5",
+      "cors": "^2.8.5",
+      "dotenv": "^10.0.0",
+      "express": "^4.17.1",
+      "express-winston": "^4.1.0",
+      "handlebars": "^4.7.7",
+      "jsonwebtoken": "*",
+      "multer": "^1.4.2",
+      "nodemailer": "^6.6.1",
+      "passport": "*",
+      "passport-jwt": "*",
+      "path": "^0.12.7",
+      "serverless-http": "^2.7.0",
+      "source-map-support": "^0.5.19",
+      "swagger-ui-express": "^4.1.6",
+      "tsoa": "^3.8.0",
+      "typeorm": "^0.2.34",
+      "winston": "^3.3.3"
+    },
+    "_id": "pms-backend@1.0.0"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
