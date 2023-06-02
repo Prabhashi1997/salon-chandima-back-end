@@ -10,6 +10,7 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
 
+    
 
   }
   

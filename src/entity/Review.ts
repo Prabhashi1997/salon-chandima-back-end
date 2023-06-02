@@ -11,6 +11,8 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    comment: string;
 
   }
   
