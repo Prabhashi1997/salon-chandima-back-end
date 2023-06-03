@@ -11,6 +11,9 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({ nullable: true })
+    user: number;
+
 
   }
   

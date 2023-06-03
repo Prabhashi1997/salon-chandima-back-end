@@ -13,8 +13,33 @@ import {
     @Column({ nullable: true })
     date: Date;
 
+    @Column()
+    status: string;
+
     @Column({ nullable: true })
-    time: string;
+    duration: number;
+
+    @Column({ nullable: true })
+    customer: number;
+
+    @Column({ nullable: true })
+    employee: number;
+
+    @Column({ nullable: true })
+    service: number;
+
+    
+    @Column({ default: false })
+    deleted: boolean;
+
+    @Column({ nullable: true })
+    payment: number;
+
+    @Column({ nullable: true })
+    appointmentHistory: number;
+
+    
+
 
   }
   
