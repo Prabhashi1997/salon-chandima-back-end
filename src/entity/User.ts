@@ -4,10 +4,13 @@ import {
   Column,
   JoinColumn,
   Index,
-  OneToMany,
+  OneToMany, OneToOne, RelationId, CreateDateColumn, UpdateDateColumn,
 } from 'typeorm';
 import { Password } from './Password';
 import { Notification } from './Notification';
+import {Admin} from "./Admin";
+import {Employee} from "./Employee";
+import {Customer} from "./Customer";
 
 @Entity()
 export class User {
@@ -48,7 +51,38 @@ export class User {
   @JoinColumn()
   notifications: Notification[];
 
+
+  @OneToOne(() => Admin, { cascade: true, onDelete: 'SET NULL' })
+  @JoinColumn()
+  admin?: Admin;
+
+  @RelationId((user: User) => user.admin)
+  @Column({ nullable: true })
+  adminId?: number;
+
+  @OneToOne(() => Employee, { cascade: true, onDelete: 'CASCADE' })
+  @JoinColumn()
+  employee?: Employee;
+
+  @RelationId((user: User) => user.employee)
+  @Column({ nullable: true })
+  employeeId?: number;
+
+  @OneToOne(() => Customer, { cascade: true, onDelete: 'CASCADE' })
+  @JoinColumn()
+  customer?: Customer;
+
+  @RelationId((user: User) => user.customer)
+  @Column({ nullable: true })
+  customerId?: number;
+
   @Column({ default: false })
   @JoinColumn()
   delete: boolean;
+
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+  updatedAt: Date;
 }

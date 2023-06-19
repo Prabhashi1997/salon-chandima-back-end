@@ -18,7 +18,7 @@ export class NotificationController extends ControllerBase {
 
   // 1.2.0
   @Security('jwt', ['admin', 'user', 'hr', 'manger'])
-  @Get()
+  @Get() 
   public async getNotification(
     @Request() request: any,
     @Query() userId: number,

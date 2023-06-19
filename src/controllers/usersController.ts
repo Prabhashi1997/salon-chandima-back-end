@@ -1,18 +1,4 @@
-import {
-  Body,
-  Delete,
-  Example,
-  Get,
-  Patch,
-  Path,
-  Post,
-  Query,
-  Request,
-  Response,
-  Route,
-  Security,
-  SuccessResponse,
-} from 'tsoa';
+import {Body, Delete, Example, Get, Patch, Path, Post, Query, Request, Response, Route, Security, SuccessResponse,} from 'tsoa';
 import { ErrorJson } from '../models/response';
 import { UserCreationParams } from '../models/user';
 import { Responses } from '../Response';
@@ -127,7 +113,6 @@ export class UsersController extends ControllerBase {
       return Responses.ok(response);
     });
   }
-
 
   // 1.2.0
   @Security('jwt', ['admin', 'hr', 'manger'])

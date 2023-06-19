@@ -8,7 +8,7 @@ export class DatabaseService {
   connectionManager = getConnectionManager();
   public connection = this.connectionManager.create({
     name: `default`,
-    type: 'postgres',
+    type: `mysql`,
     host: process.env.DB_HOST,
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,

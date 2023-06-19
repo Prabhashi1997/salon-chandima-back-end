@@ -1,45 +1,85 @@
 import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-  } from 'typeorm';
-  
-  @Entity()
-  export class Appointment {
-  
-    @PrimaryGeneratedColumn()
-    id: number;
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  RelationId,
+  ManyToOne,
+  JoinColumn,
+  OneToMany, JoinTable, ManyToMany,
+} from 'typeorm';
+import {Service} from "./Service";
+import {Customer} from "./Customer";
+import {Employee} from "./Employee";
+import {AppointmentHistory} from "./AppointmentHistory";
+import {Payment} from "./Payment";
 
-    @Column({ nullable: true })
-    date: Date;
+@Entity()
+export class Appointment {
 
-    @Column()
-    status: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ nullable: true })
-    duration: number;
+  @Column({ nullable: true })
+  dateAndTime: Date;
 
-    @Column({ nullable: true })
-    customer: number;
+  @Column()
+  status: string;
 
-    @Column({ nullable: true })
-    employee: number;
+  @Column()
+  duration: number;
 
-    @Column({ nullable: true })
-    service: number;
-
-    
-    @Column({ default: false })
-    deleted: boolean;
-
-    @Column({ nullable: true })
-    payment: number;
-
-    @Column({ nullable: true })
-    appointmentHistory: number;
-
-    
+  @Column({ default: false })
+  deleted: boolean;
 
 
-  }
-  
+  @OneToMany(() => Payment, (payment) => payment.appointment)
+  @JoinColumn()
+  payments: Payment[];
+
+
+  @OneToMany(() => AppointmentHistory, (appointmentHistory) => appointmentHistory.appointment)
+  @JoinColumn()
+  appointmentHistories: AppointmentHistory[];
+
+
+  @ManyToMany(() => Service, (service) => service.appointments)
+  @JoinTable()
+  @JoinColumn()
+  services: Service[];
+
+
+
+  @ManyToOne(() => Customer, (customer) => customer.appointment, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  customer: Customer;
+
+  @RelationId((appointment: Appointment) => appointment.customer)
+  @Column()
+  customerId: number;
+
+
+  @ManyToOne(() => Employee, (employee) => employee.appointment, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  employee: Employee;
+
+  @RelationId((appointment: Appointment) => appointment.employee)
+  @Column()
+  employeeId: number;
+
+
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+  updatedAt: Date;
+
+
+}
