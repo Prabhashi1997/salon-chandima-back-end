@@ -9,12 +9,12 @@ export class AdminService {
             .getRepository(Admin)
             .createQueryBuilder('admin');
 
-        const [services, total] = await qb
+        const [admin, total] = await qb
             .orderBy('admin.name')
             .getManyAndCount();
 
         return Responses.ok({
-            services: Admin.map((item) => {
+            admin: Admin.map((item) => {
                 return {
                     name: item.name,
                 };
@@ -39,7 +39,7 @@ export class AdminService {
             .getManyAndCount();
 
         return Responses.ok({
-            services: admin.map((item) => {
+            admin: admin.map((item) => {
                 return {...item};
             }),
             total,
@@ -50,16 +50,13 @@ export class AdminService {
         await queryRunner.startTransaction();
         try {
             const newAdmin = new Admin();
-            newAdmin.name = requestBody.name;
-            newAdmin.description = requestBody.description;
-            newAdmin.price = requestBody.price;
             await queryRunner.manager.save(newAdmin);
 
             requestBody.id = newAdmin.id;
             await queryRunner.commitTransaction();
             return Responses.ok(requestBody);
         } catch (e) {
-            console.log(e);
+            // console.log(e);
             // since we have errors let's rollback changes we made
             await queryRunner.rollbackTransaction();
         } finally {
@@ -77,7 +74,7 @@ export class AdminService {
             return Responses.ok(id);
         } catch (e) {
             // since we have errors let's rollback changes we made
-            console.log(e);
+            // console.log(e);
             await queryRunner.rollbackTransaction();
         } finally {
             // you need to release query runner which is manually created:
@@ -85,23 +82,16 @@ export class AdminService {
         }
     }
     public async editAdmin(id: number, data: AdminData): Promise<{ body: any; statusCode: number }> {
-        const service = await DatabaseService.getInstance()
+        const admin = await DatabaseService.getInstance()
             .getRepository(Admin)
             .findOne({ where: { id: id } });
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
 
         try {
-            service.name = data.name;
-            service.description = data.description;
-            service.price = data.price;
-            service.image = data.image;
-            service.category = data.category;
-            service.duration = data.duration;
-
-            await queryRunner.manager.save(service);
+            await queryRunner.manager.save(admin);
             await queryRunner.commitTransaction();
-            return Responses.ok(service);
+            return Responses.ok(admin);
         } catch (e) {
             // since we have errors let's rollback changes we made
             await queryRunner.rollbackTransaction();

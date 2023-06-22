@@ -4,10 +4,10 @@ import { Responses } from '../Response';
 import {ReviewService} from "../service/reviewService";
 import { ReviewData } from '../models/review';
 
-@Route('api/v1/appointment')
+@Route('api/v1/reviw')
 export class ReviewController extends ControllerBase {
 
-    @Get()
+    @Get('all')
     public async getAll(): Promise<void> {
         return this.exec(async () => {
             const response = await new ReviewService().getAll();

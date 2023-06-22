@@ -9,12 +9,12 @@ export class AppointmentService {
             .getRepository(Appointment)
             .createQueryBuilder('appointment');
 
-        const [services, total] = await qb
+        const [appointments, total] = await qb
             .orderBy('appointment.name')
             .getManyAndCount();
 
         return Responses.ok({
-            services: services.map((item) => {
+            appointments: appointments.map((item) => {
                 return {
                     dateAndTime: item.dateAndTime,
                     status: item.status,
@@ -63,7 +63,7 @@ export class AppointmentService {
             await queryRunner.commitTransaction();
             return Responses.ok(requestBody);
         } catch (e) {
-            console.log(e);
+            // console.log(e);
             // since we have errors let's rollback changes we made
             await queryRunner.rollbackTransaction();
         } finally {
@@ -81,7 +81,7 @@ export class AppointmentService {
             return Responses.ok(id);
         } catch (e) {
             // since we have errors let's rollback changes we made
-            console.log(e);
+            // console.log(e);
             await queryRunner.rollbackTransaction();
         } finally {
             // you need to release query runner which is manually created:

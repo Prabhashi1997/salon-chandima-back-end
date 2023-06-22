@@ -14,12 +14,9 @@ export class ReviewService {
             .getManyAndCount();
 
         return Responses.ok({
-            services: reviews.map((item) => {
+            reviews: reviews.map((item) => {
                 return {
-                    dateAndTime: item.dateAndTime,
-                    status: item.status,
-                    duration: item.duration,
-                    deleted: item.deleted,        
+                    comment: item.comment,        
                 };
             }),
             total,
@@ -53,17 +50,14 @@ export class ReviewService {
         await queryRunner.startTransaction();
         try {
             const newReview = new Review();
-            newReview.dateAndTime = requestBody.dateAndTime;
-            newReview.status = requestBody.status;
-            newReview.duration = requestBody.duration;
-            newReview.deleted = requestBody.deleted;
+            newReview.comment = requestBody.comment;
             await queryRunner.manager.save(newReview);
 
             requestBody.id = newReview.id;
             await queryRunner.commitTransaction();
             return Responses.ok(requestBody);
         } catch (e) {
-            console.log(e);
+            // console.log(e);
             // since we have errors let's rollback changes we made
             await queryRunner.rollbackTransaction();
         } finally {
@@ -81,7 +75,7 @@ export class ReviewService {
             return Responses.ok(id);
         } catch (e) {
             // since we have errors let's rollback changes we made
-            console.log(e);
+            // console.log(e);
             await queryRunner.rollbackTransaction();
         } finally {
             // you need to release query runner which is manually created:
@@ -89,17 +83,14 @@ export class ReviewService {
         }
     }
     public async editReview(id: number, data: ReviewData): Promise<{ body: any; statusCode: number }> {
-        const appointment = await DatabaseService.getInstance()
+        const review = await DatabaseService.getInstance()
             .getRepository(Review)
             .findOne({ where: { id: id } });
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
 
         try {
-            review.dateAndTime = data.dateAndTime;
-            review.status = data.status;
-            review.duration = data.duration;
-            review.deleted = data.deleted;
+            review.comment = data.comment;
 
             await queryRunner.manager.save(review);
             await queryRunner.commitTransaction();

@@ -7,7 +7,7 @@ import { EmployeeData } from '../models/employee';
 @Route('api/v1/employee')
 export class EmployeeController extends ControllerBase {
 
-    @Get()
+    @Get('all')
     public async getAll(): Promise<void> {
         return this.exec(async () => {
             const response = await new EmployeeService().getAll();

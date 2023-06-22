@@ -61,7 +61,7 @@ export class EmployeeService {
             await queryRunner.commitTransaction();
             return Responses.ok(requestBody);
         } catch (e) {
-            console.log(e);
+            // console.log(e);
             // since we have errors let's rollback changes we made
             await queryRunner.rollbackTransaction();
         } finally {
@@ -79,7 +79,7 @@ export class EmployeeService {
             return Responses.ok(id);
         } catch (e) {
             // since we have errors let's rollback changes we made
-            console.log(e);
+            // console.log(e);
             await queryRunner.rollbackTransaction();
         } finally {
             // you need to release query runner which is manually created:

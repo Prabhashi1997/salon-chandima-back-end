@@ -4,10 +4,10 @@ import { Responses } from '../Response';
 import {AppointmentHistoryService} from "../service/appointmentHistoryService";
 import { AppointmentHistoryData } from '../models/appointmentHistory';
 
-@Route('api/v1/appointment')
-export class AppointmentController extends ControllerBase {
+@Route('api/v1/appointment-history')
+export class AppointmentHistoryController extends ControllerBase {
 
-    @Get()
+    @Get('all')
     public async getAll(): Promise<void> {
         return this.exec(async () => {
             const response = await new AppointmentHistoryService().getAll();

@@ -1,13 +1,13 @@
 import { Body, Delete, Get, Patch, Path, Post, Query, Request, Route, Security } from 'tsoa';
 import ControllerBase from '../common/ControllerBase';
 import { Responses } from '../Response';
-import {CustomerService} from "../service/commonService";
-import {CustomerData} from '../models/'customer;
+import { CustomerService } from '../service/customerService';
+import {CustomerData} from '../models/customer';
 
 @Route('api/v1/customer')
 export class CustomerController extends ControllerBase {
 
-    @Get()
+    @Get('all')
     public async getAll(): Promise<void> {
         return this.exec(async () => {
             const response = await new CustomerService().getAll();
@@ -24,7 +24,7 @@ export class CustomerController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['admin'])
+    @Security('jwt', ['admin', 'employee'])
     @Post()
     public async addCustomer(@Body() requestBody: CustomerData, @Request() request: any) {
         return this.exec(async () => {
@@ -46,7 +46,7 @@ export class CustomerController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['admin'])
+    @Security('jwt', ['admin', 'employee'])
     @Delete('{id}')
     public async deleteCustomer(@Path() id: number, @Request() request: any): Promise<any> {
         return this.exec(async () => {

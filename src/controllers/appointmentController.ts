@@ -7,7 +7,7 @@ import {AppointmentData} from "../models/appointment";
 @Route('api/v1/appointment')
 export class AppointmentController extends ControllerBase {
 
-    @Get()
+    @Get('all')
     public async getAll(): Promise<void> {
         return this.exec(async () => {
             const response = await new AppointmentService().getAll();

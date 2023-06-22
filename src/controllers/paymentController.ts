@@ -2,12 +2,12 @@ import { Body, Delete, Get, Patch, Path, Post, Query, Request, Route, Security }
 import ControllerBase from '../common/ControllerBase';
 import { Responses } from '../Response';
 import {PaymentService} from "../service/paymentService";
-import { PaymentData } from '../models/paymenyt';
+import { PaymentData } from '../models/payment';
 
 @Route('api/v1/payment')
 export class PaymentController extends ControllerBase {
 
-    @Get()
+    @Get('all')
     public async getAll(): Promise<void> {
         return this.exec(async () => {
             const response = await new PaymentService().getAll();
@@ -24,7 +24,7 @@ export class PaymentController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['admin'])
+    @Security('jwt', ['admin', 'employee'])
     @Post()
     public async addPayment(@Body() requestBody: PaymentData, @Request() request: any) {
         return this.exec(async () => {
@@ -46,7 +46,7 @@ export class PaymentController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['admin'])
+    @Security('jwt', ['admin', 'employee'])
     @Delete('{id}')
     public async deletePayment(@Path() id: number, @Request() request: any): Promise<any> {
         return this.exec(async () => {

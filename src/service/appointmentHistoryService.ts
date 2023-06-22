@@ -9,12 +9,12 @@ export class AppointmentHistoryService {
             .getRepository(AppointmentHistory)
             .createQueryBuilder('service');
 
-        const [services, total] = await qb
+        const [appointmentHistory, total] = await qb
             .orderBy('appointmentHistory.name')
             .getManyAndCount();
 
         return Responses.ok({
-            services: services.map((item) => {
+            appointmentHistory: appointmentHistory.map((item) => {
                 return {
                     dateAndTime: item.dateAndTime,
                     status: item.status,
@@ -24,7 +24,7 @@ export class AppointmentHistoryService {
             total,
         });
     }
-    public async getAppointment(page?: number, size?: number, search?: string) {
+    public async getAppointmentHistory(page?: number, size?: number, search?: string) {
         const qb = DatabaseService.getInstance()
             .getRepository(AppointmentHistory)
             .createQueryBuilder('service');
@@ -61,7 +61,7 @@ export class AppointmentHistoryService {
             await queryRunner.commitTransaction();
             return Responses.ok(requestBody);
         } catch (e) {
-            console.log(e);
+            // console.log(e);
             // since we have errors let's rollback changes we made
             await queryRunner.rollbackTransaction();
         } finally {
@@ -79,7 +79,7 @@ export class AppointmentHistoryService {
             return Responses.ok(id);
         } catch (e) {
             // since we have errors let's rollback changes we made
-            console.log(e);
+            // console.log(e);
             await queryRunner.rollbackTransaction();
         } finally {
             // you need to release query runner which is manually created:

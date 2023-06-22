@@ -7,7 +7,7 @@ import {ServiceData} from "../models/Service";
 @Route('api/v1/service')
 export class ServiceController extends ControllerBase {
 
-    @Get()
+    @Get('all')
     public async getAll(): Promise<void> {
         return this.exec(async () => {
             const response = await new ServiceService().getAll();
