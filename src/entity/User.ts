@@ -41,7 +41,7 @@ export class User {
   @Column({ nullable: true })
   doj?: string;
 
-  @Column({ type: 'simple-array', default: 'admin,user', nullable: true })
+  @Column({ type: 'simple-array', nullable: true })
   roles?: string[];
 
   @OneToMany(() => Password, (password) => password.user)

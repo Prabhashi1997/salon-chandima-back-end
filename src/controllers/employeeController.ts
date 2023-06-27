@@ -24,7 +24,7 @@ export class EmployeeController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['admin'])
+    //@Security('jwt', ['admin'])
     @Post()
     public async addEmployee(@Body() requestBody: EmployeeData, @Request() request: any) {
         return this.exec(async () => {

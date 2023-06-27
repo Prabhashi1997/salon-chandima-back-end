@@ -1112,7 +1112,6 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/api/v1/employee',
-            authenticateMiddleware([{"jwt":["admin"]}]),
             ...(fetchMiddlewares<RequestHandler>(EmployeeController)),
             ...(fetchMiddlewares<RequestHandler>(EmployeeController.prototype.addEmployee)),
 
@@ -1654,7 +1653,6 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.delete('/api/v1/service/:id',
-            authenticateMiddleware([{"jwt":["admin"]}]),
             ...(fetchMiddlewares<RequestHandler>(ServiceController)),
             ...(fetchMiddlewares<RequestHandler>(ServiceController.prototype.deleteService)),
 

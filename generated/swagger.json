@@ -1952,13 +1952,7 @@
 						}
 					}
 				},
-				"security": [
-					{
-						"jwt": [
-							"admin"
-						]
-					}
-				],
+				"security": [],
 				"parameters": [],
 				"requestBody": {
 					"required": true,
@@ -2671,13 +2665,7 @@
 						}
 					}
 				},
-				"security": [
-					{
-						"jwt": [
-							"admin"
-						]
-					}
-				],
+				"security": [],
 				"parameters": [
 					{
 						"in": "path",

@@ -25,7 +25,6 @@ export class Admin {
   @RelationId((admin: Admin) => admin.user)
   userId: number;
 
-
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
   createdAt: Date;
 
