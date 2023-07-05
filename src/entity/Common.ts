@@ -5,6 +5,6 @@ export class Common {
   @PrimaryColumn()
   key: string;
 
-  @Column()
+  @Column("text")
   val: string;
 }

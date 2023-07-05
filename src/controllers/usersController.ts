@@ -51,15 +51,6 @@ export class UsersController extends ControllerBase {
   }
 
   // 1.2.0
-  @Security('jwt', ['admin', 'hr', 'manger'])
-  @Delete('{userId}')
-  public async deleteUser(@Path() userId: number): Promise<UserCreationParams> {
-    const user = await new UsersService().delete(userId);
-    this.setStatus(user['statusCode']);
-    return user['body'];
-  }
-
-  // 1.2.0
   @Post('request-password-reset')
   public async requestPasswordReset(@Body() body: { email: string }): Promise<UserCreationParams> {
     return this.exec(async () => {
@@ -114,20 +105,6 @@ export class UsersController extends ControllerBase {
     });
   }
 
-  // 1.2.0
-  @Security('jwt', ['admin', 'hr', 'manger'])
-  @SuccessResponse('201', 'Created') // Custom success response
-  @Post()
-  public async createUser(
-    @Request() request: express.Request,
-    @Body() requestBody: { user: UserCreationParams; password: string },
-  ): Promise<UserCreationParams> {
-    return await this.exec(async () => {
-      await this.handleFile(request);
-      const user = await new UsersService().create(requestBody.user, requestBody.password);
-      return Responses.ok({ user });
-    });
-  }
 
   private handleFile(request: express.Request): Promise<any> {
     const multerSingle = multer().single('avatar');

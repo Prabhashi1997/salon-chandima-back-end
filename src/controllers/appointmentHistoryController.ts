@@ -24,34 +24,4 @@ export class AppointmentHistoryController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['admin'])
-    @Post()
-    public async addAppointmentHistory(@Body() requestBody: AppointmentHistoryData, @Request() request: any) {
-        return this.exec(async () => {
-            const response = await new AppointmentHistoryService().addAppointmentHistory(requestBody);
-            return Responses.ok(response.body);
-        });
-    }
-
-    @Security('jwt', ['admin', 'employee'])
-    @Patch('{id}')
-    public async editAppointmentHistory(
-        @Path() id: number,
-        @Body() requestBody: AppointmentHistoryData,
-        @Request() request: any,
-    ): Promise<any> {
-        return this.exec(async () => {
-            const designation = await new AppointmentHistoryService().editAppointmentHistory(id, requestBody);
-            return designation.body;
-        });
-    }
-
-    @Security('jwt', ['admin'])
-    @Delete('{id}')
-    public async deleteAppointmentHistory(@Path() id: number, @Request() request: any): Promise<any> {
-        return this.exec(async () => {
-            const designation = await new AppointmentHistoryService().deleteAppointmentHistory(id);
-            return designation?.body ?? designation;
-        });
-    }
 }

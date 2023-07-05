@@ -24,7 +24,7 @@ export class EmployeeController extends ControllerBase {
         });
     }
 
-    //@Security('jwt', ['admin'])
+    @Security('jwt', ['admin'])
     @Post()
     public async addEmployee(@Body() requestBody: EmployeeData, @Request() request: any) {
         return this.exec(async () => {
@@ -41,7 +41,9 @@ export class EmployeeController extends ControllerBase {
         @Request() request: any,
     ): Promise<any> {
         return this.exec(async () => {
-            const designation = await new EmployeeService().editEmployee(id, requestBody);
+            const designation = await new EmployeeService().editEmployee(
+                id, requestBody, +request?.user.userId,request?.user?.role ?? [],
+            );
             return designation.body;
         });
     }

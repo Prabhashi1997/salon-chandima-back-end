@@ -41,8 +41,11 @@ export class CustomerController extends ControllerBase {
         @Request() request: any,
     ): Promise<any> {
         return this.exec(async () => {
-            const designation = await new CustomerService().editCustomer(id, requestBody);
-            return designation.body;
+            const response = await new CustomerService().editCustomer(
+                id, requestBody, +request?.user.userId,request?.user?.role ?? [],
+
+            );
+            return response.body;
         });
     }
 
@@ -50,8 +53,8 @@ export class CustomerController extends ControllerBase {
     @Delete('{id}')
     public async deleteCustomer(@Path() id: number, @Request() request: any): Promise<any> {
         return this.exec(async () => {
-            const designation = await new CustomerService().deleteCustomer(id);
-            return designation?.body ?? designation;
+            const response = await new CustomerService().deleteCustomer(id);
+            return response?.body ?? response;
         });
     }
 }

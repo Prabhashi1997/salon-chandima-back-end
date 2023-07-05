@@ -45,8 +45,7 @@ export class UsersService {
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.supervisor', 'supervisor')
       .leftJoinAndSelect('user.designation', 'designation')
-      .leftJoinAndSelect('user.teams', 'teams')
-      .leftJoinAndSelect('user.teams1', 'teams1');
+      .leftJoinAndSelect('user.teams', 'teams');
     if (search) {
       qb.andWhere(
         'lower(user.email) LIKE :search OR lower(user.firstName) LIKE :search OR lower(user.lastName) LIKE :search  OR lower(user.name) LIKE :search',
@@ -87,54 +86,6 @@ export class UsersService {
         }),
       total,
     };
-  }
-
-  public async create(params: UserCreationParams, password: string): Promise<ControllerResponse<UserCreationParams>> {
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(password, salt);
-    const queryRunner = DatabaseService.getInstance().createQueryRunner();
-    await queryRunner.startTransaction();
-
-    try {
-      const result = await queryRunner.manager.insert(UserEntity, {
-        ...params,
-        email: params.email.toLowerCase(),
-        name: `${params.firstName} ${params.lastName}`.toLowerCase(),
-      });
-      // const result = null;
-      await queryRunner.manager.insert(PasswordEntity, {
-        user: result.identifiers[0].id,
-        password: hash,
-      });
-      const user = await queryRunner.manager
-        .getRepository(UserEntity)
-        .findOne({ where: { id: result.identifiers[0].id } });
-      // commit transaction now:
-      await queryRunner.commitTransaction();
-      return Responses.ok({});
-    } catch (e) {
-      // since we have errors let's rollback changes we made
-      await queryRunner.rollbackTransaction();
-      if (e instanceof QueryFailedError) {
-        const err: any = e;
-        if (err.code === '23505') {
-          throw new ServiceError(ResponseCode.conflict, 'Duplicate entry', {
-            errors: Utils.getIndexErrorMessage(UserEntity.Index, err.constraint),
-          });
-        }
-        throw new ServiceError(ResponseCode.forbidden, 'Unprocessable entity');
-      }
-    } finally {
-      // you need to release query runner which is manually created:
-      await queryRunner.release();
-    }
-  }
-
-  public async delete(id: number): Promise<Responses> {
-    await DatabaseService.getInstance().manager.delete(UserEntity, {
-      id: id,
-    });
-    return Responses.ok(id);
   }
 
   public async edit(userId: number, body: UserCreationParams, roles: string[], reqUserId: number): Promise<User> {
@@ -243,18 +194,19 @@ export class UsersService {
           lastName: user.lastName,
           image: user.image,
           userId: user.id,
-          role: [...(user?.roles ?? [])],
+          role: [...(user?.roles ?? [])]
         };
-        const iss = 'StridePal';
+        console.log(payload)
+        const iss = 'Salon-Chandima';
         const sub = 'user';
-        const aud = 'http://localhost:4000';
+        const aud = 'http://localhost:4200';
         const exp = '58365h';
         const signOptions = {
           issuer: iss,
           subject: sub,
           audience: aud,
           expiresIn: exp,
-          algorithm: 'RS256' as Algorithm,
+          algorithm: 'RS256',
         };
         return jwt.sign(payload, key.val, signOptions) as string;
       } else {
@@ -397,7 +349,6 @@ export class UsersService {
     }
     return Responses.ok();
   }
-
   public async resetPasswordFromToken(token: string, newPassword: string) {
     const rToken = await DatabaseService.getInstance()
       .getRepository(PasswordRest)

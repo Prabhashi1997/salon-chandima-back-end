@@ -41,17 +41,17 @@ export class ServiceController extends ControllerBase {
         @Request() request: any,
     ): Promise<any> {
         return this.exec(async () => {
-            const designation = await new ServiceService().editService(id, requestBody);
-            return designation.body;
+            const service = await new ServiceService().editService(id, requestBody);
+            return service.body;
         });
     }
 
-    //@Security('jwt', ['admin'])
+    @Security('jwt', ['admin'])
     @Delete('{id}')
     public async deleteService(@Path() id: number, @Request() request: any): Promise<any> {
         return this.exec(async () => {
-            const designation = await new ServiceService().deleteService(id);
-            return designation?.body ?? designation;
+            const service = await new ServiceService().deleteService(id);
+            return service?.body ?? service;
         });
     }
 }

@@ -2,7 +2,7 @@ import { Body, Delete, Get, Patch, Path, Post, Query, Request, Route, Security }
 import ControllerBase from '../common/ControllerBase';
 import { Responses } from '../Response';
 import {AdminService} from "../service/adminService";
-import {AdminData} from "../models/admin";
+import {UserCreationParams} from "../models/user";
 
 @Route('api/v1/admin')
 export class AdminController extends ControllerBase {
@@ -18,18 +18,18 @@ export class AdminController extends ControllerBase {
 
     @Security('jwt', ['admin'])
     @Post()
-    public async addAdmin(@Body() requestBody: AdminData, @Request() request: any) {
+    public async addAdmin(@Body() requestBody: UserCreationParams, @Request() request: any) {
         return this.exec(async () => {
             const response = await new AdminService().addAdmin(requestBody);
             return Responses.ok(response.body);
-        }); 
+        });
     }
 
     @Security('jwt', ['admin'])
     @Patch('{id}')
     public async editAdmin(
         @Path() id: number,
-        @Body() requestBody: AdminData,
+        @Body() requestBody: UserCreationParams,
         @Request() request: any,
     ): Promise<any> {
         return this.exec(async () => {

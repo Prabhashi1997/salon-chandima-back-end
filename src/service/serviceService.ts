@@ -22,7 +22,6 @@ export class ServiceService {
                     image: item.image,
                     category: item.category,
                     duration: item.duration,
-        
                 };
             }),
             total,
