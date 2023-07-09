@@ -17,11 +17,17 @@ const usersController_1 = require("./../src/controllers/usersController");
 const authentication_1 = require("./../src/authentication");
 const promiseAny = require('promise.any');
 const models = {
-    "AdminData": {
+    "UserCreationParams": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "double" },
-            "name": { "dataType": "string", "required": true },
+            "firstName": { "dataType": "string", "required": true },
+            "lastName": { "dataType": "string", "required": true },
+            "epfNo": { "dataType": "double", "required": true },
+            "designation": { "dataType": "any" },
+            "email": { "dataType": "string", "required": true },
+            "image": { "dataType": "string" },
+            "doj": { "dataType": "string" },
+            "roles": { "dataType": "array", "array": { "dataType": "string" } },
         },
         "additionalProperties": false,
     },
@@ -33,16 +39,6 @@ const models = {
             "status": { "dataType": "string", "required": true },
             "duration": { "dataType": "double" },
             "deleted": { "dataType": "boolean", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    "AppointmentHistoryData": {
-        "dataType": "refObject",
-        "properties": {
-            "id": { "dataType": "double", "required": true },
-            "dateAndTime": { "dataType": "datetime", "required": true },
-            "status": { "dataType": "string", "required": true },
-            "duration": { "dataType": "double", "required": true },
         },
         "additionalProperties": false,
     },
@@ -58,6 +54,14 @@ const models = {
     "CustomerData": {
         "dataType": "refObject",
         "properties": {
+            "firstName": { "dataType": "string", "required": true },
+            "lastName": { "dataType": "string", "required": true },
+            "epfNo": { "dataType": "double", "required": true },
+            "designation": { "dataType": "any" },
+            "email": { "dataType": "string", "required": true },
+            "image": { "dataType": "string" },
+            "doj": { "dataType": "string" },
+            "roles": { "dataType": "array", "array": { "dataType": "string" } },
             "id": { "dataType": "double", "required": true },
             "gender": { "dataType": "string", "required": true },
         },
@@ -66,8 +70,15 @@ const models = {
     "EmployeeData": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "double", "required": true },
+            "firstName": { "dataType": "string", "required": true },
+            "lastName": { "dataType": "string", "required": true },
+            "epfNo": { "dataType": "double", "required": true },
             "designation": { "dataType": "string" },
+            "email": { "dataType": "string", "required": true },
+            "image": { "dataType": "string" },
+            "doj": { "dataType": "string" },
+            "roles": { "dataType": "array", "array": { "dataType": "string" } },
+            "id": { "dataType": "double" },
             "gender": { "dataType": "string", "required": true },
             "dob": { "dataType": "datetime", "required": true },
         },
@@ -142,20 +153,6 @@ const models = {
             "code": { "dataType": "string", "required": true },
             "message": { "dataType": "string", "required": true },
             "body": { "dataType": "any" },
-        },
-        "additionalProperties": false,
-    },
-    "UserCreationParams": {
-        "dataType": "refObject",
-        "properties": {
-            "firstName": { "dataType": "string", "required": true },
-            "lastName": { "dataType": "string", "required": true },
-            "epfNo": { "dataType": "double", "required": true },
-            "designation": { "dataType": "any" },
-            "email": { "dataType": "string", "required": true },
-            "image": { "dataType": "string" },
-            "doj": { "dataType": "string" },
-            "roles": { "dataType": "array", "array": { "dataType": "string" } },
         },
         "additionalProperties": false,
     },
@@ -380,7 +377,7 @@ function RegisterRoutes(app) {
     });
     app.post('/api/v1/admin', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController)), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController.prototype.addAdmin)), function AdminController_addAdmin(request, response, next) {
         const args = {
-            requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "AdminData" },
+            requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "UserCreationParams" },
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
         };
         let validatedArgs = [];
@@ -397,7 +394,7 @@ function RegisterRoutes(app) {
     app.patch('/api/v1/admin/:id', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController)), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController.prototype.editAdmin)), function AdminController_editAdmin(request, response, next) {
         const args = {
             id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
-            requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "AdminData" },
+            requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "UserCreationParams" },
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
         };
         let validatedArgs = [];
@@ -530,55 +527,6 @@ function RegisterRoutes(app) {
             validatedArgs = getValidatedArgs(args, request, response);
             const controller = new appointmentHistoryController_1.AppointmentHistoryController();
             const promise = controller.getAppointmentHistory.apply(controller, validatedArgs);
-            promiseHandler(controller, promise, response, undefined, next);
-        }
-        catch (err) {
-            return next(err);
-        }
-    });
-    app.post('/api/v1/appointment-history', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(appointmentHistoryController_1.AppointmentHistoryController)), ...((0, runtime_1.fetchMiddlewares)(appointmentHistoryController_1.AppointmentHistoryController.prototype.addAppointmentHistory)), function AppointmentHistoryController_addAppointmentHistory(request, response, next) {
-        const args = {
-            requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "AppointmentHistoryData" },
-            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-        };
-        let validatedArgs = [];
-        try {
-            validatedArgs = getValidatedArgs(args, request, response);
-            const controller = new appointmentHistoryController_1.AppointmentHistoryController();
-            const promise = controller.addAppointmentHistory.apply(controller, validatedArgs);
-            promiseHandler(controller, promise, response, undefined, next);
-        }
-        catch (err) {
-            return next(err);
-        }
-    });
-    app.patch('/api/v1/appointment-history/:id', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(appointmentHistoryController_1.AppointmentHistoryController)), ...((0, runtime_1.fetchMiddlewares)(appointmentHistoryController_1.AppointmentHistoryController.prototype.editAppointmentHistory)), function AppointmentHistoryController_editAppointmentHistory(request, response, next) {
-        const args = {
-            id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
-            requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "AppointmentHistoryData" },
-            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-        };
-        let validatedArgs = [];
-        try {
-            validatedArgs = getValidatedArgs(args, request, response);
-            const controller = new appointmentHistoryController_1.AppointmentHistoryController();
-            const promise = controller.editAppointmentHistory.apply(controller, validatedArgs);
-            promiseHandler(controller, promise, response, undefined, next);
-        }
-        catch (err) {
-            return next(err);
-        }
-    });
-    app.delete('/api/v1/appointment-history/:id', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(appointmentHistoryController_1.AppointmentHistoryController)), ...((0, runtime_1.fetchMiddlewares)(appointmentHistoryController_1.AppointmentHistoryController.prototype.deleteAppointmentHistory)), function AppointmentHistoryController_deleteAppointmentHistory(request, response, next) {
-        const args = {
-            id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
-            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-        };
-        let validatedArgs = [];
-        try {
-            validatedArgs = getValidatedArgs(args, request, response);
-            const controller = new appointmentHistoryController_1.AppointmentHistoryController();
-            const promise = controller.deleteAppointmentHistory.apply(controller, validatedArgs);
             promiseHandler(controller, promise, response, undefined, next);
         }
         catch (err) {
@@ -1129,21 +1077,6 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.delete('/api/v1/users/:userId', authenticateMiddleware([{ "jwt": ["admin", "hr", "manger"] }]), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController)), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController.prototype.deleteUser)), function UsersController_deleteUser(request, response, next) {
-        const args = {
-            userId: { "in": "path", "name": "userId", "required": true, "dataType": "double" },
-        };
-        let validatedArgs = [];
-        try {
-            validatedArgs = getValidatedArgs(args, request, response);
-            const controller = new usersController_1.UsersController();
-            const promise = controller.deleteUser.apply(controller, validatedArgs);
-            promiseHandler(controller, promise, response, undefined, next);
-        }
-        catch (err) {
-            return next(err);
-        }
-    });
     app.post('/api/v1/users/request-password-reset', ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController)), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController.prototype.requestPasswordReset)), function UsersController_requestPasswordReset(request, response, next) {
         const args = {
             body: { "in": "body", "name": "body", "required": true, "dataType": "nestedObjectLiteral", "nestedProperties": { "email": { "dataType": "string", "required": true } } },
@@ -1206,22 +1139,6 @@ function RegisterRoutes(app) {
             const controller = new usersController_1.UsersController();
             const promise = controller.getUsers.apply(controller, validatedArgs);
             promiseHandler(controller, promise, response, undefined, next);
-        }
-        catch (err) {
-            return next(err);
-        }
-    });
-    app.post('/api/v1/users', authenticateMiddleware([{ "jwt": ["admin", "hr", "manger"] }]), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController)), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController.prototype.createUser)), function UsersController_createUser(request, response, next) {
-        const args = {
-            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-            requestBody: { "in": "body", "name": "requestBody", "required": true, "dataType": "nestedObjectLiteral", "nestedProperties": { "password": { "dataType": "string", "required": true }, "user": { "ref": "UserCreationParams", "required": true } } },
-        };
-        let validatedArgs = [];
-        try {
-            validatedArgs = getValidatedArgs(args, request, response);
-            const controller = new usersController_1.UsersController();
-            const promise = controller.createUser.apply(controller, validatedArgs);
-            promiseHandler(controller, promise, response, 201, next);
         }
         catch (err) {
             return next(err);

@@ -34,11 +34,17 @@ import type { RequestHandler, Router } from 'express';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "AdminData": {
+    "UserCreationParams": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"double"},
-            "name": {"dataType":"string","required":true},
+            "firstName": {"dataType":"string","required":true},
+            "lastName": {"dataType":"string","required":true},
+            "epfNo": {"dataType":"double","required":true},
+            "designation": {"dataType":"any"},
+            "email": {"dataType":"string","required":true},
+            "image": {"dataType":"string"},
+            "doj": {"dataType":"string"},
+            "roles": {"dataType":"array","array":{"dataType":"string"}},
         },
         "additionalProperties": false,
     },
@@ -51,17 +57,6 @@ const models: TsoaRoute.Models = {
             "status": {"dataType":"string","required":true},
             "duration": {"dataType":"double"},
             "deleted": {"dataType":"boolean","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AppointmentHistoryData": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"double","required":true},
-            "dateAndTime": {"dataType":"datetime","required":true},
-            "status": {"dataType":"string","required":true},
-            "duration": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },
@@ -79,6 +74,14 @@ const models: TsoaRoute.Models = {
     "CustomerData": {
         "dataType": "refObject",
         "properties": {
+            "firstName": {"dataType":"string","required":true},
+            "lastName": {"dataType":"string","required":true},
+            "epfNo": {"dataType":"double","required":true},
+            "designation": {"dataType":"any"},
+            "email": {"dataType":"string","required":true},
+            "image": {"dataType":"string"},
+            "doj": {"dataType":"string"},
+            "roles": {"dataType":"array","array":{"dataType":"string"}},
             "id": {"dataType":"double","required":true},
             "gender": {"dataType":"string","required":true},
         },
@@ -88,8 +91,15 @@ const models: TsoaRoute.Models = {
     "EmployeeData": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"double","required":true},
+            "firstName": {"dataType":"string","required":true},
+            "lastName": {"dataType":"string","required":true},
+            "epfNo": {"dataType":"double","required":true},
             "designation": {"dataType":"string"},
+            "email": {"dataType":"string","required":true},
+            "image": {"dataType":"string"},
+            "doj": {"dataType":"string"},
+            "roles": {"dataType":"array","array":{"dataType":"string"}},
+            "id": {"dataType":"double"},
             "gender": {"dataType":"string","required":true},
             "dob": {"dataType":"datetime","required":true},
         },
@@ -171,21 +181,6 @@ const models: TsoaRoute.Models = {
             "code": {"dataType":"string","required":true},
             "message": {"dataType":"string","required":true},
             "body": {"dataType":"any"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "UserCreationParams": {
-        "dataType": "refObject",
-        "properties": {
-            "firstName": {"dataType":"string","required":true},
-            "lastName": {"dataType":"string","required":true},
-            "epfNo": {"dataType":"double","required":true},
-            "designation": {"dataType":"any"},
-            "email": {"dataType":"string","required":true},
-            "image": {"dataType":"string"},
-            "doj": {"dataType":"string"},
-            "roles": {"dataType":"array","array":{"dataType":"string"}},
         },
         "additionalProperties": false,
     },
@@ -446,7 +441,7 @@ export function RegisterRoutes(app: Router) {
 
             function AdminController_addAdmin(request: any, response: any, next: any) {
             const args = {
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"AdminData"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"UserCreationParams"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
@@ -474,7 +469,7 @@ export function RegisterRoutes(app: Router) {
             function AdminController_editAdmin(request: any, response: any, next: any) {
             const args = {
                     id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"AdminData"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"UserCreationParams"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
@@ -701,88 +696,6 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.getAppointmentHistory.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/v1/appointment-history',
-            authenticateMiddleware([{"jwt":["admin"]}]),
-            ...(fetchMiddlewares<RequestHandler>(AppointmentHistoryController)),
-            ...(fetchMiddlewares<RequestHandler>(AppointmentHistoryController.prototype.addAppointmentHistory)),
-
-            function AppointmentHistoryController_addAppointmentHistory(request: any, response: any, next: any) {
-            const args = {
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"AppointmentHistoryData"},
-                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new AppointmentHistoryController();
-
-
-              const promise = controller.addAppointmentHistory.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.patch('/api/v1/appointment-history/:id',
-            authenticateMiddleware([{"jwt":["admin","employee"]}]),
-            ...(fetchMiddlewares<RequestHandler>(AppointmentHistoryController)),
-            ...(fetchMiddlewares<RequestHandler>(AppointmentHistoryController.prototype.editAppointmentHistory)),
-
-            function AppointmentHistoryController_editAppointmentHistory(request: any, response: any, next: any) {
-            const args = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"AppointmentHistoryData"},
-                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new AppointmentHistoryController();
-
-
-              const promise = controller.editAppointmentHistory.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.delete('/api/v1/appointment-history/:id',
-            authenticateMiddleware([{"jwt":["admin"]}]),
-            ...(fetchMiddlewares<RequestHandler>(AppointmentHistoryController)),
-            ...(fetchMiddlewares<RequestHandler>(AppointmentHistoryController.prototype.deleteAppointmentHistory)),
-
-            function AppointmentHistoryController_deleteAppointmentHistory(request: any, response: any, next: any) {
-            const args = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new AppointmentHistoryController();
-
-
-              const promise = controller.deleteAppointmentHistory.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
@@ -1112,6 +1025,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/api/v1/employee',
+            authenticateMiddleware([{"jwt":["admin"]}]),
             ...(fetchMiddlewares<RequestHandler>(EmployeeController)),
             ...(fetchMiddlewares<RequestHandler>(EmployeeController.prototype.addEmployee)),
 
@@ -1653,6 +1567,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.delete('/api/v1/service/:id',
+            authenticateMiddleware([{"jwt":["admin"]}]),
             ...(fetchMiddlewares<RequestHandler>(ServiceController)),
             ...(fetchMiddlewares<RequestHandler>(ServiceController.prototype.deleteService)),
 
@@ -1700,32 +1615,6 @@ export function RegisterRoutes(app: Router) {
 
               const promise = controller.getUser.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.delete('/api/v1/users/:userId',
-            authenticateMiddleware([{"jwt":["admin","hr","manger"]}]),
-            ...(fetchMiddlewares<RequestHandler>(UsersController)),
-            ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.deleteUser)),
-
-            function UsersController_deleteUser(request: any, response: any, next: any) {
-            const args = {
-                    userId: {"in":"path","name":"userId","required":true,"dataType":"double"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new UsersController();
-
-
-              const promise = controller.deleteUser.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
             }
@@ -1835,33 +1724,6 @@ export function RegisterRoutes(app: Router) {
 
               const promise = controller.getUsers.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/v1/users',
-            authenticateMiddleware([{"jwt":["admin","hr","manger"]}]),
-            ...(fetchMiddlewares<RequestHandler>(UsersController)),
-            ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.createUser)),
-
-            function UsersController_createUser(request: any, response: any, next: any) {
-            const args = {
-                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
-                    requestBody: {"in":"body","name":"requestBody","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"password":{"dataType":"string","required":true},"user":{"ref":"UserCreationParams","required":true}}},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new UsersController();
-
-
-              const promise = controller.createUser.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, 201, next);
             } catch (err) {
                 return next(err);
             }

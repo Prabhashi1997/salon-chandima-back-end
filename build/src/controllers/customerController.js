@@ -41,15 +41,16 @@ let CustomerController = exports.CustomerController = class CustomerController e
     }
     async editCustomer(id, requestBody, request) {
         return this.exec(async () => {
-            const designation = await new customerService_1.CustomerService().editCustomer(id, requestBody);
-            return designation.body;
+            var _a, _b;
+            const response = await new customerService_1.CustomerService().editCustomer(id, requestBody, +(request === null || request === void 0 ? void 0 : request.user.userId), (_b = (_a = request === null || request === void 0 ? void 0 : request.user) === null || _a === void 0 ? void 0 : _a.role) !== null && _b !== void 0 ? _b : []);
+            return response.body;
         });
     }
     async deleteCustomer(id, request) {
         return this.exec(async () => {
             var _a;
-            const designation = await new customerService_1.CustomerService().deleteCustomer(id);
-            return (_a = designation === null || designation === void 0 ? void 0 : designation.body) !== null && _a !== void 0 ? _a : designation;
+            const response = await new customerService_1.CustomerService().deleteCustomer(id);
+            return (_a = response === null || response === void 0 ? void 0 : response.body) !== null && _a !== void 0 ? _a : response;
         });
     }
 };

@@ -33,25 +33,6 @@ let AppointmentHistoryController = exports.AppointmentHistoryController = class 
             return Response_1.Responses.ok(response.body);
         });
     }
-    async addAppointmentHistory(requestBody, request) {
-        return this.exec(async () => {
-            const response = await new appointmentHistoryService_1.AppointmentHistoryService().addAppointmentHistory(requestBody);
-            return Response_1.Responses.ok(response.body);
-        });
-    }
-    async editAppointmentHistory(id, requestBody, request) {
-        return this.exec(async () => {
-            const designation = await new appointmentHistoryService_1.AppointmentHistoryService().editAppointmentHistory(id, requestBody);
-            return designation.body;
-        });
-    }
-    async deleteAppointmentHistory(id, request) {
-        return this.exec(async () => {
-            var _a;
-            const designation = await new appointmentHistoryService_1.AppointmentHistoryService().deleteAppointmentHistory(id);
-            return (_a = designation === null || designation === void 0 ? void 0 : designation.body) !== null && _a !== void 0 ? _a : designation;
-        });
-    }
 };
 __decorate([
     (0, tsoa_1.Get)('all'),
@@ -69,34 +50,6 @@ __decorate([
     __metadata("design:paramtypes", [Number, Number, String]),
     __metadata("design:returntype", Promise)
 ], AppointmentHistoryController.prototype, "getAppointmentHistory", null);
-__decorate([
-    (0, tsoa_1.Security)('jwt', ['admin']),
-    (0, tsoa_1.Post)(),
-    __param(0, (0, tsoa_1.Body)()),
-    __param(1, (0, tsoa_1.Request)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
-], AppointmentHistoryController.prototype, "addAppointmentHistory", null);
-__decorate([
-    (0, tsoa_1.Security)('jwt', ['admin', 'employee']),
-    (0, tsoa_1.Patch)('{id}'),
-    __param(0, (0, tsoa_1.Path)()),
-    __param(1, (0, tsoa_1.Body)()),
-    __param(2, (0, tsoa_1.Request)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Object, Object]),
-    __metadata("design:returntype", Promise)
-], AppointmentHistoryController.prototype, "editAppointmentHistory", null);
-__decorate([
-    (0, tsoa_1.Security)('jwt', ['admin']),
-    (0, tsoa_1.Delete)('{id}'),
-    __param(0, (0, tsoa_1.Path)()),
-    __param(1, (0, tsoa_1.Request)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Object]),
-    __metadata("design:returntype", Promise)
-], AppointmentHistoryController.prototype, "deleteAppointmentHistory", null);
 exports.AppointmentHistoryController = AppointmentHistoryController = __decorate([
     (0, tsoa_1.Route)('api/v1/appointment-history')
 ], AppointmentHistoryController);

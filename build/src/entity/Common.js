@@ -18,7 +18,7 @@ __decorate([
     __metadata("design:type", String)
 ], Common.prototype, "key", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)("text"),
     __metadata("design:type", String)
 ], Common.prototype, "val", void 0);
 exports.Common = Common = __decorate([

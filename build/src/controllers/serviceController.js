@@ -41,15 +41,15 @@ let ServiceController = exports.ServiceController = class ServiceController exte
     }
     async editService(id, requestBody, request) {
         return this.exec(async () => {
-            const designation = await new serviceService_1.ServiceService().editService(id, requestBody);
-            return designation.body;
+            const service = await new serviceService_1.ServiceService().editService(id, requestBody);
+            return service.body;
         });
     }
     async deleteService(id, request) {
         return this.exec(async () => {
             var _a;
-            const designation = await new serviceService_1.ServiceService().deleteService(id);
-            return (_a = designation === null || designation === void 0 ? void 0 : designation.body) !== null && _a !== void 0 ? _a : designation;
+            const service = await new serviceService_1.ServiceService().deleteService(id);
+            return (_a = service === null || service === void 0 ? void 0 : service.body) !== null && _a !== void 0 ? _a : service;
         });
     }
 };

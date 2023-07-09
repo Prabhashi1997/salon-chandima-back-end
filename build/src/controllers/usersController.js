@@ -20,7 +20,6 @@ const tsoa_1 = require("tsoa");
 const Response_1 = require("../Response");
 const usersService_1 = require("../service/usersService");
 const ControllerBase_1 = __importDefault(require("../common/ControllerBase"));
-const express_1 = __importDefault(require("express"));
 const multer_1 = __importDefault(require("multer"));
 let UsersController = exports.UsersController = class UsersController extends ControllerBase_1.default {
     async getUser(request, userId) {
@@ -34,11 +33,6 @@ let UsersController = exports.UsersController = class UsersController extends Co
                 return Response_1.Responses.forbidden();
             }
         });
-    }
-    async deleteUser(userId) {
-        const user = await new usersService_1.UsersService().delete(userId);
-        this.setStatus(user['statusCode']);
-        return user['body'];
     }
     async requestPasswordReset(body) {
         return this.exec(async () => {
@@ -64,13 +58,6 @@ let UsersController = exports.UsersController = class UsersController extends Co
         return this.exec(async () => {
             const response = await new usersService_1.UsersService().getUsers(page, size, search, email, employeeId, epfNumber);
             return Response_1.Responses.ok(response);
-        });
-    }
-    async createUser(request, requestBody) {
-        return await this.exec(async () => {
-            await this.handleFile(request);
-            const user = await new usersService_1.UsersService().create(requestBody.user, requestBody.password);
-            return Response_1.Responses.ok({ user });
         });
     }
     handleFile(request) {
@@ -142,14 +129,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getUser", null);
 __decorate([
-    (0, tsoa_1.Security)('jwt', ['admin', 'hr', 'manger']),
-    (0, tsoa_1.Delete)('{userId}'),
-    __param(0, (0, tsoa_1.Path)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "deleteUser", null);
-__decorate([
     (0, tsoa_1.Post)('request-password-reset'),
     __param(0, (0, tsoa_1.Body)()),
     __metadata("design:type", Function),
@@ -186,16 +165,6 @@ __decorate([
     __metadata("design:paramtypes", [Number, Number, String, String, String, String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getUsers", null);
-__decorate([
-    (0, tsoa_1.Security)('jwt', ['admin', 'hr', 'manger']),
-    (0, tsoa_1.SuccessResponse)('201', 'Created'),
-    (0, tsoa_1.Post)(),
-    __param(0, (0, tsoa_1.Request)()),
-    __param(1, (0, tsoa_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "createUser", null);
 __decorate([
     (0, tsoa_1.Response)(500, 'internal server error', {
         code: '500',

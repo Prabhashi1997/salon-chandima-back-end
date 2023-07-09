@@ -59,8 +59,7 @@ class UsersService {
             .createQueryBuilder('user')
             .leftJoinAndSelect('user.supervisor', 'supervisor')
             .leftJoinAndSelect('user.designation', 'designation')
-            .leftJoinAndSelect('user.teams', 'teams')
-            .leftJoinAndSelect('user.teams1', 'teams1');
+            .leftJoinAndSelect('user.teams', 'teams');
         if (search) {
             qb.andWhere('lower(user.email) LIKE :search OR lower(user.firstName) LIKE :search OR lower(user.lastName) LIKE :search  OR lower(user.name) LIKE :search', {
                 search: `%${search.toLowerCase()}%`,
@@ -91,45 +90,6 @@ class UsersService {
             }),
             total,
         };
-    }
-    async create(params, password) {
-        const salt = bcryptjs_1.default.genSaltSync(10);
-        const hash = bcryptjs_1.default.hashSync(password, salt);
-        const queryRunner = database_1.DatabaseService.getInstance().createQueryRunner();
-        await queryRunner.startTransaction();
-        try {
-            const result = await queryRunner.manager.insert(User_1.User, Object.assign(Object.assign({}, params), { email: params.email.toLowerCase(), name: `${params.firstName} ${params.lastName}`.toLowerCase() }));
-            await queryRunner.manager.insert(Password_1.Password, {
-                user: result.identifiers[0].id,
-                password: hash,
-            });
-            const user = await queryRunner.manager
-                .getRepository(User_1.User)
-                .findOne({ where: { id: result.identifiers[0].id } });
-            await queryRunner.commitTransaction();
-            return Response_1.Responses.ok({});
-        }
-        catch (e) {
-            await queryRunner.rollbackTransaction();
-            if (e instanceof typeorm_1.QueryFailedError) {
-                const err = e;
-                if (err.code === '23505') {
-                    throw new Response_1.ServiceError(Response_1.ResponseCode.conflict, 'Duplicate entry', {
-                        errors: Utils_1.default.getIndexErrorMessage(User_1.User.Index, err.constraint),
-                    });
-                }
-                throw new Response_1.ServiceError(Response_1.ResponseCode.forbidden, 'Unprocessable entity');
-            }
-        }
-        finally {
-            await queryRunner.release();
-        }
-    }
-    async delete(id) {
-        await database_1.DatabaseService.getInstance().manager.delete(User_1.User, {
-            id: id,
-        });
-        return Response_1.Responses.ok(id);
     }
     async edit(userId, body, roles, reqUserId) {
         var _a;
@@ -232,11 +192,12 @@ class UsersService {
                     lastName: user.lastName,
                     image: user.image,
                     userId: user.id,
-                    role: [...((_a = user === null || user === void 0 ? void 0 : user.roles) !== null && _a !== void 0 ? _a : [])],
+                    role: [...((_a = user === null || user === void 0 ? void 0 : user.roles) !== null && _a !== void 0 ? _a : [])]
                 };
-                const iss = 'StridePal';
+                console.log(payload);
+                const iss = 'Salon-Chandima';
                 const sub = 'user';
-                const aud = 'http://localhost:4000';
+                const aud = 'http://localhost:4200';
                 const exp = '58365h';
                 const signOptions = {
                     issuer: iss,

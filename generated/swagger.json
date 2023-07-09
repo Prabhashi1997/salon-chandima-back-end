@@ -6,18 +6,40 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"AdminData": {
+			"UserCreationParams": {
 				"properties": {
-					"id": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"epfNo": {
 						"type": "number",
 						"format": "double"
 					},
-					"name": {
+					"designation": {},
+					"email": {
 						"type": "string"
+					},
+					"image": {
+						"type": "string"
+					},
+					"doj": {
+						"type": "string"
+					},
+					"roles": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
-					"name"
+					"firstName",
+					"lastName",
+					"epfNo",
+					"email"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -51,33 +73,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"AppointmentHistoryData": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"dateAndTime": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"status": {
-						"type": "string"
-					},
-					"duration": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"id",
-					"dateAndTime",
-					"status",
-					"duration"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"ConfigData": {
 				"properties": {
 					"id": {
@@ -100,6 +95,32 @@
 			},
 			"CustomerData": {
 				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"epfNo": {
+						"type": "number",
+						"format": "double"
+					},
+					"designation": {},
+					"email": {
+						"type": "string"
+					},
+					"image": {
+						"type": "string"
+					},
+					"doj": {
+						"type": "string"
+					},
+					"roles": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
 					"id": {
 						"type": "number",
 						"format": "double"
@@ -109,6 +130,10 @@
 					}
 				},
 				"required": [
+					"firstName",
+					"lastName",
+					"epfNo",
+					"email",
 					"id",
 					"gender"
 				],
@@ -117,12 +142,37 @@
 			},
 			"EmployeeData": {
 				"properties": {
-					"id": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"epfNo": {
 						"type": "number",
 						"format": "double"
 					},
 					"designation": {
 						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"image": {
+						"type": "string"
+					},
+					"doj": {
+						"type": "string"
+					},
+					"roles": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
 					},
 					"gender": {
 						"type": "string"
@@ -133,7 +183,10 @@
 					}
 				},
 				"required": [
-					"id",
+					"firstName",
+					"lastName",
+					"epfNo",
+					"email",
 					"gender",
 					"dob"
 				],
@@ -314,44 +367,6 @@
 				"required": [
 					"code",
 					"message"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"UserCreationParams": {
-				"properties": {
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"epfNo": {
-						"type": "number",
-						"format": "double"
-					},
-					"designation": {},
-					"email": {
-						"type": "string"
-					},
-					"image": {
-						"type": "string"
-					},
-					"doj": {
-						"type": "string"
-					},
-					"roles": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"firstName",
-					"lastName",
-					"epfNo",
-					"email"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1127,7 +1142,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/AdminData"
+								"$ref": "#/components/schemas/UserCreationParams"
 							}
 						}
 					}
@@ -1170,7 +1185,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/AdminData"
+								"$ref": "#/components/schemas/UserCreationParams"
 							}
 						}
 					}
@@ -1425,112 +1440,6 @@
 						"required": false,
 						"schema": {
 							"type": "string"
-						}
-					}
-				]
-			},
-			"post": {
-				"operationId": "AddAppointmentHistory",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [
-					{
-						"jwt": [
-							"admin"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/AppointmentHistoryData"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/v1/appointment-history/{id}": {
-			"patch": {
-				"operationId": "EditAppointmentHistory",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [
-					{
-						"jwt": [
-							"admin",
-							"employee"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/AppointmentHistoryData"
-							}
-						}
-					}
-				}
-			},
-			"delete": {
-				"operationId": "DeleteAppointmentHistory",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [
-					{
-						"jwt": [
-							"admin"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
 						}
 					}
 				]
@@ -1952,7 +1861,13 @@
 						}
 					}
 				},
-				"security": [],
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,
@@ -2665,7 +2580,13 @@
 						}
 					}
 				},
-				"security": [],
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -2766,41 +2687,6 @@
 						"jwt": [
 							"admin",
 							"user",
-							"hr",
-							"manger"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "userId",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
-			},
-			"delete": {
-				"operationId": "DeleteUser",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/UserCreationParams"
-								}
-							}
-						}
-					}
-				},
-				"security": [
-					{
-						"jwt": [
-							"admin",
 							"hr",
 							"manger"
 						]
@@ -3025,53 +2911,6 @@
 						}
 					}
 				]
-			},
-			"post": {
-				"operationId": "CreateUser",
-				"responses": {
-					"201": {
-						"description": "Created",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/UserCreationParams"
-								}
-							}
-						}
-					}
-				},
-				"security": [
-					{
-						"jwt": [
-							"admin",
-							"hr",
-							"manger"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"password": {
-										"type": "string"
-									},
-									"user": {
-										"$ref": "#/components/schemas/UserCreationParams"
-									}
-								},
-								"required": [
-									"password",
-									"user"
-								],
-								"type": "object"
-							}
-						}
-					}
-				}
 			}
 		},
 		"/api/v1/users/login": {

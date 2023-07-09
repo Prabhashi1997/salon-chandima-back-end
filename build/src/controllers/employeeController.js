@@ -41,7 +41,8 @@ let EmployeeController = exports.EmployeeController = class EmployeeController e
     }
     async editEmployee(id, requestBody, request) {
         return this.exec(async () => {
-            const designation = await new employeeService_1.EmployeeService().editEmployee(id, requestBody);
+            var _a, _b;
+            const designation = await new employeeService_1.EmployeeService().editEmployee(id, requestBody, +(request === null || request === void 0 ? void 0 : request.user.userId), (_b = (_a = request === null || request === void 0 ? void 0 : request.user) === null || _a === void 0 ? void 0 : _a.role) !== null && _b !== void 0 ? _b : []);
             return designation.body;
         });
     }

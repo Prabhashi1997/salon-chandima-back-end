@@ -8,13 +8,19 @@ class ReviewService {
     async getAll() {
         const qb = database_1.DatabaseService.getInstance()
             .getRepository(Review_1.Review)
-            .createQueryBuilder('review');
+            .createQueryBuilder('review')
+            .leftJoinAndSelect('review.customer', 'customer')
+            .leftJoinAndSelect('customer.user', 'user');
         const [reviews, total] = await qb
             .orderBy('review.name')
             .getManyAndCount();
         return Response_1.Responses.ok({
             reviews: reviews.map((item) => {
+                const user = item.customer.user;
                 return {
+                    name: user.firstName + ' ' + user.lastName,
+                    image: user.image,
+                    createdAt: item.createdAt,
                     comment: item.comment,
                 };
             }),
@@ -37,7 +43,8 @@ class ReviewService {
             .getManyAndCount();
         return Response_1.Responses.ok({
             reviews: reviews.map((item) => {
-                return Object.assign({}, item);
+                const user = item.customer.user;
+                return Object.assign({ name: user.firstName + ' ' + user.lastName, image: user.image }, item);
             }),
             total,
         });
