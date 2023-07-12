@@ -19,6 +19,12 @@ export class Customer {
     @Column()
     gender: string;
 
+    @Column()
+    age: number;
+
+    @Column()
+    address: string;
+
 
     @OneToOne(() => User, (user) => user.admin)
     @JoinColumn()

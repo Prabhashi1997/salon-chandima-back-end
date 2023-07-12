@@ -17,7 +17,7 @@ export class CustomerController extends ControllerBase {
 
     @Security('jwt', ['admin', 'employee'])
     @Get()
-    public async getCustomer(@Query() page?: number, @Query() size?: number, @Query() search?: string): Promise<void> {
+    public async getCustomers(@Query() page?: number, @Query() size?: number, @Query() search?: string): Promise<void> {
         return this.exec(async () => {
             const response = await new CustomerService().getCustomer(page, size, search);
             return Responses.ok(response.body);
@@ -25,11 +25,21 @@ export class CustomerController extends ControllerBase {
     }
 
     @Security('jwt', ['admin', 'employee'])
+    @Get('{id}')
+    public async getCustomer(@Path() id: number): Promise<void> {
+        return this.exec(async () => {
+            const response = await new CustomerService().get(id);
+            return Responses.ok(response);
+        });
+    }
+
+
+    @Security('jwt', ['admin', 'employee'])
     @Post()
-    public async addCustomer(@Body() requestBody: CustomerData, @Request() request: any) {
+    public async addCustomer(@Body() requestBody: any, @Request() request: any) {
         return this.exec(async () => {
             const response = await new CustomerService().addCustomer(requestBody);
-            return Responses.ok(response.body);
+            return Responses.ok(response);
         });
     }
 
@@ -37,7 +47,7 @@ export class CustomerController extends ControllerBase {
     @Patch('{id}')
     public async editCustomer(
         @Path() id: number,
-        @Body() requestBody: CustomerData,
+        @Body() requestBody: any,
         @Request() request: any,
     ): Promise<any> {
         return this.exec(async () => {

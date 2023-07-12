@@ -30,25 +30,48 @@ export class CustomerService {
             total,
         });
     }
+    public async get(id) {
+        const qb = await DatabaseService.getInstance()
+            .getRepository(Customer)
+            .createQueryBuilder('customer')
+            .leftJoinAndSelect('customer.user', 'user')
+            .where({id})
+            .getOne();
+
+        return {
+            data: {
+                address: qb.address,
+                age: qb.age,
+                gender: qb.gender,
+                contactNumber: qb.user.contactNumber,
+                doj: qb.user.doj,
+                email: qb.user.email,
+                firstName: qb.user.firstName,
+                lastName: qb.user.lastName,
+                nic: qb.user.nic,
+            }
+        };
+    }
+
     public async getCustomer(page?: number, size?: number, search?: string) {
         const qb = DatabaseService.getInstance()
             .getRepository(Customer)
             .createQueryBuilder('customer')
             .leftJoinAndSelect('customer.user', 'user')
         if (search) {
-            qb.andWhere('lower(customer.name) LIKE :search', {
+            qb.andWhere('lower(user.email) LIKE :search', {
                 search: `%${search.toLowerCase()}%`,
             });
         }
 
         const [customers, total] = await qb
-            .orderBy('customer.name')
-            .take(size ?? 10)
-            .skip(page ? (page - 1) * (size ?? 10) : 0)
+            .orderBy('user.email')
+            // .take(size ?? 10)
+            // .skip(page ? (page - 1) * (size ?? 10) : 0)
             .getManyAndCount();
 
         return Responses.ok({
-            customers: customers.map((item) => {
+            data: customers.map((item) => {
                 return {
                     ...item.user,
                     ...item
@@ -57,30 +80,39 @@ export class CustomerService {
             total,
         });
     }
-    public async addCustomer(params: CustomerData): Promise<{ body: any; statusCode: number }> {
+    public async addCustomer(params: CustomerData): Promise<{ done: boolean; }> {
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync('User@123', salt);
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
         const gender = params.gender;
+        const age = params.age;
+        const address = params.address;
         delete params.gender;
+        delete params.age;
+        delete params.address;
 
         try {
             const user = await queryRunner.manager
                 .getRepository(UserEntity)
-                .findOne({ where: { email: params.email } });
+                .findOne({ where: { email: params.email } }) ?? await queryRunner.manager
+                .getRepository(UserEntity)
+                .findOne({ where: { nic: params.email } });
+            let userId;
             if(!user) {
                 // create user for customer
                 const result = await queryRunner.manager.insert(UserEntity, {
                     ...params,
                     roles: ['customer'],
                     email: params.email.toLowerCase(),
+                    doj: new Date(),
                     name: `${params.firstName} ${params.lastName}`.toLowerCase(),
                 });
                 await queryRunner.manager.insert(PasswordEntity, {
                     user: result.identifiers[0].id,
                     password: hash,
                 });
+                userId = result.identifiers[0].id;
             } else {
 
                 const customer = await queryRunner.manager
@@ -97,15 +129,29 @@ export class CustomerService {
                 });
             }
 
+            console.log('user', userId)
+            const userx = await queryRunner.manager
+                .getRepository(UserEntity)
+                .findOne({ where: { email: params.email } }) ?? await queryRunner.manager
+                .getRepository(UserEntity)
+                .findOne({ where: { nic: params.email } });
             // create customer
             const newCustomer = new Customer();
             newCustomer.gender = gender;
-            await queryRunner.manager.save(newCustomer);
+            newCustomer.age = age;
+            newCustomer.address = address;
+            newCustomer.user = userx;
+            const x = await queryRunner.manager.save(newCustomer);
+
+
+            userx.customer = newCustomer;
+            await queryRunner.manager.save(userx);
 
             // commit transaction now:
             await queryRunner.commitTransaction();
-            return Responses.ok({});
+            return { done: true};
         } catch (e) {
+            console.log(e);
             // since we have errors let's rollback changes we made
             await queryRunner.rollbackTransaction();
             if (e instanceof QueryFailedError) {
@@ -117,6 +163,7 @@ export class CustomerService {
                 }
                 throw new ServiceError(ResponseCode.forbidden, 'Unprocessable entity');
             }
+            throw new ServiceError(ResponseCode.forbidden,  e.message);
         } finally {
             // you need to release query runner which is manually created:
             await queryRunner.release();
@@ -166,10 +213,16 @@ export class CustomerService {
                 user.image = data?.image ?? user.image;
                 user.firstName = data.firstName;
                 user.lastName = data.lastName;
+                user.lastName = data.lastName;
+                user.contactNumber = data.contactNumber;
                 user.name = `${data.firstName} ${data.lastName}`.toLowerCase();
+
+
                 await queryRunner.manager.save(user);
 
-                customer.gender = data.gender
+                customer.gender = data.gender;
+                customer.age = data.age;
+                customer.address = data.address;
                 await queryRunner.manager.save(customer);
             } else {
                 throw new ServiceError(ResponseCode.forbidden, 'Invalid authentication credentials');

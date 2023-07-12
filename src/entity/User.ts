@@ -16,7 +16,9 @@ import {Customer} from "./Customer";
 export class User {
   static Index = {
     Unique: {
-      email: { idx: 'IDX_User_email', msg: 'An employee already exist with same email address' },
+      email: { idx: 'IDX_User_email', msg: 'An customer already exist with same email address' },
+      nic: { idx: 'IDX_User_nic', msg: 'An customer already exist with same NIC number' },
+
     },
   };
   @PrimaryGeneratedColumn()
@@ -35,11 +37,18 @@ export class User {
   @Index(User.Index.Unique.email.idx, { unique: true })
   email: string;
 
+  @Column()
+  @Index(User.Index.Unique.nic.idx, { unique: true })
+  nic: string;
+
+  @Column({ nullable: true })
+  contactNumber?: string;
+
   @Column({ nullable: true })
   image?: string;
 
   @Column({ nullable: true })
-  doj?: string;
+  doj?: Date;
 
   @Column({ type: 'simple-array', nullable: true })
   roles?: string[];

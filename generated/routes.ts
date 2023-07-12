@@ -39,12 +39,13 @@ const models: TsoaRoute.Models = {
         "properties": {
             "firstName": {"dataType":"string","required":true},
             "lastName": {"dataType":"string","required":true},
-            "epfNo": {"dataType":"double","required":true},
             "designation": {"dataType":"any"},
             "email": {"dataType":"string","required":true},
             "image": {"dataType":"string"},
             "doj": {"dataType":"string"},
             "roles": {"dataType":"array","array":{"dataType":"string"}},
+            "nic": {"dataType":"string"},
+            "contactNumber": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -71,34 +72,18 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CustomerData": {
-        "dataType": "refObject",
-        "properties": {
-            "firstName": {"dataType":"string","required":true},
-            "lastName": {"dataType":"string","required":true},
-            "epfNo": {"dataType":"double","required":true},
-            "designation": {"dataType":"any"},
-            "email": {"dataType":"string","required":true},
-            "image": {"dataType":"string"},
-            "doj": {"dataType":"string"},
-            "roles": {"dataType":"array","array":{"dataType":"string"}},
-            "id": {"dataType":"double","required":true},
-            "gender": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "EmployeeData": {
         "dataType": "refObject",
         "properties": {
             "firstName": {"dataType":"string","required":true},
             "lastName": {"dataType":"string","required":true},
-            "epfNo": {"dataType":"double","required":true},
             "designation": {"dataType":"string"},
             "email": {"dataType":"string","required":true},
             "image": {"dataType":"string"},
             "doj": {"dataType":"string"},
             "roles": {"dataType":"array","array":{"dataType":"string"}},
+            "nic": {"dataType":"string"},
+            "contactNumber": {"dataType":"string"},
             "id": {"dataType":"double"},
             "gender": {"dataType":"string","required":true},
             "dob": {"dataType":"datetime","required":true},
@@ -193,8 +178,10 @@ const models: TsoaRoute.Models = {
             "lastName": {"dataType":"string","required":true},
             "name": {"dataType":"string","required":true},
             "email": {"dataType":"string","required":true},
+            "nic": {"dataType":"string","required":true},
+            "contactNumber": {"dataType":"string"},
             "image": {"dataType":"string"},
-            "doj": {"dataType":"string"},
+            "doj": {"dataType":"datetime"},
             "roles": {"dataType":"array","array":{"dataType":"string"}},
             "password": {"dataType":"array","array":{"dataType":"refObject","ref":"Password"},"required":true},
             "notifications": {"dataType":"array","array":{"dataType":"refObject","ref":"Notification"},"required":true},
@@ -364,6 +351,8 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": {"dataType":"double","required":true},
             "gender": {"dataType":"string","required":true},
+            "age": {"dataType":"double","required":true},
+            "address": {"dataType":"string","required":true},
             "user": {"ref":"User","required":true},
             "userId": {"dataType":"double","required":true},
             "review": {"dataType":"array","array":{"dataType":"refObject","ref":"Review"},"required":true},
@@ -865,13 +854,39 @@ export function RegisterRoutes(app: Router) {
         app.get('/api/v1/customer',
             authenticateMiddleware([{"jwt":["admin","employee"]}]),
             ...(fetchMiddlewares<RequestHandler>(CustomerController)),
-            ...(fetchMiddlewares<RequestHandler>(CustomerController.prototype.getCustomer)),
+            ...(fetchMiddlewares<RequestHandler>(CustomerController.prototype.getCustomers)),
 
-            function CustomerController_getCustomer(request: any, response: any, next: any) {
+            function CustomerController_getCustomers(request: any, response: any, next: any) {
             const args = {
                     page: {"in":"query","name":"page","dataType":"double"},
                     size: {"in":"query","name":"size","dataType":"double"},
                     search: {"in":"query","name":"search","dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CustomerController();
+
+
+              const promise = controller.getCustomers.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/customer/:id',
+            authenticateMiddleware([{"jwt":["admin","employee"]}]),
+            ...(fetchMiddlewares<RequestHandler>(CustomerController)),
+            ...(fetchMiddlewares<RequestHandler>(CustomerController.prototype.getCustomer)),
+
+            function CustomerController_getCustomer(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -897,7 +912,7 @@ export function RegisterRoutes(app: Router) {
 
             function CustomerController_addCustomer(request: any, response: any, next: any) {
             const args = {
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"CustomerData"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"dataType":"any"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
@@ -925,7 +940,7 @@ export function RegisterRoutes(app: Router) {
             function CustomerController_editCustomer(request: any, response: any, next: any) {
             const args = {
                     id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"CustomerData"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"dataType":"any"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 

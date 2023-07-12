@@ -59,16 +59,9 @@ export class UsersService {
       qb.andWhere('user.email = :email', { email });
     }
 
-    if (employeeId) {
-      qb.andWhere('user.employeeId = :employeeId', { employeeId });
-    }
-
-    if (epfNumber) {
-      qb.andWhere('user.epfNo = :epfNumber', { epfNumber: +epfNumber });
-    }
 
     const [users, total] = await qb
-      .orderBy('user.epfNo', 'ASC', 'NULLS FIRST')
+      .orderBy('user.email', 'ASC', 'NULLS FIRST')
       .take(size ?? 10)
       .skip(page ? (page - 1) * (size ?? 10) : 0)
       .getManyAndCount();
@@ -197,7 +190,7 @@ export class UsersService {
           role: [...(user?.roles ?? [])]
         };
         console.log(payload)
-        const iss = 'Salon-Chandima';
+        const iss = 'salon-chandima';
         const sub = 'user';
         const aud = 'http://localhost:4200';
         const exp = '58365h';
@@ -237,9 +230,9 @@ export class UsersService {
           userId: user.id,
           role: [...user.roles],
         };
-        const iss = 'StridePal';
+        const iss = 'salon-chandima';
         const sub = 'user';
-        const aud = 'http://localhost:4000';
+        const aud = 'http://localhost:4200';
         const exp = '58365h';
         const signOptions = {
           issuer: iss,

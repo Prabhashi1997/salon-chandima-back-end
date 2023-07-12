@@ -1,6 +1,13 @@
 import {
     Entity,
-    PrimaryGeneratedColumn, OneToOne, JoinColumn, RelationId, CreateDateColumn, UpdateDateColumn, OneToMany, Column,
+    PrimaryGeneratedColumn, 
+    OneToOne, 
+    JoinColumn, 
+    RelationId, 
+    CreateDateColumn, 
+    UpdateDateColumn, 
+    OneToMany, 
+    Column,
 } from 'typeorm';
 import {User} from "./User";
 import {Appointment} from "./Appointment";

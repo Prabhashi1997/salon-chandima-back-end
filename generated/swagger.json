@@ -14,10 +14,6 @@
 					"lastName": {
 						"type": "string"
 					},
-					"epfNo": {
-						"type": "number",
-						"format": "double"
-					},
 					"designation": {},
 					"email": {
 						"type": "string"
@@ -33,12 +29,17 @@
 							"type": "string"
 						},
 						"type": "array"
+					},
+					"nic": {
+						"type": "string"
+					},
+					"contactNumber": {
+						"type": "string"
 					}
 				},
 				"required": [
 					"firstName",
 					"lastName",
-					"epfNo",
 					"email"
 				],
 				"type": "object",
@@ -93,53 +94,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"CustomerData": {
-				"properties": {
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"epfNo": {
-						"type": "number",
-						"format": "double"
-					},
-					"designation": {},
-					"email": {
-						"type": "string"
-					},
-					"image": {
-						"type": "string"
-					},
-					"doj": {
-						"type": "string"
-					},
-					"roles": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"gender": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"firstName",
-					"lastName",
-					"epfNo",
-					"email",
-					"id",
-					"gender"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"EmployeeData": {
 				"properties": {
 					"firstName": {
@@ -147,10 +101,6 @@
 					},
 					"lastName": {
 						"type": "string"
-					},
-					"epfNo": {
-						"type": "number",
-						"format": "double"
 					},
 					"designation": {
 						"type": "string"
@@ -170,6 +120,12 @@
 						},
 						"type": "array"
 					},
+					"nic": {
+						"type": "string"
+					},
+					"contactNumber": {
+						"type": "string"
+					},
 					"id": {
 						"type": "number",
 						"format": "double"
@@ -185,7 +141,6 @@
 				"required": [
 					"firstName",
 					"lastName",
-					"epfNo",
 					"email",
 					"gender",
 					"dob"
@@ -389,11 +344,18 @@
 					"email": {
 						"type": "string"
 					},
+					"nic": {
+						"type": "string"
+					},
+					"contactNumber": {
+						"type": "string"
+					},
 					"image": {
 						"type": "string"
 					},
 					"doj": {
-						"type": "string"
+						"type": "string",
+						"format": "date-time"
 					},
 					"roles": {
 						"items": {
@@ -452,6 +414,7 @@
 					"lastName",
 					"name",
 					"email",
+					"nic",
 					"password",
 					"notifications",
 					"delete",
@@ -954,6 +917,13 @@
 					"gender": {
 						"type": "string"
 					},
+					"age": {
+						"type": "number",
+						"format": "double"
+					},
+					"address": {
+						"type": "string"
+					},
 					"user": {
 						"$ref": "#/components/schemas/User"
 					},
@@ -985,6 +955,8 @@
 				"required": [
 					"id",
 					"gender",
+					"age",
+					"address",
 					"user",
 					"userId",
 					"review",
@@ -1640,7 +1612,7 @@
 		},
 		"/api/v1/customer": {
 			"get": {
-				"operationId": "GetCustomer",
+				"operationId": "GetCustomers",
 				"responses": {
 					"204": {
 						"description": "No content"
@@ -1708,15 +1680,40 @@
 					"required": true,
 					"content": {
 						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CustomerData"
-							}
+							"schema": {}
 						}
 					}
 				}
 			}
 		},
 		"/api/v1/customer/{id}": {
+			"get": {
+				"operationId": "GetCustomer",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"employee"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
 			"patch": {
 				"operationId": "EditCustomer",
 				"responses": {
@@ -1752,9 +1749,7 @@
 					"required": true,
 					"content": {
 						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CustomerData"
-							}
+							"schema": {}
 						}
 					}
 				}
