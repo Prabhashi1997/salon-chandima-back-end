@@ -1,5 +1,6 @@
-export interface AdminData {
+import { UserCreationParams } from "./user";
+
+export interface AdminData extends UserCreationParams {
     id?: number;
-    name: string;
     
 }

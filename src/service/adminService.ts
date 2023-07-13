@@ -12,7 +12,8 @@ import {Customer} from "../entity/Customer";
 
 export class AdminService {
     public async getAll() {
-        const qb = DatabaseService.getInstance()
+        try {
+            const qb = DatabaseService.getInstance()
             .getRepository(Admin)
             .createQueryBuilder('admin')
             .leftJoinAndSelect('admin.user', 'user');
@@ -20,6 +21,7 @@ export class AdminService {
         const [admin, total] = await qb
             .orderBy('admin.name')
             .getManyAndCount();
+        console.log(admin, total)
 
         return Responses.ok({
             admin: admin.map((item) => {
@@ -29,7 +31,11 @@ export class AdminService {
                 };
             }),
             total,
-        });
+        }); 
+        } catch (error) {
+            console.log(error)
+        }
+    
     }
     public async getAdmin(page?: number, size?: number, search?: string) {
         const qb = DatabaseService.getInstance()
