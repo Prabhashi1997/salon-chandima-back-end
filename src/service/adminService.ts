@@ -19,7 +19,7 @@ export class AdminService {
             .leftJoinAndSelect('admin.user', 'user');
 
         const [admin, total] = await qb
-            .orderBy('admin.name')
+            .orderBy('user.name')
             .getManyAndCount();
         console.log(admin, total)
 
@@ -37,21 +37,42 @@ export class AdminService {
         }
     
     }
+
+    public async get(id) {
+        const qb = await DatabaseService.getInstance()
+            .getRepository(Admin)
+            .createQueryBuilder('admin')
+            .leftJoinAndSelect('admin.user', 'user')
+            .where({id})
+            .getOne();
+
+        return {
+            data: {
+                firstName: qb.user.firstName,
+                lastName: qb.user.lastName,
+                contactNumber: qb.user.contactNumber,
+                doj: qb.user.doj,
+                email: qb.user.email,
+                nic: qb.user.nic,
+            }
+        };
+    }
+
     public async getAdmin(page?: number, size?: number, search?: string) {
         const qb = DatabaseService.getInstance()
             .getRepository(Admin)
             .createQueryBuilder('admin')
             .leftJoinAndSelect('admin.user', 'user');
         if (search) {
-            qb.andWhere('lower(admin.name) LIKE :search', {
+            qb.andWhere('lower(user.name) LIKE :search', {
                 search: `%${search.toLowerCase()}%`,
             });
         }
 
         const [admin, total] = await qb
-            .orderBy('admin.name')
-            .take(size ?? 10)
-            .skip(page ? (page - 1) * (size ?? 10) : 0)
+            .orderBy('user.name')
+            // .take(size ?? 10)
+            // .skip(page ? (page - 1) * (size ?? 10) : 0)
             .getManyAndCount();
 
         return Responses.ok({

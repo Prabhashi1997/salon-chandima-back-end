@@ -89,20 +89,20 @@ export class UsersService {
       .getRepository(UserEntity)
       .findOne({ where: { id: userId } });
 
-    if (roles.find((e) => e === 'hr' || e === 'admin' || e === 'manger') || reqUserId === user.id) {
+    if (roles.find((e) => e === 'hr' || e === 'admin' || e === 'manager') || reqUserId === user.id) {
       if (reqUserId === user.id) {
         user.image = body?.image ?? user.image;
         user.firstName = body.firstName;
         user.lastName = body.lastName;
         user.name = `${body.firstName} ${body.lastName}`.toLowerCase();
-      } else if (roles.find((e) => e === 'hr' || e === 'admin' || e === 'manger')) {
+      } else if (roles.find((e) => e === 'hr' || e === 'admin' || e === 'manager')) {
         const roles1 = body?.roles;
         delete body?.roles;
         Object.entries(body).forEach((v) => (user[v[0]] = v[1]));
         if (
           roles.find((e) => e === 'admin') ||
           (roles.find((e) => e === 'hr') && !roles1.find((e) => e === 'hr' || e === 'admin')) ||
-          (roles.find((e) => e === 'manger') && !roles1.find((e) => e === 'hr' || e === 'admin' || e === 'manger'))
+          (roles.find((e) => e === 'manager') && !roles1.find((e) => e === 'hr' || e === 'admin' || e === 'manager'))
         ) {
           user.roles = roles1;
         }

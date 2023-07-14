@@ -132,18 +132,13 @@
 					},
 					"gender": {
 						"type": "string"
-					},
-					"dob": {
-						"type": "string",
-						"format": "date-time"
 					}
 				},
 				"required": [
 					"firstName",
 					"lastName",
 					"email",
-					"gender",
-					"dob"
+					"gender"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -643,10 +638,6 @@
 					"gender": {
 						"type": "string"
 					},
-					"dob": {
-						"type": "string",
-						"format": "date-time"
-					},
 					"appointment": {
 						"items": {
 							"$ref": "#/components/schemas/Appointment"
@@ -672,19 +663,22 @@
 					"updatedAt": {
 						"type": "string",
 						"format": "date-time"
-					}
+					},
+					"address": {},
+					"age": {}
 				},
 				"required": [
 					"id",
 					"user",
 					"userId",
 					"gender",
-					"dob",
 					"appointment",
 					"appointmentHistories",
 					"payments",
 					"createdAt",
-					"updatedAt"
+					"updatedAt",
+					"address",
+					"age"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1045,9 +1039,21 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/api/v1/admin/all": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/api/v1/admin": {
 			"get": {
-				"operationId": "GetAdmin",
+				"operationId": "GetAdmins",
 				"responses": {
 					"204": {
 						"description": "No content"
@@ -1122,6 +1128,32 @@
 			}
 		},
 		"/api/v1/admin/{id}": {
+			"get": {
+				"operationId": "GetAdmin",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
 			"patch": {
 				"operationId": "EditAdmin",
 				"responses": {
@@ -1801,7 +1833,7 @@
 		},
 		"/api/v1/employee": {
 			"get": {
-				"operationId": "GetEmployee",
+				"operationId": "GetEmployees",
 				"responses": {
 					"204": {
 						"description": "No content"
@@ -1877,6 +1909,33 @@
 			}
 		},
 		"/api/v1/employee/{id}": {
+			"get": {
+				"operationId": "GetEmployee",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"employee"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
 			"patch": {
 				"operationId": "EditEmployee",
 				"responses": {
@@ -2683,7 +2742,7 @@
 							"admin",
 							"user",
 							"hr",
-							"manger"
+							"manager"
 						]
 					}
 				],
@@ -2717,7 +2776,7 @@
 							"admin",
 							"user",
 							"hr",
-							"manger"
+							"manager"
 						]
 					}
 				],
@@ -2850,7 +2909,7 @@
 						"jwt": [
 							"admin",
 							"hr",
-							"manger"
+							"manager"
 						]
 					}
 				],
@@ -2975,7 +3034,7 @@
 							"admin",
 							"user",
 							"hr",
-							"manger"
+							"manager"
 						]
 					}
 				],
@@ -3006,7 +3065,7 @@
 							"admin",
 							"user",
 							"hr",
-							"manger"
+							"manager"
 						]
 					}
 				],

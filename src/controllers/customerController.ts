@@ -64,7 +64,7 @@ export class CustomerController extends ControllerBase {
     public async deleteCustomer(@Path() id: number, @Request() request: any): Promise<any> {
         return this.exec(async () => {
             const response = await new CustomerService().deleteCustomer(id);
-            return response?.body ?? response;
+            return Responses.ok(response);
         });
     }
 }

@@ -7,12 +7,29 @@ import {UserCreationParams} from "../models/user";
 @Route('api/v1/admin')
 export class AdminController extends ControllerBase {
 
+    @Get('all')
+    public async getAll(): Promise<void> {
+        return this.exec(async () => {
+            const response = await new AdminService().getAll();
+            return Responses.ok(response.body);
+        });
+    }
+
     @Security('jwt', ['admin'])
     @Get()
-    public async getAdmin(@Query() page?: number, @Query() size?: number, @Query() search?: string): Promise<void> {
+    public async getAdmins(@Query() page?: number, @Query() size?: number, @Query() search?: string): Promise<void> {
         return this.exec(async () => {
             const response = await new AdminService().getAdmin(page, size, search);
             return Responses.ok(response.body);
+        });
+    }
+
+    @Security('jwt', ['admin'])
+    @Get('{id}')
+    public async getAdmin(@Path() id: number): Promise<void> {
+        return this.exec(async () => {
+            const response = await new AdminService().get(id);
+            return Responses.ok(response);
         });
     }
 

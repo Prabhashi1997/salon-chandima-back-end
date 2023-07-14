@@ -5,7 +5,6 @@ import { EmployeeData } from '../models/employee';
 import bcrypt from "bcryptjs";
 import {User, User as UserEntity} from "../entity/User";
 import {Password as PasswordEntity} from "../entity/Password";
-import {Customer} from "../entity/Customer";
 import {QueryFailedError} from "typeorm";
 import Utils from "../common/Utils";
 
@@ -31,21 +30,43 @@ export class EmployeeService {
             total,
         });
     }
+
+    public async get(id) {
+        const qb = await DatabaseService.getInstance()
+            .getRepository(Employee)
+            .createQueryBuilder('employ')
+            .leftJoinAndSelect('employ.user', 'user')
+            .where({id})
+            .getOne();
+
+        return {
+            data: {
+                designation: qb.designation,
+                gender: qb.gender,
+                contactNumber: qb.user.contactNumber,
+                doj: qb.user.doj,
+                email: qb.user.email,
+                firstName: qb.user.firstName,
+                lastName: qb.user.lastName,
+                nic: qb.user.nic,
+            }
+        };
+    }
     public async getEmployee(page?: number, size?: number, search?: string) {
         const qb = DatabaseService.getInstance()
             .getRepository(Employee)
             .createQueryBuilder('employee')
             .leftJoinAndSelect('employee.user', 'user');
         if (search) {
-            qb.andWhere('lower(employee.name) LIKE :search', {
+            qb.andWhere('lower(user.name) LIKE :search', {
                 search: `%${search.toLowerCase()}%`,
             });
         }
 
         const [employees, total] = await qb
-            .orderBy('employee.name')
-            .take(size ?? 10)
-            .skip(page ? (page - 1) * (size ?? 10) : 0)
+            .orderBy('user.name')
+            // .take(size ?? 10)
+            // .skip(page ? (page - 1) * (size ?? 10) : 0)
             .getManyAndCount();
 
         return Responses.ok({
@@ -65,8 +86,6 @@ export class EmployeeService {
         await queryRunner.startTransaction();
         const gender = params.gender;
         delete params.gender;
-        const dob = params.dob;
-        delete params.dob;
         const designation = params.designation;
         delete params.designation;
 
@@ -78,7 +97,7 @@ export class EmployeeService {
                 // create user for employ
                 const result = await queryRunner.manager.insert(UserEntity, {
                     ...params,
-                    roles: ['employ'],
+                    roles: ['user'],
                     email: params.email.toLowerCase(),
                     name: `${params.firstName} ${params.lastName}`.toLowerCase(),
                 });
@@ -88,17 +107,17 @@ export class EmployeeService {
                 });
             } else {
 
-                const customer = await queryRunner.manager
-                    .getRepository(Customer)
+                const employee = await queryRunner.manager
+                    .getRepository(Employee)
                     .findOne({ where: { userId: user.id } });
 
-                if (!!customer) {
+                if (!!employee) {
                     throw new ServiceError(ResponseCode.conflict, 'Duplicate entry');
                 }
 
                 const result = await queryRunner.manager.insert(UserEntity, {
                     ...params,
-                    roles: [...user.roles,'employ'],
+                    roles: [...user.roles,'user'],
                 });
             }
 
@@ -106,7 +125,6 @@ export class EmployeeService {
             const newEmployee = new Employee();
             newEmployee.designation = designation;
             newEmployee.gender = gender;
-            newEmployee.dob = dob;
             await queryRunner.manager.save(newEmployee);
 
             // commit transaction now:
@@ -181,7 +199,6 @@ export class EmployeeService {
 
                 employee.designation = data.designation;
                 employee.gender = data.gender;
-                employee.dob = data.dob;
                 await queryRunner.manager.save(employee);
             } else {
                 throw new ServiceError(ResponseCode.forbidden, 'Invalid authentication credentials');

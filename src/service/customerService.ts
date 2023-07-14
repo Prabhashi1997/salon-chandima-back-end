@@ -30,6 +30,7 @@ export class CustomerService {
             total,
         });
     }
+    
     public async get(id) {
         const qb = await DatabaseService.getInstance()
             .getRepository(Customer)
@@ -169,7 +170,7 @@ export class CustomerService {
             await queryRunner.release();
         }
     }
-    public async deleteCustomer(id: number): Promise<{ body: any; statusCode: number }> {
+    public async deleteCustomer(id: number): Promise<any> {
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
 
@@ -179,18 +180,21 @@ export class CustomerService {
                 .findOne({ where: { id: id } });
 
             if (customer) {
-                await queryRunner.manager.delete(Customer, { id: id });
                 const user = await DatabaseService.getInstance()
                     .getRepository(UserEntity)
                     .findOne({ where: { id: customer.userId } });
                 user.roles = user.roles.filter((n) => n !== 'customer');
+                user.customer = null;
                 await queryRunner.manager.update(User, customer.userId, user);
+                customer.user = null;
+                await queryRunner.manager.update(Customer, id, customer);
+                await queryRunner.manager.delete(Customer, { id: id });
             }
             await queryRunner.commitTransaction();
-            return Responses.ok(id);
+            return id;
         } catch (e) {
             // since we have errors let's rollback changes we made
-            // console.log(e);
+            console.log(e);
             await queryRunner.rollbackTransaction();
         } finally {
             // you need to release query runner which is manually created:

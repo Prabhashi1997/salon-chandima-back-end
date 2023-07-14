@@ -17,10 +17,19 @@ export class EmployeeController extends ControllerBase {
 
     @Security('jwt', ['admin', 'employee'])
     @Get()
-    public async getEmployee(@Query() page?: number, @Query() size?: number, @Query() search?: string): Promise<void> {
+    public async getEmployees(@Query() page?: number, @Query() size?: number, @Query() search?: string): Promise<void> {
         return this.exec(async () => {
             const response = await new EmployeeService().getEmployee(page, size, search);
             return Responses.ok(response.body);
+        });
+    }
+
+    @Security('jwt', ['admin', 'employee'])
+    @Get('{id}')
+    public async getEmployee(@Path() id: number): Promise<void> {
+        return this.exec(async () => {
+            const response = await new EmployeeService().get(id);
+            return Responses.ok(response);
         });
     }
 

@@ -32,9 +32,6 @@ export class Employee {
     @Column()
     gender: string;
 
-    @Column({ nullable: true })
-    dob: Date;
-
     @OneToMany(() => Appointment, (appointment) => appointment.employee)
     @JoinColumn()
     appointment: Appointment[];
@@ -54,5 +51,7 @@ export class Employee {
 
     @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
     updatedAt: Date;
+    address: any;
+    age: any;
 
 }

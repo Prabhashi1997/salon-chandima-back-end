@@ -12,7 +12,7 @@ import { DataTableResponse } from '../common/Definitions';
 @Route('api/v1/users')
 export class UsersController extends ControllerBase {
   // 1.2.0
-  @Security('jwt', ['admin', 'user', 'hr', 'manger'])
+  @Security('jwt', ['admin', 'user', 'hr', 'manager'])
   @Response<ErrorJson>(500, 'internal server error', {
     code: '500',
     message: 'internal server error',
@@ -39,7 +39,7 @@ export class UsersController extends ControllerBase {
   public async getUser(@Request() request: any, @Path() userId: number): Promise<Responses> {
     return this.exec(async () => {
       if (
-        request?.user.role.find((e) => e === 'hr' || e === 'admin' || e === 'manger') ||
+        request?.user.role.find((e) => e === 'hr' || e === 'admin' || e === 'manager') ||
         userId === +request?.user.userId
       ) {
         const user = await new UsersService().get(userId);
@@ -69,7 +69,7 @@ export class UsersController extends ControllerBase {
   }
 
   // 1.2.0
-  @Security('jwt', ['admin', 'user', 'hr', 'manger'])
+  @Security('jwt', ['admin', 'user', 'hr', 'manager'])
   @Patch('{userId}')
   public async editUser(
     @Request() request: any,
@@ -89,7 +89,7 @@ export class UsersController extends ControllerBase {
   }
 
   // 1.2.0
-  @Security('jwt', ['admin', 'hr', 'manger'])
+  @Security('jwt', ['admin', 'hr', 'manager'])
   @Get()
   public async getUsers(
     @Query() page?: number,
@@ -139,7 +139,7 @@ export class UsersController extends ControllerBase {
   }
 
   // 1.2.0
-  @Security('jwt', ['admin', 'user', 'hr', 'manger'])
+  @Security('jwt', ['admin', 'user', 'hr', 'manager'])
   @Get('refresh-token/{userId}')
   public async refreshToken(@Path() userId: number, @Request() request: any): Promise<void> {
     return await this.exec(async () => {
@@ -149,7 +149,7 @@ export class UsersController extends ControllerBase {
   }
 
   // 1.2.0
-  @Security('jwt', ['admin', 'user', 'hr', 'manger'])
+  @Security('jwt', ['admin', 'user', 'hr', 'manager'])
   @Patch('password-change/{userId}')
   public async changePassword(
     @Path() userId: number,

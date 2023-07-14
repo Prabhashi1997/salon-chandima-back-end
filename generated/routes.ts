@@ -86,7 +86,6 @@ const models: TsoaRoute.Models = {
             "contactNumber": {"dataType":"string"},
             "id": {"dataType":"double"},
             "gender": {"dataType":"string","required":true},
-            "dob": {"dataType":"datetime","required":true},
         },
         "additionalProperties": false,
     },
@@ -269,12 +268,13 @@ const models: TsoaRoute.Models = {
             "userId": {"dataType":"double","required":true},
             "designation": {"dataType":"string"},
             "gender": {"dataType":"string","required":true},
-            "dob": {"dataType":"datetime","required":true},
             "appointment": {"dataType":"array","array":{"dataType":"refObject","ref":"Appointment"},"required":true},
             "appointmentHistories": {"dataType":"array","array":{"dataType":"refObject","ref":"AppointmentHistory"},"required":true},
             "payments": {"dataType":"array","array":{"dataType":"refObject","ref":"Payment"},"required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "updatedAt": {"dataType":"datetime","required":true},
+            "address": {"dataType":"any","required":true},
+            "age": {"dataType":"any","required":true},
         },
         "additionalProperties": false,
     },
@@ -395,16 +395,66 @@ export function RegisterRoutes(app: Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
+        app.get('/api/v1/admin/all',
+            ...(fetchMiddlewares<RequestHandler>(AdminController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminController.prototype.getAll)),
+
+            function AdminController_getAll(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AdminController();
+
+
+              const promise = controller.getAll.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/v1/admin',
+            authenticateMiddleware([{"jwt":["admin"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminController.prototype.getAdmins)),
+
+            function AdminController_getAdmins(request: any, response: any, next: any) {
+            const args = {
+                    page: {"in":"query","name":"page","dataType":"double"},
+                    size: {"in":"query","name":"size","dataType":"double"},
+                    search: {"in":"query","name":"search","dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AdminController();
+
+
+              const promise = controller.getAdmins.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/admin/:id',
             authenticateMiddleware([{"jwt":["admin"]}]),
             ...(fetchMiddlewares<RequestHandler>(AdminController)),
             ...(fetchMiddlewares<RequestHandler>(AdminController.prototype.getAdmin)),
 
             function AdminController_getAdmin(request: any, response: any, next: any) {
             const args = {
-                    page: {"in":"query","name":"page","dataType":"double"},
-                    size: {"in":"query","name":"size","dataType":"double"},
-                    search: {"in":"query","name":"search","dataType":"string"},
+                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -1014,13 +1064,39 @@ export function RegisterRoutes(app: Router) {
         app.get('/api/v1/employee',
             authenticateMiddleware([{"jwt":["admin","employee"]}]),
             ...(fetchMiddlewares<RequestHandler>(EmployeeController)),
-            ...(fetchMiddlewares<RequestHandler>(EmployeeController.prototype.getEmployee)),
+            ...(fetchMiddlewares<RequestHandler>(EmployeeController.prototype.getEmployees)),
 
-            function EmployeeController_getEmployee(request: any, response: any, next: any) {
+            function EmployeeController_getEmployees(request: any, response: any, next: any) {
             const args = {
                     page: {"in":"query","name":"page","dataType":"double"},
                     size: {"in":"query","name":"size","dataType":"double"},
                     search: {"in":"query","name":"search","dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new EmployeeController();
+
+
+              const promise = controller.getEmployees.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/employee/:id',
+            authenticateMiddleware([{"jwt":["admin","employee"]}]),
+            ...(fetchMiddlewares<RequestHandler>(EmployeeController)),
+            ...(fetchMiddlewares<RequestHandler>(EmployeeController.prototype.getEmployee)),
+
+            function EmployeeController_getEmployee(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -1609,7 +1685,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/v1/users/:userId',
-            authenticateMiddleware([{"jwt":["admin","user","hr","manger"]}]),
+            authenticateMiddleware([{"jwt":["admin","user","hr","manager"]}]),
             ...(fetchMiddlewares<RequestHandler>(UsersController)),
             ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.getUser)),
 
@@ -1686,7 +1762,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.patch('/api/v1/users/:userId',
-            authenticateMiddleware([{"jwt":["admin","user","hr","manger"]}]),
+            authenticateMiddleware([{"jwt":["admin","user","hr","manager"]}]),
             ...(fetchMiddlewares<RequestHandler>(UsersController)),
             ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.editUser)),
 
@@ -1714,7 +1790,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/v1/users',
-            authenticateMiddleware([{"jwt":["admin","hr","manger"]}]),
+            authenticateMiddleware([{"jwt":["admin","hr","manager"]}]),
             ...(fetchMiddlewares<RequestHandler>(UsersController)),
             ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.getUsers)),
 
@@ -1770,7 +1846,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/v1/users/refresh-token/:userId',
-            authenticateMiddleware([{"jwt":["admin","user","hr","manger"]}]),
+            authenticateMiddleware([{"jwt":["admin","user","hr","manager"]}]),
             ...(fetchMiddlewares<RequestHandler>(UsersController)),
             ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.refreshToken)),
 
@@ -1797,7 +1873,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.patch('/api/v1/users/password-change/:userId',
-            authenticateMiddleware([{"jwt":["admin","user","hr","manger"]}]),
+            authenticateMiddleware([{"jwt":["admin","user","hr","manager"]}]),
             ...(fetchMiddlewares<RequestHandler>(UsersController)),
             ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.changePassword)),
 
