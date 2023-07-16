@@ -15,7 +15,7 @@ import {AppointmentHistory} from "./AppointmentHistory";
     @Column()
     name: string;
 
-    @Column()
+    @Column({ nullable: true})
     description: string;
 
     @Column({ nullable: true })
@@ -24,11 +24,14 @@ import {AppointmentHistory} from "./AppointmentHistory";
     @Column()
     price: number;
 
-    @Column({ nullable: true })
-    category?: string;
+    // @Column({ nullable: true })
+    // category?: string;
+
+    @Column()
+    duration: number;
 
     @Column({ nullable: true})
-    duration?: number;
+    employeeName?: string;
 
     @ManyToMany(() => Appointment, (appointment) => appointment.services)
     @JoinColumn()

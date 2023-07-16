@@ -287,14 +287,14 @@
 						"type": "number",
 						"format": "double"
 					},
-					"category": {
+					"employeeName": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"name",
-					"description",
-					"price"
+					"price",
+					"duration"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -861,12 +861,12 @@
 						"type": "number",
 						"format": "double"
 					},
-					"category": {
-						"type": "string"
-					},
 					"duration": {
 						"type": "number",
 						"format": "double"
+					},
+					"employeeName": {
+						"type": "string"
 					},
 					"appointments": {
 						"items": {
@@ -894,6 +894,7 @@
 					"name",
 					"description",
 					"price",
+					"duration",
 					"appointments",
 					"appointmentHistories",
 					"createdAt",
@@ -2580,6 +2581,33 @@
 			}
 		},
 		"/api/v1/service/{id}": {
+			"get": {
+				"operationId": "GetSerivice",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"employee"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
 			"patch": {
 				"operationId": "EditService",
 				"responses": {

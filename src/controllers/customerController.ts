@@ -33,7 +33,6 @@ export class CustomerController extends ControllerBase {
         });
     }
 
-
     @Security('jwt', ['admin', 'employee'])
     @Post()
     public async addCustomer(@Body() requestBody: any, @Request() request: any) {

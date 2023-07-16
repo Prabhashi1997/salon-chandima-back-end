@@ -5,7 +5,6 @@ import { CustomerData } from '../models/customer';
 import bcrypt from "bcryptjs";
 import {User, User as UserEntity} from "../entity/User";
 import {Password as PasswordEntity} from "../entity/Password";
-import {Admin} from "../entity/Admin";
 import {QueryFailedError} from "typeorm";
 import Utils from "../common/Utils";
 
@@ -170,6 +169,7 @@ export class CustomerService {
             await queryRunner.release();
         }
     }
+
     public async deleteCustomer(id: number): Promise<any> {
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
@@ -201,6 +201,7 @@ export class CustomerService {
             await queryRunner.release();
         }
     }
+
     public async editCustomer(id: number, data: CustomerData, reqUserId: number, roles: string[]): Promise<{ body: any; statusCode: number }> {
         const customer = await DatabaseService.getInstance()
             .getRepository(Customer)

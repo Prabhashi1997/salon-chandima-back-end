@@ -24,6 +24,15 @@ export class ServiceController extends ControllerBase {
         });
     }
 
+    @Security('jwt', ['admin', 'employee'])
+    @Get('{id}')
+    public async getSerivice(@Path() id: number): Promise<void> {
+        return this.exec(async () => {
+            const response = await new ServiceService().get(id);
+            return Responses.ok(response);
+        });
+    }
+
     @Security('jwt', ['admin'])
     @Post()
     public async addService(@Body() requestBody: ServiceData, @Request() request: any) {

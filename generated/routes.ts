@@ -143,11 +143,11 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": {"dataType":"double"},
             "name": {"dataType":"string","required":true},
-            "description": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
             "image": {"dataType":"string"},
             "price": {"dataType":"double","required":true},
-            "duration": {"dataType":"double"},
-            "category": {"dataType":"string"},
+            "duration": {"dataType":"double","required":true},
+            "employeeName": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -336,8 +336,8 @@ const models: TsoaRoute.Models = {
             "description": {"dataType":"string","required":true},
             "image": {"dataType":"string"},
             "price": {"dataType":"double","required":true},
-            "category": {"dataType":"string"},
-            "duration": {"dataType":"double"},
+            "duration": {"dataType":"double","required":true},
+            "employeeName": {"dataType":"string"},
             "appointments": {"dataType":"array","array":{"dataType":"refObject","ref":"Appointment"},"required":true},
             "appointmentHistories": {"dataType":"array","array":{"dataType":"refObject","ref":"AppointmentHistory"},"required":true},
             "createdAt": {"dataType":"datetime","required":true},
@@ -1596,6 +1596,32 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.getSerivices.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/service/:id',
+            authenticateMiddleware([{"jwt":["admin","employee"]}]),
+            ...(fetchMiddlewares<RequestHandler>(ServiceController)),
+            ...(fetchMiddlewares<RequestHandler>(ServiceController.prototype.getSerivice)),
+
+            function ServiceController_getSerivice(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new ServiceController();
+
+
+              const promise = controller.getSerivice.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

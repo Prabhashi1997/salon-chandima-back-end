@@ -20,13 +20,35 @@ export class ServiceService {
                     description: item.description,
                     price: item.price,
                     image: item.image,
-                    category: item.category,
+                    // category: item.category,
                     duration: item.duration,
+                    employeeName: item.employeeName,
                 };
             }),
             total,
         });
     }
+
+    public async get(id) {
+        const qb = await DatabaseService.getInstance()
+            .getRepository(Service)
+            .createQueryBuilder('service')
+            .where({id})
+            .getOne();
+
+        return {
+            data: {
+                name: qb.name,
+                description: qb.description,
+                price: qb.price,
+                image: qb.image,
+                // category: qb.category,
+                duration: qb.duration,
+                employeeName: qb.employeeName,
+            }
+        };
+    }
+
     public async getServices(page?: number, size?: number, search?: string) {
         const qb = DatabaseService.getInstance()
             .getRepository(Service)
@@ -39,8 +61,8 @@ export class ServiceService {
 
         const [services, total] = await qb
             .orderBy('service.name')
-            .take(size ?? 10)
-            .skip(page ? (page - 1) * (size ?? 10) : 0)
+            // .take(size ?? 10)
+            // .skip(page ? (page - 1) * (size ?? 10) : 0)
             .getManyAndCount();
 
         return Responses.ok({
@@ -50,22 +72,26 @@ export class ServiceService {
             total,
         });
     }
+
     public async addService(requestBody: ServiceData): Promise<{ body: any; statusCode: number }> {
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
         try {
             const newService = new Service();
             newService.name = requestBody.name;
-            newService.description = requestBody.description;
+            newService.duration = requestBody.duration;
             newService.price = requestBody.price;
             if (!!requestBody.image) {
                 newService.image = requestBody.image;
             }
-            if (!!requestBody.category) {
-                newService.category = requestBody.category;
+            // if (!!requestBody.category) {
+            //     newService.category = requestBody.category;
+            // }
+            if (!!requestBody.description) {
+                newService.description = requestBody.description;
             }
-            if (!!requestBody.duration) {
-                newService.duration = requestBody.duration;
+            if (!!requestBody.employeeName) {
+                newService.employeeName = requestBody.employeeName;
             }
             await queryRunner.manager.save(newService);
 
@@ -81,12 +107,20 @@ export class ServiceService {
             await queryRunner.release();
         }
     }
-    public async deleteService(id: number): Promise<{ body: any; statusCode: number }> {
+
+    public async deleteService(id: number): Promise<any> {
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
 
         try {
-            await queryRunner.manager.delete(Service, { id: id });
+            const service = await queryRunner.manager
+                .getRepository(Service)
+                .findOne({ where: {id: id} });
+
+            if (service) {
+                const service = await DatabaseService.getInstance().manager.delete
+                await queryRunner.manager.delete(Service, { id: id });
+            }
             await queryRunner.commitTransaction();
             return Responses.ok(id);
         } catch (e) {
@@ -98,6 +132,7 @@ export class ServiceService {
             await queryRunner.release();
         }
     }
+
     public async editService(id: number, data: ServiceData): Promise<{ body: any; statusCode: number }> {
         const service = await DatabaseService.getInstance()
             .getRepository(Service)
@@ -110,8 +145,9 @@ export class ServiceService {
             service.description = data.description;
             service.price = data.price;
             service.image = data.image;
-            service.category = data.category;
+            // service.category = data.category;
             service.duration = data.duration;
+            service.employeeName = data.employeeName;
 
             await queryRunner.manager.save(service);
             await queryRunner.commitTransaction();
