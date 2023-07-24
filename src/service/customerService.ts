@@ -29,7 +29,7 @@ export class CustomerService {
             total,
         });
     }
-    
+
     public async get(id) {
         const qb = await DatabaseService.getInstance()
             .getRepository(Customer)
@@ -53,19 +53,43 @@ export class CustomerService {
         };
     }
 
+    public async getCustomerbyUserId(id) {
+        const qb = await DatabaseService.getInstance()
+            .getRepository(Customer)
+            .createQueryBuilder('customer')
+            .leftJoinAndSelect('customer.user', 'user')
+            .where('customer.userId = :userID',{ userID: id})
+            .getOne();
+
+        return {
+            data: {
+                id: qb.id,
+                address: qb.address,
+                age: qb.age,
+                gender: qb.gender,
+                contactNumber: qb.user.contactNumber,
+                doj: qb.user.doj,
+                email: qb.user.email,
+                firstName: qb.user.firstName,
+                lastName: qb.user.lastName,
+                nic: qb.user.nic,
+            }
+        };
+    }
+
     public async getCustomer(page?: number, size?: number, search?: string) {
         const qb = DatabaseService.getInstance()
             .getRepository(Customer)
             .createQueryBuilder('customer')
             .leftJoinAndSelect('customer.user', 'user')
         if (search) {
-            qb.andWhere('lower(user.email) LIKE :search', {
+            qb.andWhere('lower(user.name) LIKE :search', {
                 search: `%${search.toLowerCase()}%`,
             });
         }
 
         const [customers, total] = await qb
-            .orderBy('user.email')
+            .orderBy('user.name')
             // .take(size ?? 10)
             // .skip(page ? (page - 1) * (size ?? 10) : 0)
             .getManyAndCount();
@@ -83,8 +107,10 @@ export class CustomerService {
     public async addCustomer(params: CustomerData): Promise<{ done: boolean; }> {
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync('User@123', salt);
+
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
+
         const gender = params.gender;
         const age = params.age;
         const address = params.address;
@@ -93,49 +119,58 @@ export class CustomerService {
         delete params.address;
 
         try {
-            const user = await queryRunner.manager
+            const user =  await queryRunner.manager
                 .getRepository(UserEntity)
-                .findOne({ where: { email: params.email } }) ?? await queryRunner.manager
-                .getRepository(UserEntity)
-                .findOne({ where: { nic: params.email } });
-            let userId;
+                .createQueryBuilder('user')
+                .where('email =:email OR nic =:nic', { email: params.email, nic: params.nic })
+                .getOne();
             if(!user) {
-                // create user for customer
+                // create user for admin
                 const result = await queryRunner.manager.insert(UserEntity, {
                     ...params,
                     roles: ['customer'],
                     email: params.email.toLowerCase(),
-                    doj: new Date(),
                     name: `${params.firstName} ${params.lastName}`.toLowerCase(),
                 });
                 await queryRunner.manager.insert(PasswordEntity, {
                     user: result.identifiers[0].id,
                     password: hash,
                 });
-                userId = result.identifiers[0].id;
             } else {
 
-                const customer = await queryRunner.manager
-                    .getRepository(Customer)
-                    .findOne({ where: { userId: user.id } });
-
-                if (!!customer) {
-                    throw new ServiceError(ResponseCode.conflict, 'Duplicate entry');
+                const user1 =  await queryRunner.manager
+                    .getRepository(UserEntity)
+                    .createQueryBuilder('user')
+                    .where('email =:email AND nic =:nic', { email: params.email, nic: params.nic })
+                    .getOne();
+                if (!!user1) {
+                    if (!!user1.customerId) {
+                        throw new ServiceError(
+                            ResponseCode.conflict,
+                            'Duplicate entry',
+                            { msg: `Already have customer for ${user.email === params.email.toLowerCase() ? 'this email' : 'this nic' }`}
+                        );
+                    }
+                    const result = await queryRunner.manager.update(UserEntity, user1.id, {
+                        roles: [...user1.roles,'customer'],
+                    });
+                } else {
+                    throw new ServiceError(
+                        ResponseCode.conflict,
+                        'Duplicate entry',
+                        { msg: `Already have user for ${user.email === params.email.toLowerCase() ? 'this email' : 'this nic' }`}
+                    );
                 }
-
-                const result = await queryRunner.manager.insert(UserEntity, {
-                    ...params,
-                    roles: [...user.roles,'customer'],
-                });
             }
 
-            console.log('user', userId)
             const userx = await queryRunner.manager
                 .getRepository(UserEntity)
-                .findOne({ where: { email: params.email } }) ?? await queryRunner.manager
-                .getRepository(UserEntity)
-                .findOne({ where: { nic: params.email } });
-            // create customer
+                .createQueryBuilder('user')
+                .where('email =:email OR nic =:nic', { email: params.email, nic: params.nic })
+                .getOne();
+
+            // create new Employee
+
             const newCustomer = new Customer();
             newCustomer.gender = gender;
             newCustomer.age = age;
@@ -143,15 +178,15 @@ export class CustomerService {
             newCustomer.user = userx;
             const x = await queryRunner.manager.save(newCustomer);
 
-
             userx.customer = newCustomer;
             await queryRunner.manager.save(userx);
 
             // commit transaction now:
             await queryRunner.commitTransaction();
-            return { done: true};
+            return { done: true };
         } catch (e) {
-            console.log(e);
+            // since we have errors let's rollback changes we made
+            await queryRunner.rollbackTransaction();
             // since we have errors let's rollback changes we made
             await queryRunner.rollbackTransaction();
             if (e instanceof QueryFailedError) {
@@ -163,13 +198,11 @@ export class CustomerService {
                 }
                 throw new ServiceError(ResponseCode.forbidden, 'Unprocessable entity');
             }
-            throw new ServiceError(ResponseCode.forbidden,  e.message);
         } finally {
             // you need to release query runner which is manually created:
             await queryRunner.release();
         }
     }
-
     public async deleteCustomer(id: number): Promise<any> {
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
@@ -184,14 +217,12 @@ export class CustomerService {
                     .getRepository(UserEntity)
                     .findOne({ where: { id: customer.userId } });
                 user.roles = user.roles.filter((n) => n !== 'customer');
-                user.customer = null;
+                user.customerId = null;
                 await queryRunner.manager.update(User, customer.userId, user);
-                customer.user = null;
-                await queryRunner.manager.update(Customer, id, customer);
                 await queryRunner.manager.delete(Customer, { id: id });
             }
             await queryRunner.commitTransaction();
-            return id;
+            return Responses.ok(id);
         } catch (e) {
             // since we have errors let's rollback changes we made
             console.log(e);
@@ -201,7 +232,6 @@ export class CustomerService {
             await queryRunner.release();
         }
     }
-
     public async editCustomer(id: number, data: CustomerData, reqUserId: number, roles: string[]): Promise<{ body: any; statusCode: number }> {
         const customer = await DatabaseService.getInstance()
             .getRepository(Customer)
@@ -209,11 +239,10 @@ export class CustomerService {
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
 
-        const user = await DatabaseService.getInstance()
-            .getRepository(UserEntity)
-            .findOne({ where: { id: customer.userId } });
-
         try {
+            const user = await DatabaseService.getInstance()
+                .getRepository(UserEntity)
+                .findOne({ where: { id: customer.userId } });
             if (roles.find((e) => e === 'admin' || e === 'employ') || reqUserId === user.id) {
                 user.image = data?.image ?? user.image;
                 user.firstName = data.firstName;
@@ -234,10 +263,24 @@ export class CustomerService {
             }
 
             await queryRunner.commitTransaction();
-            return Responses.ok(customer);
+            return Responses.ok({
+                image: data?.image ?? user.image,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                name: `${data.firstName} ${data.lastName}`.toLowerCase(),
+            });
         } catch (e) {
             // since we have errors let's rollback changes we made
             await queryRunner.rollbackTransaction();
+            if (e instanceof QueryFailedError) {
+                const err: any = e;
+                if (err.code === '23505') {
+                    throw new ServiceError(ResponseCode.conflict, 'Duplicate entry', {
+                        errors: Utils.getIndexErrorMessage(UserEntity.Index, err.constraint),
+                    });
+                }
+                throw new ServiceError(ResponseCode.unprocessableEntity, 'Unprocessable entity');
+            }
         } finally {
             // you need to release query runner which is manually created:
             await queryRunner.release();

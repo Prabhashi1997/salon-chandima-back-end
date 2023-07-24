@@ -9,6 +9,7 @@ import {QueryFailedError} from "typeorm";
 import Utils from "../common/Utils";
 import {UserCreationParams} from "../models/user";
 import {Customer} from "../entity/Customer";
+import {Employee} from "../entity/Employee";
 
 export class AdminService {
     public async getAll() {
@@ -31,11 +32,11 @@ export class AdminService {
                 };
             }),
             total,
-        }); 
+        });
         } catch (error) {
             console.log(error)
         }
-    
+
     }
 
     public async get(id) {
@@ -48,6 +49,27 @@ export class AdminService {
 
         return {
             data: {
+                firstName: qb.user.firstName,
+                lastName: qb.user.lastName,
+                contactNumber: qb.user.contactNumber,
+                doj: qb.user.doj,
+                email: qb.user.email,
+                nic: qb.user.nic,
+            }
+        };
+    }
+
+    public async getAdminbyUserId(id) {
+        const qb = await DatabaseService.getInstance()
+            .getRepository(Admin)
+            .createQueryBuilder('admin')
+            .leftJoinAndSelect('admin.user', 'user')
+            .where('admin.userId = :userID',{ userID: id})
+            .getOne();
+
+        return {
+            data: {
+                id: qb.id,
                 firstName: qb.user.firstName,
                 lastName: qb.user.lastName,
                 contactNumber: qb.user.contactNumber,
@@ -85,16 +107,18 @@ export class AdminService {
             total,
         });
     }
-    public async addAdmin(params: UserCreationParams): Promise<{ body: any; statusCode: number }> {
+    public async addAdmin(params: UserCreationParams): Promise<any> {
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync('User@123', salt);
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
 
         try {
-            const user = await queryRunner.manager
+            const user =  await queryRunner.manager
                 .getRepository(UserEntity)
-                .findOne({ where: { email: params.email } });
+                .createQueryBuilder('user')
+                .where('email =:email OR nic =:nic', { email: params.email, nic: params.nic })
+                .getOne();
             if(!user) {
                 // create user for admin
                 const result = await queryRunner.manager.insert(UserEntity, {
@@ -108,38 +132,63 @@ export class AdminService {
                     password: hash,
                 });
             } else {
-                const admin = await queryRunner.manager
-                    .getRepository(Admin)
-                    .findOne({ where: { userId: user.id } });
-
-                if (!!admin) {
-                    throw new ServiceError(ResponseCode.conflict, 'Duplicate entry');
+                const user1 =  await queryRunner.manager
+                    .getRepository(UserEntity)
+                    .createQueryBuilder('user')
+                    .where('email =:email AND nic =:nic', { email: params.email, nic: params.nic })
+                    .getOne();
+                if (!!user1) {
+                    if (!!user1.adminId) {
+                        throw new ServiceError(
+                            ResponseCode.conflict,
+                            'Duplicate entry',
+                            { msg: `Already have admin for ${user.email === params.email.toLowerCase() ? 'this email' : 'this nic' }`}
+                        );
+                    }
+                    const result = await queryRunner.manager.update(UserEntity, user1.id, {
+                        roles: [...user1.roles,'admin'],
+                    });
+                } else {
+                    throw new ServiceError(
+                        ResponseCode.conflict,
+                        'Duplicate entry',
+                        { msg: `Already have user for ${user.email === params.email.toLowerCase() ? 'this email' : 'this nic' }`}
+                    );
                 }
-                const result = await queryRunner.manager.insert(UserEntity, {
-                    ...params,
-                    roles: [...user.roles,'admin'],
-                });
             }
+
+            const userx = await queryRunner.manager
+                .getRepository(UserEntity)
+                .createQueryBuilder('user')
+                .where('email =:email OR nic =:nic', { email: params.email, nic: params.nic })
+                .getOne();
 
             // create admin
             const newAdmin = new Admin();
-            newAdmin.user = user;
+            newAdmin.user = userx;
             await queryRunner.manager.save(newAdmin);
+
+
+            userx.admin = newAdmin;
+            await queryRunner.manager.save(userx);
 
             // commit transaction now:
             await queryRunner.commitTransaction();
-            return Responses.ok({});
+            return { done: true };
         } catch (e) {
             // since we have errors let's rollback changes we made
             await queryRunner.rollbackTransaction();
             if (e instanceof QueryFailedError) {
                 const err: any = e;
-                if (err.code === '23505') {
+                if (err.code === 'ER_DUP_ENTRY') {
                     throw new ServiceError(ResponseCode.conflict, 'Duplicate entry', {
-                        errors: Utils.getIndexErrorMessage(UserEntity.Index, err.constraint),
+                        msg: Utils.getIndexErrorMessage(UserEntity.Index, err.constraint),
                     });
                 }
+                console.log(e);
                 throw new ServiceError(ResponseCode.forbidden, 'Unprocessable entity');
+            } else {
+                throw new ServiceError(e.code, e?.body?.msg);
             }
         } finally {
             // you need to release query runner which is manually created:
@@ -156,12 +205,13 @@ export class AdminService {
                 .findOne({ where: { id: id } });
 
             if (admin) {
-                await queryRunner.manager.delete(Admin, { id: id });
                 const user = await DatabaseService.getInstance()
                     .getRepository(UserEntity)
                     .findOne({ where: { id: admin.userId } });
                 user.roles = user.roles.filter((n) => n !== 'admin');
+                user.adminId = null;
                 await queryRunner.manager.update(User, admin.userId, user);
+                await queryRunner.manager.delete(Admin, { id: id });
             }
 
             await queryRunner.commitTransaction();
@@ -190,6 +240,7 @@ export class AdminService {
             user.image = data?.image ?? user.image;
             user.firstName = data.firstName;
             user.lastName = data.lastName;
+            user.contactNumber = data.contactNumber;
             user.name = `${data.firstName} ${data.lastName}`.toLowerCase();
 
             await queryRunner.manager.save(user);
@@ -198,12 +249,12 @@ export class AdminService {
                 image: data?.image ?? user.image,
                 firstName: data.firstName,
                 lastName: data.lastName,
+                contactNumber: data.contactNumber,
                 name: `${data.firstName} ${data.lastName}`.toLowerCase(),
             });
         } catch (e) {
             // since we have errors let's rollback changes we made
             await queryRunner.rollbackTransaction();
-            console.log(e);
             if (e instanceof QueryFailedError) {
                 const err: any = e;
                 if (err.code === '23505') {

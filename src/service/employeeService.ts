@@ -16,7 +16,7 @@ export class EmployeeService {
             .leftJoinAndSelect('employee.user', 'user');
 
         const [employees, total] = await qb
-            .orderBy('employee.name')
+            .orderBy('user.name')
             .getManyAndCount();
 
         return Responses.ok({
@@ -41,17 +41,41 @@ export class EmployeeService {
 
         return {
             data: {
-                designation: qb.designation,
-                gender: qb.gender,
+                firstName: qb.user.firstName,
+                lastName: qb.user.lastName,
                 contactNumber: qb.user.contactNumber,
                 doj: qb.user.doj,
                 email: qb.user.email,
-                firstName: qb.user.firstName,
-                lastName: qb.user.lastName,
                 nic: qb.user.nic,
+                gender: qb.gender,
+                designation: qb.designation,
             }
         };
     }
+
+    public async getEmployeebyUserId(id) {
+        const qb = await DatabaseService.getInstance()
+            .getRepository(Employee)
+            .createQueryBuilder('employ')
+            .leftJoinAndSelect('employ.user', 'user')
+            .where('employ.userId = :userID',{ userID: id})
+            .getOne();
+
+        return {
+            data: {
+                id: qb.id,
+                firstName: qb.user.firstName,
+                lastName: qb.user.lastName,
+                contactNumber: qb.user.contactNumber,
+                doj: qb.user.doj,
+                email: qb.user.email,
+                nic: qb.user.nic,
+                gender: qb.gender,
+                designation: qb.designation,
+            }
+        };
+    }
+
     public async getEmployee(page?: number, size?: number, search?: string) {
         const qb = DatabaseService.getInstance()
             .getRepository(Employee)
@@ -79,25 +103,31 @@ export class EmployeeService {
             total,
         });
     }
-    public async addEmployee(params: EmployeeData): Promise<{ body: any; statusCode: number }> {
+
+    public async addEmployee(params: EmployeeData): Promise<{ done: boolean; }> {
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync('User@123', salt);
+
+
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
+
         const gender = params.gender;
         delete params.gender;
         const designation = params.designation;
         delete params.designation;
 
         try {
-            const user = await queryRunner.manager
+            const user =  await queryRunner.manager
                 .getRepository(UserEntity)
-                .findOne({ where: { email: params.email } });
+                .createQueryBuilder('user')
+                .where('email =:email OR nic =:nic', { email: params.email, nic: params.nic })
+                .getOne();
             if(!user) {
-                // create user for employ
+                // create user for admin
                 const result = await queryRunner.manager.insert(UserEntity, {
                     ...params,
-                    roles: ['user'],
+                    roles: ['employee'],
                     email: params.email.toLowerCase(),
                     name: `${params.firstName} ${params.lastName}`.toLowerCase(),
                 });
@@ -107,30 +137,55 @@ export class EmployeeService {
                 });
             } else {
 
-                const employee = await queryRunner.manager
-                    .getRepository(Employee)
-                    .findOne({ where: { userId: user.id } });
-
-                if (!!employee) {
-                    throw new ServiceError(ResponseCode.conflict, 'Duplicate entry');
+                const user1 =  await queryRunner.manager
+                    .getRepository(UserEntity)
+                    .createQueryBuilder('user')
+                    .where('email =:email AND nic =:nic', { email: params.email, nic: params.nic })
+                    .getOne();
+                if (!!user1) {
+                    if (!!user1.employeeId) {
+                        throw new ServiceError(
+                            ResponseCode.conflict,
+                            'Duplicate entry',
+                            { msg: `Already have admin for ${user.email === params.email.toLowerCase() ? 'this email' : 'this nic' }`}
+                        );
+                    }
+                    const result = await queryRunner.manager.update(UserEntity, user1.id, {
+                        roles: [...user1.roles,'employee'],
+                    });
+                } else {
+                    throw new ServiceError(
+                        ResponseCode.conflict,
+                        'Duplicate entry',
+                        { msg: `Already have user for ${user.email === params.email.toLowerCase() ? 'this email' : 'this nic' }`}
+                    );
                 }
-
-                const result = await queryRunner.manager.insert(UserEntity, {
-                    ...params,
-                    roles: [...user.roles,'user'],
-                });
             }
 
-            // create employ
+            const userx = await queryRunner.manager
+                .getRepository(UserEntity)
+                .createQueryBuilder('user')
+                .where('email =:email OR nic =:nic', { email: params.email, nic: params.nic })
+                .getOne();
+
+            // create new Employee
+
             const newEmployee = new Employee();
             newEmployee.designation = designation;
             newEmployee.gender = gender;
+            newEmployee.user = userx;
             await queryRunner.manager.save(newEmployee);
+
+
+            userx.employee = newEmployee;
+            await queryRunner.manager.save(userx);
 
             // commit transaction now:
             await queryRunner.commitTransaction();
-            return Responses.ok({});
+            return { done: true };
         } catch (e) {
+            // since we have errors let's rollback changes we made
+            await queryRunner.rollbackTransaction();
             // since we have errors let's rollback changes we made
             await queryRunner.rollbackTransaction();
             if (e instanceof QueryFailedError) {
@@ -161,11 +216,12 @@ export class EmployeeService {
                 await queryRunner.manager.delete(Employee, { id: id });
                 const user = await DatabaseService.getInstance()
                     .getRepository(UserEntity)
-                    .findOne({ where: { id: employ.userId } });
-                user.roles = user.roles.filter((n) => n !== 'employ');
+                    .findOne({ where: { id: employ.userId } })
+                user.roles = user.roles.filter((n) => n !== 'employee');
+                user.customerId = null;
                 await queryRunner.manager.update(User, employ.userId, user);
+                await queryRunner.manager.delete(Employee, { id: id });
             }
-            await queryRunner.manager.delete(Employee, { id: id });
             await queryRunner.commitTransaction();
             return Responses.ok(id);
         } catch (e) {
@@ -185,12 +241,12 @@ export class EmployeeService {
         await queryRunner.startTransaction();
 
 
-        const user = await DatabaseService.getInstance()
-            .getRepository(UserEntity)
-            .findOne({ where: { id: employee.userId } });
-
         try {
-            if (roles.find((e) => e === 'admin' || e === 'employ') || reqUserId === user.id) {
+            const user = await DatabaseService.getInstance()
+                .getRepository(UserEntity)
+                .findOne({ where: { id: employee.userId } });
+
+            if (roles.find((e) => e === 'employ') || reqUserId === user.id) {
                 user.image = data?.image ?? user.image;
                 user.firstName = data.firstName;
                 user.lastName = data.lastName;
@@ -200,18 +256,33 @@ export class EmployeeService {
                 employee.designation = data.designation;
                 employee.gender = data.gender;
                 await queryRunner.manager.save(employee);
+                await queryRunner.commitTransaction();
+                return Responses.ok({
+                    image: data?.image ?? user.image,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    name: `${data.firstName} ${data.lastName}`.toLowerCase(),
+                });
             } else {
                 throw new ServiceError(ResponseCode.forbidden, 'Invalid authentication credentials');
             }
 
-            await queryRunner.commitTransaction();
-            return Responses.ok(employee);
         } catch (e) {
             // since we have errors let's rollback changes we made
             await queryRunner.rollbackTransaction();
+            if (e instanceof QueryFailedError) {
+                const err: any = e;
+                if (err.code === '23505') {
+                    throw new ServiceError(ResponseCode.conflict, 'Duplicate entry', {
+                        errors: Utils.getIndexErrorMessage(UserEntity.Index, err.constraint),
+                    });
+                }
+                throw new ServiceError(ResponseCode.unprocessableEntity, 'Unprocessable entity');
+            }
         } finally {
             // you need to release query runner which is manually created:
             await queryRunner.release();
         }
+
     }
 }

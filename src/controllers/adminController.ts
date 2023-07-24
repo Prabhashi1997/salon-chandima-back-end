@@ -25,6 +25,15 @@ export class AdminController extends ControllerBase {
     }
 
     @Security('jwt', ['admin'])
+    @Get('user')
+    public async getAdminbyUserId(@Request() request: any): Promise<void> {
+        return this.exec(async () => {
+            const response = await new AdminService().getAdminbyUserId(+request?.user.userId);
+            return Responses.ok(response);
+        });
+    }
+
+    @Security('jwt', ['admin'])
     @Get('{id}')
     public async getAdmin(@Path() id: number): Promise<void> {
         return this.exec(async () => {
@@ -38,7 +47,7 @@ export class AdminController extends ControllerBase {
     public async addAdmin(@Body() requestBody: UserCreationParams, @Request() request: any) {
         return this.exec(async () => {
             const response = await new AdminService().addAdmin(requestBody);
-            return Responses.ok(response.body);
+            return Responses.ok(response);
         });
     }
 
@@ -51,7 +60,7 @@ export class AdminController extends ControllerBase {
     ): Promise<any> {
         return this.exec(async () => {
             const designation = await new AdminService().editAdmin(id, requestBody);
-            return designation.body;
+            return Responses.ok(designation?.body ?? designation);
         });
     }
 
@@ -60,7 +69,8 @@ export class AdminController extends ControllerBase {
     public async deleteAdmin(@Path() id: number, @Request() request: any): Promise<any> {
         return this.exec(async () => {
             const designation = await new AdminService().deleteAdmin(id);
-            return designation?.body ?? designation;
+            return Responses.ok(designation?.body ?? designation);
         });
     }
+
 }

@@ -1,7 +1,9 @@
 export interface AppointmentData {
     id?: number;
-    dateAndTime: Date;
-    status: string;
-    duration?: number;
-    deleted: boolean;
+    date: Date;
+    time: number;
+    // status: string;
+    // duration?: number;
+    // deleted: boolean;
+    
 }

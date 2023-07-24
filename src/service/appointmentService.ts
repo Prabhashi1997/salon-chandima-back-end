@@ -16,10 +16,11 @@ export class AppointmentService {
         return Responses.ok({
             appointments: appointments.map((item) => {
                 return {
-                    dateAndTime: item.dateAndTime,
-                    status: item.status,
-                    duration: item.duration,
-                    deleted: item.deleted,        
+                    date: item.date,
+                    time: item.time,
+                    // status: item.status,
+                    // duration: item.duration,
+                    // deleted: item.deleted,        
                 };
             }),
             total,
@@ -53,10 +54,11 @@ export class AppointmentService {
         await queryRunner.startTransaction();
         try {
             const newAppointment = new Appointment();
-            newAppointment.dateAndTime = requestBody.dateAndTime;
-            newAppointment.status = requestBody.status;
-            newAppointment.duration = requestBody.duration;
-            newAppointment.deleted = requestBody.deleted;
+            newAppointment.date = requestBody.date;
+            newAppointment.time = requestBody.time
+            // newAppointment.status = requestBody.status;
+            // newAppointment.duration = requestBody.duration;
+            // newAppointment.deleted = requestBody.deleted;
             await queryRunner.manager.save(newAppointment);
 
             requestBody.id = newAppointment.id;
@@ -96,10 +98,11 @@ export class AppointmentService {
         await queryRunner.startTransaction();
 
         try {
-            appointment.dateAndTime = data.dateAndTime;
-            appointment.status = data.status;
-            appointment.duration = data.duration;
-            appointment.deleted = data.deleted;
+            appointment.date = data.date;
+            appointment.time = data.time
+            // appointment.status = data.status;
+            // appointment.duration = data.duration;
+            // appointment.deleted = data.deleted;
 
             await queryRunner.manager.save(appointment);
             await queryRunner.commitTransaction();

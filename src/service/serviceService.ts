@@ -81,12 +81,10 @@ export class ServiceService {
             newService.name = requestBody.name;
             newService.duration = requestBody.duration;
             newService.price = requestBody.price;
+            // newService.category = requestBody.category;
             if (!!requestBody.image) {
                 newService.image = requestBody.image;
             }
-            // if (!!requestBody.category) {
-            //     newService.category = requestBody.category;
-            // }
             if (!!requestBody.description) {
                 newService.description = requestBody.description;
             }

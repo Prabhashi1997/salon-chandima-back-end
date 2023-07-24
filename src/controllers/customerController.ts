@@ -34,6 +34,16 @@ export class CustomerController extends ControllerBase {
     }
 
     @Security('jwt', ['admin', 'employee'])
+    @Get('user')
+    public async getCustomerbyUserId(@Request() request: any): Promise<void> {
+        return this.exec(async () => {
+            const response = await new CustomerService().getCustomerbyUserId(+request?.user.userId);
+            return Responses.ok(response);
+        });
+    }
+
+
+    @Security('jwt', ['admin', 'employee'])
     @Post()
     public async addCustomer(@Body() requestBody: any, @Request() request: any) {
         return this.exec(async () => {
@@ -54,7 +64,7 @@ export class CustomerController extends ControllerBase {
                 id, requestBody, +request?.user.userId,request?.user?.role ?? [],
 
             );
-            return response.body;
+            return Responses.ok(response?.body ?? response);
         });
     }
 
@@ -63,7 +73,7 @@ export class CustomerController extends ControllerBase {
     public async deleteCustomer(@Path() id: number, @Request() request: any): Promise<any> {
         return this.exec(async () => {
             const response = await new CustomerService().deleteCustomer(id);
-            return Responses.ok(response);
+            return Responses.ok(response?.body ?? response);
         });
     }
 }

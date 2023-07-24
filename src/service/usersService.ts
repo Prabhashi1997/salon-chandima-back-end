@@ -81,60 +81,6 @@ export class UsersService {
     };
   }
 
-  public async edit(userId: number, body: UserCreationParams, roles: string[], reqUserId: number): Promise<User> {
-    const queryRunner = DatabaseService.getInstance().createQueryRunner();
-    await queryRunner.startTransaction();
-
-    const user = await DatabaseService.getInstance()
-      .getRepository(UserEntity)
-      .findOne({ where: { id: userId } });
-
-    if (roles.find((e) => e === 'hr' || e === 'admin' || e === 'manager') || reqUserId === user.id) {
-      if (reqUserId === user.id) {
-        user.image = body?.image ?? user.image;
-        user.firstName = body.firstName;
-        user.lastName = body.lastName;
-        user.name = `${body.firstName} ${body.lastName}`.toLowerCase();
-      } else if (roles.find((e) => e === 'hr' || e === 'admin' || e === 'manager')) {
-        const roles1 = body?.roles;
-        delete body?.roles;
-        Object.entries(body).forEach((v) => (user[v[0]] = v[1]));
-        if (
-          roles.find((e) => e === 'admin') ||
-          (roles.find((e) => e === 'hr') && !roles1.find((e) => e === 'hr' || e === 'admin')) ||
-          (roles.find((e) => e === 'manager') && !roles1.find((e) => e === 'hr' || e === 'admin' || e === 'manager'))
-        ) {
-          user.roles = roles1;
-        }
-        user.name = `${body.firstName} ${body.lastName}`.toLowerCase();
-      }
-      try {
-        await queryRunner.manager.update(User, userId, user);
-        // commit transaction now:
-        await queryRunner.commitTransaction();
-      } catch (e) {
-        // since we have errors let's rollback changes we made
-        await queryRunner.rollbackTransaction();
-        console.log(e);
-        if (e instanceof QueryFailedError) {
-          const err: any = e;
-          if (err.code === '23505') {
-            throw new ServiceError(ResponseCode.conflict, 'Duplicate entry', {
-              errors: Utils.getIndexErrorMessage(UserEntity.Index, err.constraint),
-            });
-          }
-          throw new ServiceError(ResponseCode.unprocessableEntity, 'Unprocessable entity');
-        }
-      } finally {
-        // you need to release query runner which is manually created:
-        await queryRunner.release();
-      }
-    } else {
-      throw new ServiceError(ResponseCode.forbidden, 'Invalid authentication credentials');
-    }
-    return user;
-  }
-
   public async search(keyword: string): Promise<Responses> {
     const user = await DatabaseService.getInstance()
       .getRepository(UserEntity)

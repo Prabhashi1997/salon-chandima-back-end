@@ -68,25 +68,6 @@ export class UsersController extends ControllerBase {
     });
   }
 
-  // 1.2.0
-  @Security('jwt', ['admin', 'user', 'hr', 'manager'])
-  @Patch('{userId}')
-  public async editUser(
-    @Request() request: any,
-    @Path() userId: number,
-    @Body() requestBody: { user: UserCreationParams },
-  ): Promise<any> {
-    return await this.exec(async () => {
-      const user = await new UsersService().edit(
-        userId,
-        requestBody?.user,
-        request?.user?.role ?? [],
-        +request?.user.userId,
-      );
-      const token = await new UsersService().refreshToken(userId);
-      return Responses.ok({ user, token });
-    });
-  }
 
   // 1.2.0
   @Security('jwt', ['admin', 'hr', 'manager'])

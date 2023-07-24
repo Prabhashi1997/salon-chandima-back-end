@@ -25,6 +25,15 @@ export class EmployeeController extends ControllerBase {
     }
 
     @Security('jwt', ['admin', 'employee'])
+    @Get('user')
+    public async getEmployeebyUserId(@Request() request: any): Promise<void> {
+        return this.exec(async () => {
+            const response = await new EmployeeService().getEmployeebyUserId(+request?.user.userId);
+            return Responses.ok(response);
+        });
+    }
+
+    @Security('jwt', ['admin', 'employee'])
     @Get('{id}')
     public async getEmployee(@Path() id: number): Promise<void> {
         return this.exec(async () => {
@@ -35,10 +44,10 @@ export class EmployeeController extends ControllerBase {
 
     @Security('jwt', ['admin'])
     @Post()
-    public async addEmployee(@Body() requestBody: EmployeeData, @Request() request: any) {
+    public async addEmployee(@Body() requestBody: any, @Request() request: any) {
         return this.exec(async () => {
             const response = await new EmployeeService().addEmployee(requestBody);
-            return Responses.ok(response.body);
+            return Responses.ok(response);
         });
     }
 
@@ -46,14 +55,14 @@ export class EmployeeController extends ControllerBase {
     @Patch('{id}')
     public async editEmployee(
         @Path() id: number,
-        @Body() requestBody: EmployeeData,
+        @Body() requestBody: any,
         @Request() request: any,
     ): Promise<any> {
         return this.exec(async () => {
             const designation = await new EmployeeService().editEmployee(
                 id, requestBody, +request?.user.userId,request?.user?.role ?? [],
             );
-            return designation.body;
+            return Responses.ok(designation?.body ?? designation);
         });
     }
 
@@ -62,7 +71,7 @@ export class EmployeeController extends ControllerBase {
     public async deleteEmployee(@Path() id: number, @Request() request: any): Promise<any> {
         return this.exec(async () => {
             const designation = await new EmployeeService().deleteEmployee(id);
-            return designation?.body ?? designation;
+            return Responses.ok(designation?.body ?? designation);
         });
     }
 }

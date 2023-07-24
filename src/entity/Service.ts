@@ -24,8 +24,8 @@ import {AppointmentHistory} from "./AppointmentHistory";
     @Column()
     price: number;
 
-    // @Column({ nullable: true })
-    // category?: string;
+    // @Column()
+    // category: string;
 
     @Column()
     duration: number;

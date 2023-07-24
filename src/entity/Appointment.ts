@@ -21,17 +21,20 @@ export class Appointment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
-  dateAndTime: Date;
+  @Column()
+  date: Date;
 
   @Column()
-  status: string;
+  time: number;
 
-  @Column()
-  duration: number;
+  // @Column()
+  // status: string;
 
-  @Column({ default: false })
-  deleted: boolean;
+  // @Column()
+  // duration: number;
+
+  // @Column({ default: false })
+  // deleted: boolean;
 
 
   @OneToMany(() => Payment, (payment) => payment.appointment)
