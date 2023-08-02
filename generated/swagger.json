@@ -2326,7 +2326,7 @@
 				]
 			}
 		},
-		"/api/v1/reviw/all": {
+		"/api/v1/review/all": {
 			"get": {
 				"operationId": "GetAll",
 				"responses": {
@@ -2338,7 +2338,7 @@
 				"parameters": []
 			}
 		},
-		"/api/v1/reviw": {
+		"/api/v1/review": {
 			"get": {
 				"operationId": "GetReview",
 				"responses": {
@@ -2349,8 +2349,7 @@
 				"security": [
 					{
 						"jwt": [
-							"admin",
-							"employee"
+							"admin"
 						]
 					}
 				],
@@ -2398,7 +2397,7 @@
 				"security": [
 					{
 						"jwt": [
-							"cutomer"
+							"customer"
 						]
 					}
 				],
@@ -2415,7 +2414,7 @@
 				}
 			}
 		},
-		"/api/v1/reviw/{id}": {
+		"/api/v1/review/{id}": {
 			"patch": {
 				"operationId": "EditReview",
 				"responses": {
@@ -2472,7 +2471,7 @@
 				"security": [
 					{
 						"jwt": [
-							"customer"
+							"admin"
 						]
 					}
 				],

@@ -4,7 +4,7 @@ import { Responses } from '../Response';
 import {ReviewService} from "../service/reviewService";
 import { ReviewData } from '../models/review';
 
-@Route('api/v1/reviw')
+@Route('api/v1/review')
 export class ReviewController extends ControllerBase {
 
     @Get('all')
@@ -15,7 +15,7 @@ export class ReviewController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['admin', 'employee'])
+    @Security('jwt', ['admin'])
     @Get()
     public async getReview(@Query() page?: number, @Query() size?: number, @Query() search?: string): Promise<void> {
         return this.exec(async () => {
@@ -24,11 +24,11 @@ export class ReviewController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['cutomer'])
+    @Security('jwt', ['customer'])
     @Post()
     public async addReview(@Body() requestBody: ReviewData, @Request() request: any) {
         return this.exec(async () => {
-            const response = await new ReviewService().addReview(requestBody);
+            const response = await new ReviewService().addReview(requestBody, +request.user.userId);
             return Responses.ok(response.body);
         });
     }
@@ -46,7 +46,7 @@ export class ReviewController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['customer'])
+    @Security('jwt', ['admin'])
     @Delete('{id}')
     public async deleteReview(@Path() id: number, @Request() request: any): Promise<any> {
         return this.exec(async () => {

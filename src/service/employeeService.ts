@@ -248,7 +248,7 @@ export class EmployeeService {
                 .getRepository(UserEntity)
                 .findOne({ where: { id: employee.userId } });
 
-            if (roles.find((e) => e === 'employ') || reqUserId === user.id) {
+            if (roles.find((e) => e === 'admin') || reqUserId === user.id) {
                 user.image = data?.image ?? user.image;
                 user.firstName = data.firstName;
                 user.lastName = data.lastName;

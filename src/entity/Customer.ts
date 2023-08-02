@@ -7,7 +7,6 @@ import {
 import {User} from "./User";
 import {Review} from "./Review";
 import {Appointment} from "./Appointment";
-import {Payment} from "./Payment";
 
 
 @Entity()

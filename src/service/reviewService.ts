@@ -13,7 +13,7 @@ export class ReviewService {
             .leftJoinAndSelect('customer.user', 'user');
 
         const [reviews, total] = await qb
-            .orderBy('review.name')
+            .orderBy('user.name')
             .getManyAndCount();
 
         return Responses.ok({
@@ -30,18 +30,21 @@ export class ReviewService {
             total,
         });
     }
+
     public async getReview(page?: number, size?: number, search?: string) {
         const qb = DatabaseService.getInstance()
             .getRepository(Review)
-            .createQueryBuilder('review');
+            .createQueryBuilder('review')
+            .leftJoinAndSelect('review.customer','customer')
+            .leftJoinAndSelect('customer.user','user');
         if (search) {
-            qb.andWhere('lower(review.name) LIKE :search', {
+            qb.andWhere('lower(user.name) LIKE :search', {
                 search: `%${search.toLowerCase()}%`,
             });
         }
 
         const [reviews, total] = await qb
-            .orderBy('review.name')
+            .orderBy('user.name')
             .take(size ?? 10)
             .skip(page ? (page - 1) * (size ?? 10) : 0)
             .getManyAndCount();
@@ -51,13 +54,13 @@ export class ReviewService {
                 const user = item.customer.user;
                 return {
                     name: user.firstName + ' ' + user.lastName,
-                    image: user.image,
                     ...item
                 };
             }),
             total,
         });
     }
+
     public async addReview(requestBody: ReviewData, userId: number): Promise<{ body: any; statusCode: number }> {
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
@@ -95,6 +98,7 @@ export class ReviewService {
             await queryRunner.release();
         }
     }
+
     public async deleteReview(id: number): Promise<{ body: any; statusCode: number }> {
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
@@ -105,13 +109,14 @@ export class ReviewService {
             return Responses.ok(id);
         } catch (e) {
             // since we have errors let's rollback changes we made
-            // console.log(e);
+            console.log(e);
             await queryRunner.rollbackTransaction();
         } finally {
             // you need to release query runner which is manually created:
             await queryRunner.release();
         }
     }
+
     public async editReview(id: number, data: ReviewData): Promise<{ body: any; statusCode: number }> {
         const review = await DatabaseService.getInstance()
             .getRepository(Review)
