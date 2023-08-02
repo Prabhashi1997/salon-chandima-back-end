@@ -15,6 +15,9 @@ export class Review {
     @Column()
     comment: string;
 
+    @Column()
+    rate: number;
+
 
     @ManyToOne(() => Customer, (customer) => customer.review, {
         cascade: true,

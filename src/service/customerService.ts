@@ -7,6 +7,8 @@ import {User, User as UserEntity} from "../entity/User";
 import {Password as PasswordEntity} from "../entity/Password";
 import {QueryFailedError} from "typeorm";
 import Utils from "../common/Utils";
+import { CustomerMessageType } from '../models/customer';
+import { CustomerMessage } from '../entity/CustomerMessage';
 
 export class CustomerService {
     public async getAll() {
@@ -16,7 +18,7 @@ export class CustomerService {
             .leftJoinAndSelect('customer.user', 'user');
 
         const [customers, total] = await qb
-            .orderBy('customer.name')
+            .orderBy('user.name')
             .getManyAndCount();
 
         return Responses.ok({
@@ -24,6 +26,7 @@ export class CustomerService {
                 return {
                     name: item.user.firstName + ' ' + item.user.lastName,
                     email: item.user.email,
+                    id: item.id,
                 };
             }),
             total,
@@ -285,5 +288,56 @@ export class CustomerService {
             // you need to release query runner which is manually created:
             await queryRunner.release();
         }
+    }
+
+    public async addMessage(requestBody: CustomerMessageType): Promise<{ body: any; statusCode: number }> {
+        const queryRunner = DatabaseService.getInstance().createQueryRunner();
+        await queryRunner.startTransaction();
+        try {
+            const newCustomerMessage = new CustomerMessage();
+            newCustomerMessage.name = requestBody.name;
+            newCustomerMessage.email = requestBody.email;
+            newCustomerMessage.subject = requestBody.subject;
+            newCustomerMessage.message = requestBody.message;
+            
+            await queryRunner.manager.save(newCustomerMessage);
+
+            requestBody.id = newCustomerMessage.id;
+            await queryRunner.commitTransaction();
+            return Responses.ok(requestBody);
+        } catch (e) {
+            console.log(e);
+            // since we have errors let's rollback changes we made
+            await queryRunner.rollbackTransaction();
+        } finally {
+            // you need to release query runner which is manually created:
+            await queryRunner.release();
+        }
+    }
+
+    public async getCustomerMessages(page?: number, size?: number, search?: string) {
+        const qb = DatabaseService.getInstance()
+            .getRepository(CustomerMessage)
+            .createQueryBuilder('message')
+        if (search) {
+            qb.andWhere('lower(message.name) LIKE :search', {
+                search: `%${search.toLowerCase()}%`,
+            });
+        }
+
+        const [messages, total] = await qb
+            .orderBy('message.name')
+            // .take(size ?? 10)
+            // .skip(page ? (page - 1) * (size ?? 10) : 0)
+            .getManyAndCount();
+
+        return Responses.ok({
+            data: messages.map((item) => {
+                return {
+                    ...item
+                };
+            }),
+            total,
+        });
     }
 }

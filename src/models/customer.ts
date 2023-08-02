@@ -7,3 +7,11 @@ export interface CustomerData extends UserCreationParams{
     address: string;
 
 }
+
+export interface CustomerMessageType {
+    id?: number;
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+}

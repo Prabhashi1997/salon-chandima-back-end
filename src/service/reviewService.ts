@@ -2,6 +2,7 @@ import {DatabaseService} from './database';
 import {Responses} from '../Response';
 import {Review} from "../entity/Review";
 import { ReviewData } from '../models/review';
+import { Customer } from '../entity/Customer';
 
 export class ReviewService {
     public async getAll() {
@@ -23,6 +24,7 @@ export class ReviewService {
                     image: user.image,
                     createdAt: item.createdAt,
                     comment: item.comment,
+                    rate: item.rate,
                 };
             }),
             total,
@@ -56,12 +58,29 @@ export class ReviewService {
             total,
         });
     }
-    public async addReview(requestBody: ReviewData): Promise<{ body: any; statusCode: number }> {
+    public async addReview(requestBody: ReviewData, userId: number): Promise<{ body: any; statusCode: number }> {
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
         try {
+            const qb = DatabaseService.getInstance()
+            .getRepository(Review)
+            .createQueryBuilder('review')
+            .leftJoinAndSelect('review.customer', 'customer')
+            .leftJoinAndSelect('customer.user', 'user')
+            .andWhere('user.id = :userID',{ userID: userId })
+            .getOne();
+
+            const qb1 = await DatabaseService.getInstance()
+            .getRepository(Customer)
+            .createQueryBuilder('customer')
+            .leftJoinAndSelect('customer.user', 'user')
+            .where('user.id = :userID',{ userID: userId })
+            .getOne();
+
             const newReview = new Review();
             newReview.comment = requestBody.comment;
+            newReview.rate = requestBody.rate;
+            newReview.customer = qb1;
             await queryRunner.manager.save(newReview);
 
             requestBody.id = newReview.id;
@@ -102,6 +121,7 @@ export class ReviewService {
 
         try {
             review.comment = data.comment;
+            review.rate = data.rate;
 
             await queryRunner.manager.save(review);
             await queryRunner.commitTransaction();

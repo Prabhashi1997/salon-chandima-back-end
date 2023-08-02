@@ -200,10 +200,15 @@
 					},
 					"comment": {
 						"type": "string"
+					},
+					"rate": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
-					"comment"
+					"comment",
+					"rate"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -907,6 +912,10 @@
 					"comment": {
 						"type": "string"
 					},
+					"rate": {
+						"type": "number",
+						"format": "double"
+					},
 					"customer": {
 						"$ref": "#/components/schemas/Customer"
 					},
@@ -926,6 +935,7 @@
 				"required": [
 					"id",
 					"comment",
+					"rate",
 					"customer",
 					"customerId",
 					"createdAt",

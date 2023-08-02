@@ -2,7 +2,6 @@ import { Body, Delete, Get, Patch, Path, Post, Query, Request, Route, Security }
 import ControllerBase from '../common/ControllerBase';
 import { Responses } from '../Response';
 import { CustomerService } from '../service/customerService';
-import {CustomerData} from '../models/customer';
 
 @Route('api/v1/customer')
 export class CustomerController extends ControllerBase {

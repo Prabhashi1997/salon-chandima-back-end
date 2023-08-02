@@ -211,12 +211,14 @@ export class EmployeeService {
             const employ = await queryRunner.manager
                 .getRepository(Employee)
                 .findOne({ where: { id: id } });
+            console.log(employ)
 
             if (employ) {
                 await queryRunner.manager.delete(Employee, { id: id });
                 const user = await DatabaseService.getInstance()
                     .getRepository(UserEntity)
-                    .findOne({ where: { id: employ.userId } })
+                    .findOne({ where: { id: employ.userId } });
+                    console.log(user)
                 user.roles = user.roles.filter((n) => n !== 'employee');
                 user.customerId = null;
                 await queryRunner.manager.update(User, employ.userId, user);
