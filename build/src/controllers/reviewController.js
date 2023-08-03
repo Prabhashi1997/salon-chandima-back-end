@@ -35,7 +35,7 @@ let ReviewController = exports.ReviewController = class ReviewController extends
     }
     async addReview(requestBody, request) {
         return this.exec(async () => {
-            const response = await new reviewService_1.ReviewService().addReview(requestBody);
+            const response = await new reviewService_1.ReviewService().addReview(requestBody, +request.user.userId);
             return Response_1.Responses.ok(response.body);
         });
     }
@@ -60,7 +60,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ReviewController.prototype, "getAll", null);
 __decorate([
-    (0, tsoa_1.Security)('jwt', ['admin', 'employee']),
+    (0, tsoa_1.Security)('jwt', ['admin']),
     (0, tsoa_1.Get)(),
     __param(0, (0, tsoa_1.Query)()),
     __param(1, (0, tsoa_1.Query)()),
@@ -70,7 +70,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ReviewController.prototype, "getReview", null);
 __decorate([
-    (0, tsoa_1.Security)('jwt', ['cutomer']),
+    (0, tsoa_1.Security)('jwt', ['customer']),
     (0, tsoa_1.Post)(),
     __param(0, (0, tsoa_1.Body)()),
     __param(1, (0, tsoa_1.Request)()),
@@ -89,7 +89,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ReviewController.prototype, "editReview", null);
 __decorate([
-    (0, tsoa_1.Security)('jwt', ['customer']),
+    (0, tsoa_1.Security)('jwt', ['admin']),
     (0, tsoa_1.Delete)('{id}'),
     __param(0, (0, tsoa_1.Path)()),
     __param(1, (0, tsoa_1.Request)()),
@@ -98,6 +98,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ReviewController.prototype, "deleteReview", null);
 exports.ReviewController = ReviewController = __decorate([
-    (0, tsoa_1.Route)('api/v1/reviw')
+    (0, tsoa_1.Route)('api/v1/review')
 ], ReviewController);
 //# sourceMappingURL=reviewController.js.map

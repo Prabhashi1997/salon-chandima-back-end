@@ -33,6 +33,12 @@ let ServiceController = exports.ServiceController = class ServiceController exte
             return Response_1.Responses.ok(response.body);
         });
     }
+    async getSerivice(id) {
+        return this.exec(async () => {
+            const response = await new serviceService_1.ServiceService().get(id);
+            return Response_1.Responses.ok(response);
+        });
+    }
     async addService(requestBody, request) {
         return this.exec(async () => {
             const response = await new serviceService_1.ServiceService().addService(requestBody);
@@ -70,6 +76,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ServiceController.prototype, "getSerivices", null);
 __decorate([
+    (0, tsoa_1.Security)('jwt', ['admin', 'employee']),
+    (0, tsoa_1.Get)('{id}'),
+    __param(0, (0, tsoa_1.Path)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], ServiceController.prototype, "getSerivice", null);
+__decorate([
     (0, tsoa_1.Security)('jwt', ['admin']),
     (0, tsoa_1.Post)(),
     __param(0, (0, tsoa_1.Body)()),
@@ -89,7 +103,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ServiceController.prototype, "editService", null);
 __decorate([
-    (0, tsoa_1.Security)('jwt', ['admin']),
+    (0, tsoa_1.Security)('jwt', ['admin', 'employee']),
     (0, tsoa_1.Delete)('{id}'),
     __param(0, (0, tsoa_1.Path)()),
     __param(1, (0, tsoa_1.Request)()),

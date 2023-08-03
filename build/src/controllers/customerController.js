@@ -27,30 +27,42 @@ let CustomerController = exports.CustomerController = class CustomerController e
             return Response_1.Responses.ok(response.body);
         });
     }
-    async getCustomer(page, size, search) {
+    async getCustomers(page, size, search) {
         return this.exec(async () => {
             const response = await new customerService_1.CustomerService().getCustomer(page, size, search);
             return Response_1.Responses.ok(response.body);
         });
     }
+    async getCustomerbyUserId(request) {
+        return this.exec(async () => {
+            const response = await new customerService_1.CustomerService().getCustomerbyUserId(+(request === null || request === void 0 ? void 0 : request.user.userId));
+            return Response_1.Responses.ok(response);
+        });
+    }
+    async getCustomer(id) {
+        return this.exec(async () => {
+            const response = await new customerService_1.CustomerService().get(id);
+            return Response_1.Responses.ok(response);
+        });
+    }
     async addCustomer(requestBody, request) {
         return this.exec(async () => {
             const response = await new customerService_1.CustomerService().addCustomer(requestBody);
-            return Response_1.Responses.ok(response.body);
+            return Response_1.Responses.ok(response);
         });
     }
     async editCustomer(id, requestBody, request) {
         return this.exec(async () => {
-            var _a, _b;
+            var _a, _b, _c;
             const response = await new customerService_1.CustomerService().editCustomer(id, requestBody, +(request === null || request === void 0 ? void 0 : request.user.userId), (_b = (_a = request === null || request === void 0 ? void 0 : request.user) === null || _a === void 0 ? void 0 : _a.role) !== null && _b !== void 0 ? _b : []);
-            return response.body;
+            return Response_1.Responses.ok((_c = response === null || response === void 0 ? void 0 : response.body) !== null && _c !== void 0 ? _c : response);
         });
     }
     async deleteCustomer(id, request) {
         return this.exec(async () => {
             var _a;
             const response = await new customerService_1.CustomerService().deleteCustomer(id);
-            return (_a = response === null || response === void 0 ? void 0 : response.body) !== null && _a !== void 0 ? _a : response;
+            return Response_1.Responses.ok((_a = response === null || response === void 0 ? void 0 : response.body) !== null && _a !== void 0 ? _a : response);
         });
     }
 };
@@ -69,6 +81,22 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Number, String]),
     __metadata("design:returntype", Promise)
+], CustomerController.prototype, "getCustomers", null);
+__decorate([
+    (0, tsoa_1.Security)('jwt', ['customer']),
+    (0, tsoa_1.Get)('user'),
+    __param(0, (0, tsoa_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], CustomerController.prototype, "getCustomerbyUserId", null);
+__decorate([
+    (0, tsoa_1.Security)('jwt', ['admin', 'employee']),
+    (0, tsoa_1.Get)('{id}'),
+    __param(0, (0, tsoa_1.Path)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
 ], CustomerController.prototype, "getCustomer", null);
 __decorate([
     (0, tsoa_1.Security)('jwt', ['admin', 'employee']),
@@ -80,7 +108,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CustomerController.prototype, "addCustomer", null);
 __decorate([
-    (0, tsoa_1.Security)('jwt', ['admin', 'employee']),
+    (0, tsoa_1.Security)('jwt', ['admin', 'employee', 'customer']),
     (0, tsoa_1.Patch)('{id}'),
     __param(0, (0, tsoa_1.Path)()),
     __param(1, (0, tsoa_1.Body)()),

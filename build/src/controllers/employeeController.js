@@ -27,30 +27,42 @@ let EmployeeController = exports.EmployeeController = class EmployeeController e
             return Response_1.Responses.ok(response.body);
         });
     }
-    async getEmployee(page, size, search) {
+    async getEmployees(page, size, search) {
         return this.exec(async () => {
             const response = await new employeeService_1.EmployeeService().getEmployee(page, size, search);
             return Response_1.Responses.ok(response.body);
         });
     }
+    async getEmployeebyUserId(request) {
+        return this.exec(async () => {
+            const response = await new employeeService_1.EmployeeService().getEmployeebyUserId(+(request === null || request === void 0 ? void 0 : request.user.userId));
+            return Response_1.Responses.ok(response);
+        });
+    }
+    async getEmployee(id) {
+        return this.exec(async () => {
+            const response = await new employeeService_1.EmployeeService().get(id);
+            return Response_1.Responses.ok(response);
+        });
+    }
     async addEmployee(requestBody, request) {
         return this.exec(async () => {
             const response = await new employeeService_1.EmployeeService().addEmployee(requestBody);
-            return Response_1.Responses.ok(response.body);
+            return Response_1.Responses.ok(response);
         });
     }
     async editEmployee(id, requestBody, request) {
         return this.exec(async () => {
-            var _a, _b;
+            var _a, _b, _c;
             const designation = await new employeeService_1.EmployeeService().editEmployee(id, requestBody, +(request === null || request === void 0 ? void 0 : request.user.userId), (_b = (_a = request === null || request === void 0 ? void 0 : request.user) === null || _a === void 0 ? void 0 : _a.role) !== null && _b !== void 0 ? _b : []);
-            return designation.body;
+            return Response_1.Responses.ok((_c = designation === null || designation === void 0 ? void 0 : designation.body) !== null && _c !== void 0 ? _c : designation);
         });
     }
     async deleteEmployee(id, request) {
         return this.exec(async () => {
             var _a;
             const designation = await new employeeService_1.EmployeeService().deleteEmployee(id);
-            return (_a = designation === null || designation === void 0 ? void 0 : designation.body) !== null && _a !== void 0 ? _a : designation;
+            return Response_1.Responses.ok((_a = designation === null || designation === void 0 ? void 0 : designation.body) !== null && _a !== void 0 ? _a : designation);
         });
     }
 };
@@ -68,6 +80,22 @@ __decorate([
     __param(2, (0, tsoa_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Number, String]),
+    __metadata("design:returntype", Promise)
+], EmployeeController.prototype, "getEmployees", null);
+__decorate([
+    (0, tsoa_1.Security)('jwt', ['admin', 'employee']),
+    (0, tsoa_1.Get)('user'),
+    __param(0, (0, tsoa_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], EmployeeController.prototype, "getEmployeebyUserId", null);
+__decorate([
+    (0, tsoa_1.Security)('jwt', ['admin', 'employee']),
+    (0, tsoa_1.Get)('{id}'),
+    __param(0, (0, tsoa_1.Path)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], EmployeeController.prototype, "getEmployee", null);
 __decorate([

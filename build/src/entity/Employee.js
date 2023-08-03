@@ -39,10 +39,6 @@ __decorate([
     __metadata("design:type", String)
 ], Employee.prototype, "gender", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", Date)
-], Employee.prototype, "dob", void 0);
-__decorate([
     (0, typeorm_1.OneToMany)(() => Appointment_1.Appointment, (appointment) => appointment.employee),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Array)

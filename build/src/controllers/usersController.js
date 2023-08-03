@@ -24,7 +24,7 @@ const multer_1 = __importDefault(require("multer"));
 let UsersController = exports.UsersController = class UsersController extends ControllerBase_1.default {
     async getUser(request, userId) {
         return this.exec(async () => {
-            if ((request === null || request === void 0 ? void 0 : request.user.role.find((e) => e === 'hr' || e === 'admin' || e === 'manger')) ||
+            if ((request === null || request === void 0 ? void 0 : request.user.role.find((e) => e === 'hr' || e === 'admin' || e === 'manager')) ||
                 userId === +(request === null || request === void 0 ? void 0 : request.user.userId)) {
                 const user = await new usersService_1.UsersService().get(userId);
                 return Response_1.Responses.ok(Object.assign({}, user));
@@ -44,14 +44,6 @@ let UsersController = exports.UsersController = class UsersController extends Co
         return this.exec(async () => {
             const user = await new usersService_1.UsersService().resetPasswordFromToken(body.token, body.password);
             return Response_1.Responses.ok({ user });
-        });
-    }
-    async editUser(request, userId, requestBody) {
-        return await this.exec(async () => {
-            var _a, _b;
-            const user = await new usersService_1.UsersService().edit(userId, requestBody === null || requestBody === void 0 ? void 0 : requestBody.user, (_b = (_a = request === null || request === void 0 ? void 0 : request.user) === null || _a === void 0 ? void 0 : _a.role) !== null && _b !== void 0 ? _b : [], +(request === null || request === void 0 ? void 0 : request.user.userId));
-            const token = await new usersService_1.UsersService().refreshToken(userId);
-            return Response_1.Responses.ok({ user, token });
         });
     }
     async getUsers(page, size, search, email, employeeId, epfNumber) {
@@ -98,7 +90,7 @@ let UsersController = exports.UsersController = class UsersController extends Co
     }
 };
 __decorate([
-    (0, tsoa_1.Security)('jwt', ['admin', 'user', 'hr', 'manger']),
+    (0, tsoa_1.Security)('jwt', ['admin', 'user', 'hr', 'manager']),
     (0, tsoa_1.Response)(500, 'internal server error', {
         code: '500',
         message: 'internal server error',
@@ -143,17 +135,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "resetPasswordFromToken", null);
 __decorate([
-    (0, tsoa_1.Security)('jwt', ['admin', 'user', 'hr', 'manger']),
-    (0, tsoa_1.Patch)('{userId}'),
-    __param(0, (0, tsoa_1.Request)()),
-    __param(1, (0, tsoa_1.Path)()),
-    __param(2, (0, tsoa_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Number, Object]),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "editUser", null);
-__decorate([
-    (0, tsoa_1.Security)('jwt', ['admin', 'hr', 'manger']),
+    (0, tsoa_1.Security)('jwt', ['admin', 'hr', 'manager']),
     (0, tsoa_1.Get)(),
     __param(0, (0, tsoa_1.Query)()),
     __param(1, (0, tsoa_1.Query)()),
@@ -182,7 +164,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "login", null);
 __decorate([
-    (0, tsoa_1.Security)('jwt', ['admin', 'user', 'hr', 'manger']),
+    (0, tsoa_1.Security)('jwt', ['admin', 'user', 'hr', 'manager']),
     (0, tsoa_1.Get)('refresh-token/{userId}'),
     __param(0, (0, tsoa_1.Path)()),
     __param(1, (0, tsoa_1.Request)()),
@@ -191,7 +173,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "refreshToken", null);
 __decorate([
-    (0, tsoa_1.Security)('jwt', ['admin', 'user', 'hr', 'manger']),
+    (0, tsoa_1.Security)('jwt', ['admin', 'user', 'hr', 'manager']),
     (0, tsoa_1.Patch)('password-change/{userId}'),
     __param(0, (0, tsoa_1.Path)()),
     __param(1, (0, tsoa_1.Body)()),

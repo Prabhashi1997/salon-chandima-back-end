@@ -55,7 +55,7 @@ export class ServiceController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['admin'])
+    @Security('jwt', ['admin', 'employee'])
     @Delete('{id}')
     public async deleteService(@Path() id: number, @Request() request: any): Promise<any> {
         return this.exec(async () => {

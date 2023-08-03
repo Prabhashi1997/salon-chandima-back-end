@@ -453,6 +453,34 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/admin/message',
+            authenticateMiddleware([{"jwt":["admin","employee"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminController.prototype.getMessage)),
+
+            function AdminController_getMessage(request: any, response: any, next: any) {
+            const args = {
+                    page: {"in":"query","name":"page","dataType":"double"},
+                    size: {"in":"query","name":"size","dataType":"double"},
+                    search: {"in":"query","name":"search","dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AdminController();
+
+
+              const promise = controller.getMessage.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/v1/admin/:id',
             authenticateMiddleware([{"jwt":["admin"]}]),
             ...(fetchMiddlewares<RequestHandler>(AdminController)),
@@ -773,6 +801,32 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/common/message',
+            ...(fetchMiddlewares<RequestHandler>(CommonController)),
+            ...(fetchMiddlewares<RequestHandler>(CommonController.prototype.addMessage)),
+
+            function CommonController_addMessage(request: any, response: any, next: any) {
+            const args = {
+                    requestBody: {"in":"body","name":"requestBody","required":true,"dataType":"any"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CommonController();
+
+
+              const promise = controller.addMessage.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/v1/config',
             authenticateMiddleware([{"jwt":["admin"]}]),
             ...(fetchMiddlewares<RequestHandler>(ConfigurationController)),
@@ -935,6 +989,32 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/customer/user',
+            authenticateMiddleware([{"jwt":["customer"]}]),
+            ...(fetchMiddlewares<RequestHandler>(CustomerController)),
+            ...(fetchMiddlewares<RequestHandler>(CustomerController.prototype.getCustomerbyUserId)),
+
+            function CustomerController_getCustomerbyUserId(request: any, response: any, next: any) {
+            const args = {
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CustomerController();
+
+
+              const promise = controller.getCustomerbyUserId.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/v1/customer/:id',
             authenticateMiddleware([{"jwt":["admin","employee"]}]),
             ...(fetchMiddlewares<RequestHandler>(CustomerController)),
@@ -955,32 +1035,6 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.getCustomer.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/v1/customer/user',
-            authenticateMiddleware([{"jwt":["admin","employee"]}]),
-            ...(fetchMiddlewares<RequestHandler>(CustomerController)),
-            ...(fetchMiddlewares<RequestHandler>(CustomerController.prototype.getCustomerbyUserId)),
-
-            function CustomerController_getCustomerbyUserId(request: any, response: any, next: any) {
-            const args = {
-                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new CustomerController();
-
-
-              const promise = controller.getCustomerbyUserId.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
@@ -1015,7 +1069,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.patch('/api/v1/customer/:id',
-            authenticateMiddleware([{"jwt":["admin","employee"]}]),
+            authenticateMiddleware([{"jwt":["admin","employee","customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(CustomerController)),
             ...(fetchMiddlewares<RequestHandler>(CustomerController.prototype.editCustomer)),
 
@@ -1742,7 +1796,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.delete('/api/v1/service/:id',
-            authenticateMiddleware([{"jwt":["admin"]}]),
+            authenticateMiddleware([{"jwt":["admin","employee"]}]),
             ...(fetchMiddlewares<RequestHandler>(ServiceController)),
             ...(fetchMiddlewares<RequestHandler>(ServiceController.prototype.deleteService)),
 

@@ -9,59 +9,39 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Service = void 0;
+exports.CustomerMessage = void 0;
 const typeorm_1 = require("typeorm");
-const Appointment_1 = require("./Appointment");
-const AppointmentHistory_1 = require("./AppointmentHistory");
-let Service = exports.Service = class Service {
+let CustomerMessage = exports.CustomerMessage = class CustomerMessage {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Service.prototype, "id", void 0);
+], CustomerMessage.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Service.prototype, "name", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", String)
-], Service.prototype, "description", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", String)
-], Service.prototype, "image", void 0);
+], CustomerMessage.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Service.prototype, "price", void 0);
+    __metadata("design:type", String)
+], CustomerMessage.prototype, "email", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Service.prototype, "duration", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
-], Service.prototype, "employeeName", void 0);
+], CustomerMessage.prototype, "subject", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => Appointment_1.Appointment, (appointment) => appointment.services),
-    (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", Array)
-], Service.prototype, "appointments", void 0);
-__decorate([
-    (0, typeorm_1.ManyToMany)(() => AppointmentHistory_1.AppointmentHistory, (appointmentHistory) => appointmentHistory.services),
-    (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", Array)
-], Service.prototype, "appointmentHistories", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], CustomerMessage.prototype, "message", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" }),
     __metadata("design:type", Date)
-], Service.prototype, "createdAt", void 0);
+], CustomerMessage.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" }),
     __metadata("design:type", Date)
-], Service.prototype, "updatedAt", void 0);
-exports.Service = Service = __decorate([
+], CustomerMessage.prototype, "updatedAt", void 0);
+exports.CustomerMessage = CustomerMessage = __decorate([
     (0, typeorm_1.Entity)()
-], Service);
-//# sourceMappingURL=Service.js.map
+], CustomerMessage);
+//# sourceMappingURL=CustomerMessage.js.map

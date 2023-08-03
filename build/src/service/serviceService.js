@@ -15,16 +15,34 @@ class ServiceService {
         return Response_1.Responses.ok({
             services: services.map((item) => {
                 return {
+                    id: item.id,
                     name: item.name,
                     description: item.description,
                     price: item.price,
                     image: item.image,
-                    category: item.category,
                     duration: item.duration,
+                    employeeName: item.employeeName,
                 };
             }),
             total,
         });
+    }
+    async get(id) {
+        const qb = await database_1.DatabaseService.getInstance()
+            .getRepository(Service_1.Service)
+            .createQueryBuilder('service')
+            .where({ id })
+            .getOne();
+        return {
+            data: {
+                name: qb.name,
+                description: qb.description,
+                price: qb.price,
+                image: qb.image,
+                duration: qb.duration,
+                employeeName: qb.employeeName,
+            }
+        };
     }
     async getServices(page, size, search) {
         const qb = database_1.DatabaseService.getInstance()
@@ -37,8 +55,6 @@ class ServiceService {
         }
         const [services, total] = await qb
             .orderBy('service.name')
-            .take(size !== null && size !== void 0 ? size : 10)
-            .skip(page ? (page - 1) * (size !== null && size !== void 0 ? size : 10) : 0)
             .getManyAndCount();
         return Response_1.Responses.ok({
             services: services.map((item) => {
@@ -53,16 +69,16 @@ class ServiceService {
         try {
             const newService = new Service_1.Service();
             newService.name = requestBody.name;
-            newService.description = requestBody.description;
+            newService.duration = requestBody.duration;
             newService.price = requestBody.price;
             if (!!requestBody.image) {
                 newService.image = requestBody.image;
             }
-            if (!!requestBody.category) {
-                newService.category = requestBody.category;
+            if (!!requestBody.description) {
+                newService.description = requestBody.description;
             }
-            if (!!requestBody.duration) {
-                newService.duration = requestBody.duration;
+            if (!!requestBody.employeeName) {
+                newService.employeeName = requestBody.employeeName;
             }
             await queryRunner.manager.save(newService);
             requestBody.id = newService.id;
@@ -81,7 +97,13 @@ class ServiceService {
         const queryRunner = database_1.DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
         try {
-            await queryRunner.manager.delete(Service_1.Service, { id: id });
+            const service = await queryRunner.manager
+                .getRepository(Service_1.Service)
+                .findOne({ where: { id: id } });
+            if (service) {
+                const service = await database_1.DatabaseService.getInstance().manager.delete;
+                await queryRunner.manager.delete(Service_1.Service, { id: id });
+            }
             await queryRunner.commitTransaction();
             return Response_1.Responses.ok(id);
         }
@@ -104,8 +126,8 @@ class ServiceService {
             service.description = data.description;
             service.price = data.price;
             service.image = data.image;
-            service.category = data.category;
             service.duration = data.duration;
+            service.employeeName = data.employeeName;
             await queryRunner.manager.save(service);
             await queryRunner.commitTransaction();
             return Response_1.Responses.ok(service);

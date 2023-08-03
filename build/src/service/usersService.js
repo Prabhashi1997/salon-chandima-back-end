@@ -35,7 +35,6 @@ const Password_1 = require("../entity/Password");
 const Common_1 = require("../entity/Common");
 const typeorm_1 = require("typeorm");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const Utils_1 = __importDefault(require("../common/Utils"));
 const PasswordRest_1 = require("../entity/PasswordRest");
 const notificationService_1 = require("./notificationService");
 class UsersService {
@@ -68,14 +67,8 @@ class UsersService {
         if (email) {
             qb.andWhere('user.email = :email', { email });
         }
-        if (employeeId) {
-            qb.andWhere('user.employeeId = :employeeId', { employeeId });
-        }
-        if (epfNumber) {
-            qb.andWhere('user.epfNo = :epfNumber', { epfNumber: +epfNumber });
-        }
         const [users, total] = await qb
-            .orderBy('user.epfNo', 'ASC', 'NULLS FIRST')
+            .orderBy('user.email', 'ASC', 'NULLS FIRST')
             .take(size !== null && size !== void 0 ? size : 10)
             .skip(page ? (page - 1) * (size !== null && size !== void 0 ? size : 10) : 0)
             .getManyAndCount();
@@ -90,57 +83,6 @@ class UsersService {
             }),
             total,
         };
-    }
-    async edit(userId, body, roles, reqUserId) {
-        var _a;
-        const queryRunner = database_1.DatabaseService.getInstance().createQueryRunner();
-        await queryRunner.startTransaction();
-        const user = await database_1.DatabaseService.getInstance()
-            .getRepository(User_1.User)
-            .findOne({ where: { id: userId } });
-        if (roles.find((e) => e === 'hr' || e === 'admin' || e === 'manger') || reqUserId === user.id) {
-            if (reqUserId === user.id) {
-                user.image = (_a = body === null || body === void 0 ? void 0 : body.image) !== null && _a !== void 0 ? _a : user.image;
-                user.firstName = body.firstName;
-                user.lastName = body.lastName;
-                user.name = `${body.firstName} ${body.lastName}`.toLowerCase();
-            }
-            else if (roles.find((e) => e === 'hr' || e === 'admin' || e === 'manger')) {
-                const roles1 = body === null || body === void 0 ? void 0 : body.roles;
-                body === null || body === void 0 ? true : delete body.roles;
-                Object.entries(body).forEach((v) => (user[v[0]] = v[1]));
-                if (roles.find((e) => e === 'admin') ||
-                    (roles.find((e) => e === 'hr') && !roles1.find((e) => e === 'hr' || e === 'admin')) ||
-                    (roles.find((e) => e === 'manger') && !roles1.find((e) => e === 'hr' || e === 'admin' || e === 'manger'))) {
-                    user.roles = roles1;
-                }
-                user.name = `${body.firstName} ${body.lastName}`.toLowerCase();
-            }
-            try {
-                await queryRunner.manager.update(User_1.User, userId, user);
-                await queryRunner.commitTransaction();
-            }
-            catch (e) {
-                await queryRunner.rollbackTransaction();
-                console.log(e);
-                if (e instanceof typeorm_1.QueryFailedError) {
-                    const err = e;
-                    if (err.code === '23505') {
-                        throw new Response_1.ServiceError(Response_1.ResponseCode.conflict, 'Duplicate entry', {
-                            errors: Utils_1.default.getIndexErrorMessage(User_1.User.Index, err.constraint),
-                        });
-                    }
-                    throw new Response_1.ServiceError(Response_1.ResponseCode.unprocessableEntity, 'Unprocessable entity');
-                }
-            }
-            finally {
-                await queryRunner.release();
-            }
-        }
-        else {
-            throw new Response_1.ServiceError(Response_1.ResponseCode.forbidden, 'Invalid authentication credentials');
-        }
-        return user;
     }
     async search(keyword) {
         const user = await database_1.DatabaseService.getInstance()
@@ -195,7 +137,7 @@ class UsersService {
                     role: [...((_a = user === null || user === void 0 ? void 0 : user.roles) !== null && _a !== void 0 ? _a : [])]
                 };
                 console.log(payload);
-                const iss = 'Salon-Chandima';
+                const iss = 'salon-chandima';
                 const sub = 'user';
                 const aud = 'http://localhost:4200';
                 const exp = '58365h';
@@ -235,9 +177,9 @@ class UsersService {
                     userId: user.id,
                     role: [...user.roles],
                 };
-                const iss = 'StridePal';
+                const iss = 'salon-chandima';
                 const sub = 'user';
-                const aud = 'http://localhost:4000';
+                const aud = 'http://localhost:4200';
                 const exp = '58365h';
                 const signOptions = {
                     issuer: iss,

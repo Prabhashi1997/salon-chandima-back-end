@@ -39,9 +39,9 @@ const expressAuthentication = (request, securityName, scopes) => {
                 reject(new ReferenceError('No token provided'));
             }
             const verifyOptions = {
-                issuer: 'StridePal',
+                issuer: 'salon-chandima',
                 subject: 'user',
-                audience: 'http://localhost:4000',
+                audience: 'http://localhost:4200',
                 maxAge: '58365h',
                 algorithms: ['RS256'],
             };
@@ -53,6 +53,7 @@ const expressAuthentication = (request, securityName, scopes) => {
                     reject(new ReferenceError(err));
                 }
                 else {
+                    console.log(decoded.role, scopes);
                     if (decoded.role.filter((e) => scopes.indexOf(e) !== -1).length === 0) {
                         reject(new ReferenceError('JWT does not contain required scope.'));
                     }

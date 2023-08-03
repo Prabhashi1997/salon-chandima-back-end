@@ -1092,6 +1092,52 @@
 				"parameters": []
 			}
 		},
+		"/api/v1/admin/message": {
+			"get": {
+				"operationId": "GetMessage",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"employee"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/api/v1/admin/{id}": {
 			"get": {
 				"operationId": "GetAdmin",
@@ -1440,6 +1486,31 @@
 				"parameters": []
 			}
 		},
+		"/api/v1/common/message": {
+			"post": {
+				"operationId": "AddMessage",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {}
+						}
+					}
+				}
+			}
+		},
 		"/api/v1/config": {
 			"get": {
 				"operationId": "GetConfig",
@@ -1683,6 +1754,24 @@
 				}
 			}
 		},
+		"/api/v1/customer/user": {
+			"get": {
+				"operationId": "GetCustomerbyUserId",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/api/v1/customer/{id}": {
 			"get": {
 				"operationId": "GetCustomer",
@@ -1727,7 +1816,8 @@
 					{
 						"jwt": [
 							"admin",
-							"employee"
+							"employee",
+							"customer"
 						]
 					}
 				],
@@ -1782,25 +1872,6 @@
 						}
 					}
 				]
-			}
-		},
-		"/api/v1/customer/user": {
-			"get": {
-				"operationId": "GetCustomerbyUserId",
-				"responses": {
-					"204": {
-						"description": "No content"
-					}
-				},
-				"security": [
-					{
-						"jwt": [
-							"admin",
-							"employee"
-						]
-					}
-				],
-				"parameters": []
 			}
 		},
 		"/api/v1/employee/all": {
@@ -2662,7 +2733,8 @@
 				"security": [
 					{
 						"jwt": [
-							"admin"
+							"admin",
+							"employee"
 						]
 					}
 				],

@@ -1,10 +1,11 @@
 import ControllerBase from '../common/ControllerBase';
-import { Post, Request, Route, Security } from 'tsoa';
+import { Body, Post, Request, Route, Security } from 'tsoa';
 import { Responses } from '../Response';
 import express from 'express';
 import multer from 'multer';
 import * as fs from 'fs';
 import Configs from '../common/Configs';
+import { CustomerService } from '../service/customerService';
 
 @Route('api/v1/common')
 export class CommonController extends ControllerBase {
@@ -37,5 +38,13 @@ export class CommonController extends ControllerBase {
         resolve(undefined);
       });
     });
+  }
+
+  @Post('message')
+  public async addMessage(@Body() requestBody: any, @Request() request: any) {
+      return this.exec(async () => {
+          const response = await new CustomerService().addMessage(requestBody);
+          return Responses.ok(response);
+      });
   }
 }

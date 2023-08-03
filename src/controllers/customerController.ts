@@ -23,20 +23,20 @@ export class CustomerController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['admin', 'employee'])
-    @Get('{id}')
-    public async getCustomer(@Path() id: number): Promise<void> {
+    @Security('jwt', ['customer'])
+    @Get('user')
+    public async getCustomerbyUserId(@Request() request: any): Promise<void> {
         return this.exec(async () => {
-            const response = await new CustomerService().get(id);
+            const response = await new CustomerService().getCustomerbyUserId(+request?.user.userId);
             return Responses.ok(response);
         });
     }
 
     @Security('jwt', ['admin', 'employee'])
-    @Get('user')
-    public async getCustomerbyUserId(@Request() request: any): Promise<void> {
+    @Get('{id}')
+    public async getCustomer(@Path() id: number): Promise<void> {
         return this.exec(async () => {
-            const response = await new CustomerService().getCustomerbyUserId(+request?.user.userId);
+            const response = await new CustomerService().get(id);
             return Responses.ok(response);
         });
     }
@@ -51,7 +51,7 @@ export class CustomerController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['admin', 'employee'])
+    @Security('jwt', ['admin', 'employee', 'customer'])
     @Patch('{id}')
     public async editCustomer(
         @Path() id: number,

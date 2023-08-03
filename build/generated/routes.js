@@ -22,12 +22,13 @@ const models = {
         "properties": {
             "firstName": { "dataType": "string", "required": true },
             "lastName": { "dataType": "string", "required": true },
-            "epfNo": { "dataType": "double", "required": true },
             "designation": { "dataType": "any" },
             "email": { "dataType": "string", "required": true },
             "image": { "dataType": "string" },
             "doj": { "dataType": "string" },
             "roles": { "dataType": "array", "array": { "dataType": "string" } },
+            "nic": { "dataType": "string" },
+            "contactNumber": { "dataType": "string" },
         },
         "additionalProperties": false,
     },
@@ -35,10 +36,8 @@ const models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "double" },
-            "dateAndTime": { "dataType": "datetime", "required": true },
-            "status": { "dataType": "string", "required": true },
-            "duration": { "dataType": "double" },
-            "deleted": { "dataType": "boolean", "required": true },
+            "date": { "dataType": "datetime", "required": true },
+            "time": { "dataType": "double", "required": true },
         },
         "additionalProperties": false,
     },
@@ -48,39 +47,6 @@ const models = {
             "id": { "dataType": "double" },
             "key": { "dataType": "string", "required": true },
             "value": { "dataType": "string", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    "CustomerData": {
-        "dataType": "refObject",
-        "properties": {
-            "firstName": { "dataType": "string", "required": true },
-            "lastName": { "dataType": "string", "required": true },
-            "epfNo": { "dataType": "double", "required": true },
-            "designation": { "dataType": "any" },
-            "email": { "dataType": "string", "required": true },
-            "image": { "dataType": "string" },
-            "doj": { "dataType": "string" },
-            "roles": { "dataType": "array", "array": { "dataType": "string" } },
-            "id": { "dataType": "double", "required": true },
-            "gender": { "dataType": "string", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    "EmployeeData": {
-        "dataType": "refObject",
-        "properties": {
-            "firstName": { "dataType": "string", "required": true },
-            "lastName": { "dataType": "string", "required": true },
-            "epfNo": { "dataType": "double", "required": true },
-            "designation": { "dataType": "string" },
-            "email": { "dataType": "string", "required": true },
-            "image": { "dataType": "string" },
-            "doj": { "dataType": "string" },
-            "roles": { "dataType": "array", "array": { "dataType": "string" } },
-            "id": { "dataType": "double" },
-            "gender": { "dataType": "string", "required": true },
-            "dob": { "dataType": "datetime", "required": true },
         },
         "additionalProperties": false,
     },
@@ -126,6 +92,7 @@ const models = {
         "properties": {
             "id": { "dataType": "double" },
             "comment": { "dataType": "string", "required": true },
+            "rate": { "dataType": "double", "required": true },
         },
         "additionalProperties": false,
     },
@@ -134,11 +101,11 @@ const models = {
         "properties": {
             "id": { "dataType": "double" },
             "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string", "required": true },
+            "description": { "dataType": "string" },
             "image": { "dataType": "string" },
             "price": { "dataType": "double", "required": true },
-            "duration": { "dataType": "double" },
-            "category": { "dataType": "string" },
+            "duration": { "dataType": "double", "required": true },
+            "employeeName": { "dataType": "string" },
         },
         "additionalProperties": false,
     },
@@ -164,8 +131,10 @@ const models = {
             "lastName": { "dataType": "string", "required": true },
             "name": { "dataType": "string", "required": true },
             "email": { "dataType": "string", "required": true },
+            "nic": { "dataType": "string", "required": true },
+            "contactNumber": { "dataType": "string" },
             "image": { "dataType": "string" },
-            "doj": { "dataType": "string" },
+            "doj": { "dataType": "datetime" },
             "roles": { "dataType": "array", "array": { "dataType": "string" } },
             "password": { "dataType": "array", "array": { "dataType": "refObject", "ref": "Password" }, "required": true },
             "notifications": { "dataType": "array", "array": { "dataType": "refObject", "ref": "Notification" }, "required": true },
@@ -224,10 +193,8 @@ const models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "double", "required": true },
-            "dateAndTime": { "dataType": "datetime", "required": true },
-            "status": { "dataType": "string", "required": true },
-            "duration": { "dataType": "double", "required": true },
-            "deleted": { "dataType": "boolean", "required": true },
+            "date": { "dataType": "datetime", "required": true },
+            "time": { "dataType": "double", "required": true },
             "payments": { "dataType": "array", "array": { "dataType": "refObject", "ref": "Payment" }, "required": true },
             "appointmentHistories": { "dataType": "array", "array": { "dataType": "refObject", "ref": "AppointmentHistory" }, "required": true },
             "services": { "dataType": "array", "array": { "dataType": "refObject", "ref": "Service" }, "required": true },
@@ -248,12 +215,13 @@ const models = {
             "userId": { "dataType": "double", "required": true },
             "designation": { "dataType": "string" },
             "gender": { "dataType": "string", "required": true },
-            "dob": { "dataType": "datetime", "required": true },
             "appointment": { "dataType": "array", "array": { "dataType": "refObject", "ref": "Appointment" }, "required": true },
             "appointmentHistories": { "dataType": "array", "array": { "dataType": "refObject", "ref": "AppointmentHistory" }, "required": true },
             "payments": { "dataType": "array", "array": { "dataType": "refObject", "ref": "Payment" }, "required": true },
             "createdAt": { "dataType": "datetime", "required": true },
             "updatedAt": { "dataType": "datetime", "required": true },
+            "address": { "dataType": "any", "required": true },
+            "age": { "dataType": "any", "required": true },
         },
         "additionalProperties": false,
     },
@@ -312,8 +280,8 @@ const models = {
             "description": { "dataType": "string", "required": true },
             "image": { "dataType": "string" },
             "price": { "dataType": "double", "required": true },
-            "category": { "dataType": "string" },
-            "duration": { "dataType": "double" },
+            "duration": { "dataType": "double", "required": true },
+            "employeeName": { "dataType": "string" },
             "appointments": { "dataType": "array", "array": { "dataType": "refObject", "ref": "Appointment" }, "required": true },
             "appointmentHistories": { "dataType": "array", "array": { "dataType": "refObject", "ref": "AppointmentHistory" }, "required": true },
             "createdAt": { "dataType": "datetime", "required": true },
@@ -326,6 +294,8 @@ const models = {
         "properties": {
             "id": { "dataType": "double", "required": true },
             "gender": { "dataType": "string", "required": true },
+            "age": { "dataType": "double", "required": true },
+            "address": { "dataType": "string", "required": true },
             "user": { "ref": "User", "required": true },
             "userId": { "dataType": "double", "required": true },
             "review": { "dataType": "array", "array": { "dataType": "refObject", "ref": "Review" }, "required": true },
@@ -340,6 +310,7 @@ const models = {
         "properties": {
             "id": { "dataType": "double", "required": true },
             "comment": { "dataType": "string", "required": true },
+            "rate": { "dataType": "double", "required": true },
             "customer": { "ref": "Customer", "required": true },
             "customerId": { "dataType": "double", "required": true },
             "createdAt": { "dataType": "datetime", "required": true },
@@ -358,11 +329,71 @@ const models = {
 };
 const validationService = new runtime_1.ValidationService(models);
 function RegisterRoutes(app) {
-    app.get('/api/v1/admin', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController)), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController.prototype.getAdmin)), function AdminController_getAdmin(request, response, next) {
+    app.get('/api/v1/admin/all', ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController)), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController.prototype.getAll)), function AdminController_getAll(request, response, next) {
+        const args = {};
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new adminController_1.AdminController();
+            const promise = controller.getAll.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    app.get('/api/v1/admin', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController)), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController.prototype.getAdmins)), function AdminController_getAdmins(request, response, next) {
         const args = {
             page: { "in": "query", "name": "page", "dataType": "double" },
             size: { "in": "query", "name": "size", "dataType": "double" },
             search: { "in": "query", "name": "search", "dataType": "string" },
+        };
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new adminController_1.AdminController();
+            const promise = controller.getAdmins.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    app.get('/api/v1/admin/user', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController)), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController.prototype.getAdminbyUserId)), function AdminController_getAdminbyUserId(request, response, next) {
+        const args = {
+            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+        };
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new adminController_1.AdminController();
+            const promise = controller.getAdminbyUserId.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    app.get('/api/v1/admin/message', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController)), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController.prototype.getMessage)), function AdminController_getMessage(request, response, next) {
+        const args = {
+            page: { "in": "query", "name": "page", "dataType": "double" },
+            size: { "in": "query", "name": "size", "dataType": "double" },
+            search: { "in": "query", "name": "search", "dataType": "string" },
+        };
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new adminController_1.AdminController();
+            const promise = controller.getMessage.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    app.get('/api/v1/admin/:id', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController)), ...((0, runtime_1.fetchMiddlewares)(adminController_1.AdminController.prototype.getAdmin)), function AdminController_getAdmin(request, response, next) {
+        const args = {
+            id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
         };
         let validatedArgs = [];
         try {
@@ -548,6 +579,22 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
+    app.post('/api/v1/common/message', ...((0, runtime_1.fetchMiddlewares)(commonController_1.CommonController)), ...((0, runtime_1.fetchMiddlewares)(commonController_1.CommonController.prototype.addMessage)), function CommonController_addMessage(request, response, next) {
+        const args = {
+            requestBody: { "in": "body", "name": "requestBody", "required": true, "dataType": "any" },
+            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+        };
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new commonController_1.CommonController();
+            const promise = controller.addMessage.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
     app.get('/api/v1/config', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(configurationController_1.ConfigurationController)), ...((0, runtime_1.fetchMiddlewares)(configurationController_1.ConfigurationController.prototype.getConfig)), function ConfigurationController_getConfig(request, response, next) {
         const args = {
             page: { "in": "query", "name": "page", "dataType": "double" },
@@ -627,11 +674,41 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.get('/api/v1/customer', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController)), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController.prototype.getCustomer)), function CustomerController_getCustomer(request, response, next) {
+    app.get('/api/v1/customer', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController)), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController.prototype.getCustomers)), function CustomerController_getCustomers(request, response, next) {
         const args = {
             page: { "in": "query", "name": "page", "dataType": "double" },
             size: { "in": "query", "name": "size", "dataType": "double" },
             search: { "in": "query", "name": "search", "dataType": "string" },
+        };
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new customerController_1.CustomerController();
+            const promise = controller.getCustomers.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    app.get('/api/v1/customer/user', authenticateMiddleware([{ "jwt": ["customer"] }]), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController)), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController.prototype.getCustomerbyUserId)), function CustomerController_getCustomerbyUserId(request, response, next) {
+        const args = {
+            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+        };
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new customerController_1.CustomerController();
+            const promise = controller.getCustomerbyUserId.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    app.get('/api/v1/customer/:id', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController)), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController.prototype.getCustomer)), function CustomerController_getCustomer(request, response, next) {
+        const args = {
+            id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
         };
         let validatedArgs = [];
         try {
@@ -646,7 +723,7 @@ function RegisterRoutes(app) {
     });
     app.post('/api/v1/customer', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController)), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController.prototype.addCustomer)), function CustomerController_addCustomer(request, response, next) {
         const args = {
-            requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "CustomerData" },
+            requestBody: { "in": "body", "name": "requestBody", "required": true, "dataType": "any" },
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
         };
         let validatedArgs = [];
@@ -660,10 +737,10 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.patch('/api/v1/customer/:id', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController)), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController.prototype.editCustomer)), function CustomerController_editCustomer(request, response, next) {
+    app.patch('/api/v1/customer/:id', authenticateMiddleware([{ "jwt": ["admin", "employee", "customer"] }]), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController)), ...((0, runtime_1.fetchMiddlewares)(customerController_1.CustomerController.prototype.editCustomer)), function CustomerController_editCustomer(request, response, next) {
         const args = {
             id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
-            requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "CustomerData" },
+            requestBody: { "in": "body", "name": "requestBody", "required": true, "dataType": "any" },
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
         };
         let validatedArgs = [];
@@ -706,11 +783,41 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.get('/api/v1/employee', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(employeeController_1.EmployeeController)), ...((0, runtime_1.fetchMiddlewares)(employeeController_1.EmployeeController.prototype.getEmployee)), function EmployeeController_getEmployee(request, response, next) {
+    app.get('/api/v1/employee', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(employeeController_1.EmployeeController)), ...((0, runtime_1.fetchMiddlewares)(employeeController_1.EmployeeController.prototype.getEmployees)), function EmployeeController_getEmployees(request, response, next) {
         const args = {
             page: { "in": "query", "name": "page", "dataType": "double" },
             size: { "in": "query", "name": "size", "dataType": "double" },
             search: { "in": "query", "name": "search", "dataType": "string" },
+        };
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new employeeController_1.EmployeeController();
+            const promise = controller.getEmployees.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    app.get('/api/v1/employee/user', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(employeeController_1.EmployeeController)), ...((0, runtime_1.fetchMiddlewares)(employeeController_1.EmployeeController.prototype.getEmployeebyUserId)), function EmployeeController_getEmployeebyUserId(request, response, next) {
+        const args = {
+            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+        };
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new employeeController_1.EmployeeController();
+            const promise = controller.getEmployeebyUserId.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    app.get('/api/v1/employee/:id', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(employeeController_1.EmployeeController)), ...((0, runtime_1.fetchMiddlewares)(employeeController_1.EmployeeController.prototype.getEmployee)), function EmployeeController_getEmployee(request, response, next) {
+        const args = {
+            id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
         };
         let validatedArgs = [];
         try {
@@ -725,7 +832,7 @@ function RegisterRoutes(app) {
     });
     app.post('/api/v1/employee', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(employeeController_1.EmployeeController)), ...((0, runtime_1.fetchMiddlewares)(employeeController_1.EmployeeController.prototype.addEmployee)), function EmployeeController_addEmployee(request, response, next) {
         const args = {
-            requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "EmployeeData" },
+            requestBody: { "in": "body", "name": "requestBody", "required": true, "dataType": "any" },
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
         };
         let validatedArgs = [];
@@ -742,7 +849,7 @@ function RegisterRoutes(app) {
     app.patch('/api/v1/employee/:id', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(employeeController_1.EmployeeController)), ...((0, runtime_1.fetchMiddlewares)(employeeController_1.EmployeeController.prototype.editEmployee)), function EmployeeController_editEmployee(request, response, next) {
         const args = {
             id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
-            requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "EmployeeData" },
+            requestBody: { "in": "body", "name": "requestBody", "required": true, "dataType": "any" },
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
         };
         let validatedArgs = [];
@@ -903,7 +1010,7 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.get('/api/v1/reviw/all', ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController)), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController.prototype.getAll)), function ReviewController_getAll(request, response, next) {
+    app.get('/api/v1/review/all', ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController)), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController.prototype.getAll)), function ReviewController_getAll(request, response, next) {
         const args = {};
         let validatedArgs = [];
         try {
@@ -916,7 +1023,7 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.get('/api/v1/reviw', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController)), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController.prototype.getReview)), function ReviewController_getReview(request, response, next) {
+    app.get('/api/v1/review', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController)), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController.prototype.getReview)), function ReviewController_getReview(request, response, next) {
         const args = {
             page: { "in": "query", "name": "page", "dataType": "double" },
             size: { "in": "query", "name": "size", "dataType": "double" },
@@ -933,7 +1040,7 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.post('/api/v1/reviw', authenticateMiddleware([{ "jwt": ["cutomer"] }]), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController)), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController.prototype.addReview)), function ReviewController_addReview(request, response, next) {
+    app.post('/api/v1/review', authenticateMiddleware([{ "jwt": ["customer"] }]), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController)), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController.prototype.addReview)), function ReviewController_addReview(request, response, next) {
         const args = {
             requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "ReviewData" },
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
@@ -949,7 +1056,7 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.patch('/api/v1/reviw/:id', authenticateMiddleware([{ "jwt": ["customer"] }]), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController)), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController.prototype.editReview)), function ReviewController_editReview(request, response, next) {
+    app.patch('/api/v1/review/:id', authenticateMiddleware([{ "jwt": ["customer"] }]), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController)), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController.prototype.editReview)), function ReviewController_editReview(request, response, next) {
         const args = {
             id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
             requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "ReviewData" },
@@ -966,7 +1073,7 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.delete('/api/v1/reviw/:id', authenticateMiddleware([{ "jwt": ["customer"] }]), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController)), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController.prototype.deleteReview)), function ReviewController_deleteReview(request, response, next) {
+    app.delete('/api/v1/review/:id', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController)), ...((0, runtime_1.fetchMiddlewares)(reviewController_1.ReviewController.prototype.deleteReview)), function ReviewController_deleteReview(request, response, next) {
         const args = {
             id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
@@ -1012,6 +1119,21 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
+    app.get('/api/v1/service/:id', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(serviceController_1.ServiceController)), ...((0, runtime_1.fetchMiddlewares)(serviceController_1.ServiceController.prototype.getSerivice)), function ServiceController_getSerivice(request, response, next) {
+        const args = {
+            id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
+        };
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new serviceController_1.ServiceController();
+            const promise = controller.getSerivice.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
     app.post('/api/v1/service', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(serviceController_1.ServiceController)), ...((0, runtime_1.fetchMiddlewares)(serviceController_1.ServiceController.prototype.addService)), function ServiceController_addService(request, response, next) {
         const args = {
             requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "ServiceData" },
@@ -1045,7 +1167,7 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.delete('/api/v1/service/:id', authenticateMiddleware([{ "jwt": ["admin"] }]), ...((0, runtime_1.fetchMiddlewares)(serviceController_1.ServiceController)), ...((0, runtime_1.fetchMiddlewares)(serviceController_1.ServiceController.prototype.deleteService)), function ServiceController_deleteService(request, response, next) {
+    app.delete('/api/v1/service/:id', authenticateMiddleware([{ "jwt": ["admin", "employee"] }]), ...((0, runtime_1.fetchMiddlewares)(serviceController_1.ServiceController)), ...((0, runtime_1.fetchMiddlewares)(serviceController_1.ServiceController.prototype.deleteService)), function ServiceController_deleteService(request, response, next) {
         const args = {
             id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
@@ -1061,7 +1183,7 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.get('/api/v1/users/:userId', authenticateMiddleware([{ "jwt": ["admin", "user", "hr", "manger"] }]), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController)), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController.prototype.getUser)), function UsersController_getUser(request, response, next) {
+    app.get('/api/v1/users/:userId', authenticateMiddleware([{ "jwt": ["admin", "user", "hr", "manager"] }]), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController)), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController.prototype.getUser)), function UsersController_getUser(request, response, next) {
         const args = {
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             userId: { "in": "path", "name": "userId", "required": true, "dataType": "double" },
@@ -1107,24 +1229,7 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.patch('/api/v1/users/:userId', authenticateMiddleware([{ "jwt": ["admin", "user", "hr", "manger"] }]), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController)), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController.prototype.editUser)), function UsersController_editUser(request, response, next) {
-        const args = {
-            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-            userId: { "in": "path", "name": "userId", "required": true, "dataType": "double" },
-            requestBody: { "in": "body", "name": "requestBody", "required": true, "dataType": "nestedObjectLiteral", "nestedProperties": { "user": { "ref": "UserCreationParams", "required": true } } },
-        };
-        let validatedArgs = [];
-        try {
-            validatedArgs = getValidatedArgs(args, request, response);
-            const controller = new usersController_1.UsersController();
-            const promise = controller.editUser.apply(controller, validatedArgs);
-            promiseHandler(controller, promise, response, undefined, next);
-        }
-        catch (err) {
-            return next(err);
-        }
-    });
-    app.get('/api/v1/users', authenticateMiddleware([{ "jwt": ["admin", "hr", "manger"] }]), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController)), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController.prototype.getUsers)), function UsersController_getUsers(request, response, next) {
+    app.get('/api/v1/users', authenticateMiddleware([{ "jwt": ["admin", "hr", "manager"] }]), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController)), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController.prototype.getUsers)), function UsersController_getUsers(request, response, next) {
         const args = {
             page: { "in": "query", "name": "page", "dataType": "double" },
             size: { "in": "query", "name": "size", "dataType": "double" },
@@ -1159,7 +1264,7 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.get('/api/v1/users/refresh-token/:userId', authenticateMiddleware([{ "jwt": ["admin", "user", "hr", "manger"] }]), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController)), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController.prototype.refreshToken)), function UsersController_refreshToken(request, response, next) {
+    app.get('/api/v1/users/refresh-token/:userId', authenticateMiddleware([{ "jwt": ["admin", "user", "hr", "manager"] }]), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController)), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController.prototype.refreshToken)), function UsersController_refreshToken(request, response, next) {
         const args = {
             userId: { "in": "path", "name": "userId", "required": true, "dataType": "double" },
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
@@ -1175,7 +1280,7 @@ function RegisterRoutes(app) {
             return next(err);
         }
     });
-    app.patch('/api/v1/users/password-change/:userId', authenticateMiddleware([{ "jwt": ["admin", "user", "hr", "manger"] }]), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController)), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController.prototype.changePassword)), function UsersController_changePassword(request, response, next) {
+    app.patch('/api/v1/users/password-change/:userId', authenticateMiddleware([{ "jwt": ["admin", "user", "hr", "manager"] }]), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController)), ...((0, runtime_1.fetchMiddlewares)(usersController_1.UsersController.prototype.changePassword)), function UsersController_changePassword(request, response, next) {
         const args = {
             userId: { "in": "path", "name": "userId", "required": true, "dataType": "double" },
             value: { "in": "body", "name": "value", "required": true, "dataType": "nestedObjectLiteral", "nestedProperties": { "newPassword": { "dataType": "string", "required": true }, "currentPassword": { "dataType": "string", "required": true } } },

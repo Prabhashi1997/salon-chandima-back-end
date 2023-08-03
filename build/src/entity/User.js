@@ -21,7 +21,8 @@ let User = exports.User = User_1 = class User {
 };
 User.Index = {
     Unique: {
-        email: { idx: 'IDX_User_email', msg: 'An employee already exist with same email address' },
+        email: { idx: 'IDX_User_email', msg: 'An customer already exist with same email address' },
+        nic: { idx: 'IDX_User_nic', msg: 'An customer already exist with same NIC number' },
     },
 };
 __decorate([
@@ -46,12 +47,21 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Index)(User_1.Index.Unique.nic.idx, { unique: true }),
+    __metadata("design:type", String)
+], User.prototype, "nic", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "contactNumber", void 0);
+__decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "image", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", String)
+    __metadata("design:type", Date)
 ], User.prototype, "doj", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'simple-array', nullable: true }),

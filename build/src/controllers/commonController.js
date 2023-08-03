@@ -45,6 +45,7 @@ const Response_1 = require("../Response");
 const multer_1 = __importDefault(require("multer"));
 const fs = __importStar(require("fs"));
 const Configs_1 = __importDefault(require("../common/Configs"));
+const customerService_1 = require("../service/customerService");
 let CommonController = exports.CommonController = class CommonController extends ControllerBase_1.default {
     async uploadFile(request) {
         return this.exec(async () => {
@@ -73,6 +74,12 @@ let CommonController = exports.CommonController = class CommonController extends
             });
         });
     }
+    async addMessage(requestBody, request) {
+        return this.exec(async () => {
+            const response = await new customerService_1.CustomerService().addMessage(requestBody);
+            return Response_1.Responses.ok(response);
+        });
+    }
 };
 __decorate([
     (0, tsoa_1.Security)('jwt', ['admin', 'user', 'hr', 'manger']),
@@ -82,6 +89,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], CommonController.prototype, "uploadFile", null);
+__decorate([
+    (0, tsoa_1.Post)('message'),
+    __param(0, (0, tsoa_1.Body)()),
+    __param(1, (0, tsoa_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], CommonController.prototype, "addMessage", null);
 exports.CommonController = CommonController = __decorate([
     (0, tsoa_1.Route)('api/v1/common')
 ], CommonController);

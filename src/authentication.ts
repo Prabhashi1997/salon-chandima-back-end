@@ -34,6 +34,7 @@ export const expressAuthentication = (
           reject(new ReferenceError(err));
         } else {
           // Check if JWT contains one of required scopes
+          console.log(decoded.role, scopes);
           if (decoded.role.filter((e) => scopes.indexOf(e) !== -1).length === 0) {
             reject(new ReferenceError('JWT does not contain required scope.'));
           }

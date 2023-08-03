@@ -8,8 +8,7 @@ import {Password as PasswordEntity} from "../entity/Password";
 import {QueryFailedError} from "typeorm";
 import Utils from "../common/Utils";
 import {UserCreationParams} from "../models/user";
-import {Customer} from "../entity/Customer";
-import {Employee} from "../entity/Employee";
+import { CustomerMessage } from '../entity/CustomerMessage';
 
 export class AdminService {
     public async getAll() {
@@ -107,6 +106,33 @@ export class AdminService {
             total,
         });
     }
+
+    public async getMessages(page?: number, size?: number, search?: string) {
+        const qb = DatabaseService.getInstance()
+            .getRepository(CustomerMessage)
+            .createQueryBuilder('customerMessage');
+        if (search) {
+            qb.andWhere('lower(customerMessage.name) LIKE :search', {
+                search: `%${search.toLowerCase()}%`,
+            });
+        }
+
+        const [messages, total] = await qb
+            .orderBy('customerMessage.name')
+            // .take(size ?? 10)
+            // .skip(page ? (page - 1) * (size ?? 10) : 0)
+            .getManyAndCount();
+
+        return Responses.ok({
+            messages: messages.map((item) => {
+                return {
+                    ...item
+                };
+            }),
+            total,
+        });
+    }
+
     public async addAdmin(params: UserCreationParams): Promise<any> {
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync('User@123', salt);

@@ -25,6 +25,14 @@ __decorate([
     __metadata("design:type", String)
 ], Customer.prototype, "gender", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Customer.prototype, "age", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Customer.prototype, "address", void 0);
+__decorate([
     (0, typeorm_1.OneToOne)(() => User_1.User, (user) => user.admin),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", User_1.User)

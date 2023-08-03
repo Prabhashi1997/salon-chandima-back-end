@@ -23,6 +23,10 @@ __decorate([
     __metadata("design:type", String)
 ], Review.prototype, "comment", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Review.prototype, "rate", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => Customer_1.Customer, (customer) => customer.review, {
         cascade: true,
         onDelete: 'CASCADE',

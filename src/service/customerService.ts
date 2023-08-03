@@ -172,7 +172,7 @@ export class CustomerService {
                 .where('email =:email OR nic =:nic', { email: params.email, nic: params.nic })
                 .getOne();
 
-            // create new Employee
+            // create new Customer
 
             const newCustomer = new Customer();
             newCustomer.gender = gender;
@@ -246,7 +246,7 @@ export class CustomerService {
             const user = await DatabaseService.getInstance()
                 .getRepository(UserEntity)
                 .findOne({ where: { id: customer.userId } });
-            if (roles.find((e) => e === 'admin' || e === 'employ') || reqUserId === user.id) {
+            if (roles.find((e) => e === 'admin' || e === 'employee') || reqUserId === user.id) {
                 user.image = data?.image ?? user.image;
                 user.firstName = data.firstName;
                 user.lastName = data.lastName;

@@ -23,21 +23,13 @@ __decorate([
     __metadata("design:type", Number)
 ], Appointment.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", Date)
-], Appointment.prototype, "dateAndTime", void 0);
-__decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Appointment.prototype, "status", void 0);
+    __metadata("design:type", Date)
+], Appointment.prototype, "date", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Appointment.prototype, "duration", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ default: false }),
-    __metadata("design:type", Boolean)
-], Appointment.prototype, "deleted", void 0);
+], Appointment.prototype, "time", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => Payment_1.Payment, (payment) => payment.appointment),
     (0, typeorm_1.JoinColumn)(),

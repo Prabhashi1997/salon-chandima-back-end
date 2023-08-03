@@ -33,6 +33,15 @@ export class AdminController extends ControllerBase {
         });
     }
 
+    @Security('jwt', ['admin', 'employee'])
+    @Get('message')
+    public async getMessage(@Query() page?: number, @Query() size?: number, @Query() search?: string): Promise<void> {
+        return this.exec(async () => {
+            const response = await new AdminService().getMessages(page, size, search);
+            return Responses.ok(response.body);
+        });
+    }
+
     @Security('jwt', ['admin'])
     @Get('{id}')
     public async getAdmin(@Path() id: number): Promise<void> {

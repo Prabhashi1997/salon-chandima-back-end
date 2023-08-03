@@ -7,6 +7,7 @@ import {User, User as UserEntity} from "../entity/User";
 import {Password as PasswordEntity} from "../entity/Password";
 import {QueryFailedError} from "typeorm";
 import Utils from "../common/Utils";
+import { CustomerMessage } from '../entity/CustomerMessage';
 
 export class EmployeeService {
     public async getAll() {
@@ -34,8 +35,8 @@ export class EmployeeService {
     public async get(id) {
         const qb = await DatabaseService.getInstance()
             .getRepository(Employee)
-            .createQueryBuilder('employ')
-            .leftJoinAndSelect('employ.user', 'user')
+            .createQueryBuilder('employee')
+            .leftJoinAndSelect('employee.user', 'user')
             .where({id})
             .getOne();
 
@@ -56,9 +57,9 @@ export class EmployeeService {
     public async getEmployeebyUserId(id) {
         const qb = await DatabaseService.getInstance()
             .getRepository(Employee)
-            .createQueryBuilder('employ')
-            .leftJoinAndSelect('employ.user', 'user')
-            .where('employ.userId = :userID',{ userID: id})
+            .createQueryBuilder('employee')
+            .leftJoinAndSelect('employee.user', 'user')
+            .where('employee.userId = :userID',{ userID: id})
             .getOne();
 
         return {
@@ -208,27 +209,25 @@ export class EmployeeService {
 
         try {
 
-            const employ = await queryRunner.manager
+            const employee = await queryRunner.manager
                 .getRepository(Employee)
                 .findOne({ where: { id: id } });
-            console.log(employ)
 
-            if (employ) {
+            if (employee) {
                 await queryRunner.manager.delete(Employee, { id: id });
                 const user = await DatabaseService.getInstance()
                     .getRepository(UserEntity)
-                    .findOne({ where: { id: employ.userId } });
-                    console.log(user)
+                    .findOne({ where: { id: employee.userId } });
                 user.roles = user.roles.filter((n) => n !== 'employee');
-                user.customerId = null;
-                await queryRunner.manager.update(User, employ.userId, user);
+                user.employeeId = null;
+                await queryRunner.manager.update(User, employee.userId, user);
                 await queryRunner.manager.delete(Employee, { id: id });
             }
             await queryRunner.commitTransaction();
             return Responses.ok(id);
         } catch (e) {
             // since we have errors let's rollback changes we made
-            // console.log(e);
+            console.log(e)
             await queryRunner.rollbackTransaction();
         } finally {
             // you need to release query runner which is manually created:
@@ -286,5 +285,30 @@ export class EmployeeService {
             await queryRunner.release();
         }
 
+    }
+    public async getMessages(page?: number, size?: number, search?: string) {
+        const qb = DatabaseService.getInstance()
+            .getRepository(CustomerMessage)
+            .createQueryBuilder('customerMessage');
+        if (search) {
+            qb.andWhere('lower(customerMessage.name) LIKE :search', {
+                search: `%${search.toLowerCase()}%`,
+            });
+        }
+
+        const [messages, total] = await qb
+            .orderBy('customerMessage.name')
+            // .take(size ?? 10)
+            // .skip(page ? (page - 1) * (size ?? 10) : 0)
+            .getManyAndCount();
+
+        return Responses.ok({
+            messages: messages.map((item) => {
+                return {
+                    ...item
+                };
+            }),
+            total,
+        });
     }
 }
