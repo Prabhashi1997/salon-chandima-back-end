@@ -42,6 +42,10 @@ export class Appointment {
   @Column({ default: false })
   deleted: boolean;
 
+  // @Column({nullable:true, default: 0 })
+  // discount?: number;
+
+
 
   @OneToMany(() => Payment, (payment) => payment.appointment)
   @JoinColumn()

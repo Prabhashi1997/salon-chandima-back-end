@@ -130,8 +130,10 @@ export class AppointmentService {
                     deleted: item.deleted,
                     start: item.start,
                     end: item.end,
+                    price: item.price,
+                    // totalPrice: item.price / 100 * (100 - item.discount) - item?.payments?.[0]?.price ?? 0,
                     services: item.services.map((e) => e.name).join(', '),
-                    advance: item.payments[0].price,
+                    advance: item?.payments?.[0]?.price ?? 0,
                 };
             }),
             total,
@@ -179,7 +181,9 @@ export class AppointmentService {
                     start: item.start,
                     end: item.end,
                     services: item.services.map((e) => e.name).join(', '),
-                    advance: item.payments[0].price,
+                    price: item.price,
+                    // totalPrice: item.price / 100 * (100 - item.discount) - item?.payments?.[0]?.price ?? 0,
+                    advance: item?.payments?.[0]?.price ?? 0,
                 };
             }),
             total,
@@ -227,6 +231,41 @@ export class AppointmentService {
             await queryRunner.release();
         }
     }
+
+    public async addAdminAppointment(requestBody: AppointmentData, userId: number): Promise<any> {
+        const queryRunner = DatabaseService.getInstance().createQueryRunner();
+        await queryRunner.startTransaction();
+        try {
+
+
+            const services = await DatabaseService.getInstance()
+                .getRepository(Service)
+                .find({ where: { id: In(requestBody.service) } });
+
+            const newAppointment = new Appointment();
+            newAppointment.date = requestBody.date;
+            newAppointment.start = requestBody.start;
+            newAppointment.services = services;
+            newAppointment.end = requestBody.end;
+            newAppointment.customerId = userId;
+            newAppointment.status = 'Reserved';
+            newAppointment.duration = requestBody.duration;
+            newAppointment.price = requestBody.price;
+            await queryRunner.manager.save(newAppointment);
+
+            requestBody.id = newAppointment.id;
+            await queryRunner.commitTransaction();
+            return { ...requestBody, payPrice: requestBody.price/100*30 };
+        } catch (e) {
+            console.log(e);
+            // since we have errors let's rollback changes we made
+            await queryRunner.rollbackTransaction();
+        } finally {
+            // you need to release query runner which is manually created:
+            await queryRunner.release();
+        }
+    }
+
     public async deleteAppointment(id: number): Promise<{ body: any; statusCode: number }> {
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
@@ -267,4 +306,27 @@ export class AppointmentService {
             await queryRunner.release();
         }
     }
+
+    // async addDiscount(data: any){
+    //     const appointment = await DatabaseService.getInstance()
+    //         .getRepository(Appointment)
+    //         .findOne({ where: { id: data.id } });
+    //     const queryRunner = DatabaseService.getInstance().createQueryRunner();
+    //     await queryRunner.startTransaction();
+
+    //     try {
+    //         appointment.discount = data.discount;
+
+    //         await queryRunner.manager.save(appointment);
+    //         await queryRunner.commitTransaction();
+    //         return Responses.ok(appointment);
+    //     } catch (e) {
+    //         // since we have errors let's rollback changes we made
+    //         await queryRunner.rollbackTransaction();
+    //     } finally {
+    //         // you need to release query runner which is manually created:
+    //         await queryRunner.release();
+    //     }
+    // }
+
 }

@@ -1310,6 +1310,38 @@
 				}
 			}
 		},
+		"/api/v1/appointment/admin": {
+			"post": {
+				"operationId": "AddAdminAppointment",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"employee"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {}
+						}
+					}
+				}
+			}
+		},
 		"/api/v1/appointment/{id}": {
 			"patch": {
 				"operationId": "EditAppointment",

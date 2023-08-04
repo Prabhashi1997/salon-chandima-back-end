@@ -53,6 +53,15 @@ export class AppointmentController extends ControllerBase {
     }
 
     @Security('jwt', ['admin', 'employee'])
+    @Post('admin')
+    public async addAdminAppointment(@Body() requestBody: any, @Request() request: any) {
+        return this.exec(async () => {
+            const response = await new AppointmentService().addAdminAppointment(requestBody, +requestBody.customer);
+            return Responses.ok(response);
+        });
+    }
+
+    @Security('jwt', ['admin', 'employee'])
     @Patch('{id}')
     public async editAppointment(
         @Path() id: number,
@@ -73,4 +82,13 @@ export class AppointmentController extends ControllerBase {
             return designation?.body ?? designation;
         });
     }
+
+    // @Security('jwt', ['admin', 'employee'])
+    // @Post('discount')
+    // public async addDiscount(@Body() requestBody: any, @Request() request: any) {
+    //     return this.exec(async () => {
+    //         const response = await new AppointmentService().addDiscount(requestBody);
+    //         return Responses.ok(response);
+    //     });
+    // }
 }

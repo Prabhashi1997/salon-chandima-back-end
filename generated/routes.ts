@@ -696,6 +696,33 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/appointment/admin',
+            authenticateMiddleware([{"jwt":["admin","employee"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AppointmentController)),
+            ...(fetchMiddlewares<RequestHandler>(AppointmentController.prototype.addAdminAppointment)),
+
+            function AppointmentController_addAdminAppointment(request: any, response: any, next: any) {
+            const args = {
+                    requestBody: {"in":"body","name":"requestBody","required":true,"dataType":"any"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AppointmentController();
+
+
+              const promise = controller.addAdminAppointment.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.patch('/api/v1/appointment/:id',
             authenticateMiddleware([{"jwt":["admin","employee"]}]),
             ...(fetchMiddlewares<RequestHandler>(AppointmentController)),
