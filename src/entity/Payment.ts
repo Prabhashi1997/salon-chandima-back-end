@@ -5,6 +5,7 @@ import {
 } from 'typeorm';
 import {Employee} from "./Employee";
 import {Appointment} from "./Appointment";
+import {Customer} from "./Customer";
 
 @Entity()
 export class Payment {
@@ -13,55 +14,10 @@ export class Payment {
     id: number;
 
     @Column()
-    type: string;
-
-    @Column({ nullable: true})
-    description: string;
+    orderId: number;
 
     @Column()
     price: number;
-
-    @Column({ nullable: true })
-    card_expiry?: string;
-
-    @Column({ nullable: true })
-    card_holder_name?: string;
-
-    @Column({ nullable: true })
-    card_no?: string;
-
-    @Column({ nullable: true })
-    md5sig?: string;
-
-    @Column({ nullable: true })
-    merchant_id?: string;
-
-    @Column({ nullable: true })
-    method?: string;
-
-    @Column({ nullable: true })
-    order_id?: string;
-
-    @Column({ nullable: true })
-    payhere_amount?: string;
-
-    @Column({ nullable: true })
-    payhere_currency?: string;
-
-    @Column({ nullable: true })
-    payment_id?: string;
-
-    @Column({ nullable: true })
-    recurring?: string;
-
-    @Column({ nullable: true })
-    status_code?: string;
-
-    @Column({ nullable: true })
-    status_message?: string;
-
-    @Column({ default: false })
-    transaction: boolean;
 
 
     @ManyToOne(() => Appointment, (appointment) => appointment.payments, {
@@ -76,16 +32,16 @@ export class Payment {
     appointmentId: number;
 
 
-    @ManyToOne(() => Employee, (employee) => employee.payments, {
+    @ManyToOne(() => Customer, (customer) => customer.payments, {
         cascade: true,
         onDelete: 'CASCADE',
     })
     @JoinColumn()
-    employee: Employee;
+    customer: Customer;
 
-    @RelationId((payment: Payment) => payment.employee)
+    @RelationId((payment: Payment) => payment.customer)
     @Column()
-    employeeId: number;
+    customerId: number;
 
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
     createdAt: Date;

@@ -22,19 +22,25 @@ export class Appointment {
   id: number;
 
   @Column()
-  date: Date;
+  date: string;
 
   @Column()
-  time: number;
+  price: number;
 
-  // @Column()
-  // status: string;
+  @Column()
+  duration: number;
 
-  // @Column()
-  // duration: number;
+  @Column()
+  status: string;
 
-  // @Column({ default: false })
-  // deleted: boolean;
+  @Column()
+  start: string;
+
+  @Column()
+  end: string;
+
+  @Column({ default: false })
+  deleted: boolean;
 
 
   @OneToMany(() => Payment, (payment) => payment.appointment)
@@ -64,18 +70,6 @@ export class Appointment {
   @RelationId((appointment: Appointment) => appointment.customer)
   @Column()
   customerId: number;
-
-
-  @ManyToOne(() => Employee, (employee) => employee.appointment, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn()
-  employee: Employee;
-
-  @RelationId((appointment: Appointment) => appointment.employee)
-  @Column()
-  employeeId: number;
 
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })

@@ -5,6 +5,4 @@ export interface ServiceData {
     image?: string;
     price: number;
     duration: number;
-    // category: string;
-    employeeName?: string;
 }

@@ -24,11 +24,11 @@ export class PaymentController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['admin', 'employee'])
+    @Security('jwt', ['customer'])
     @Post()
-    public async addPayment(@Body() requestBody: PaymentData, @Request() request: any) {
+    public async addPayment(@Body() requestBody: any, @Request() request: any) {
         return this.exec(async () => {
-            const response = await new PaymentService().addPayment(requestBody);
+            const response = await new PaymentService().addPayment(requestBody, +request.user.userId);
             return Responses.ok(response.body);
         });
     }

@@ -39,13 +39,13 @@ const models: TsoaRoute.Models = {
         "properties": {
             "firstName": {"dataType":"string","required":true},
             "lastName": {"dataType":"string","required":true},
-            "designation": {"dataType":"any"},
             "email": {"dataType":"string","required":true},
             "image": {"dataType":"string"},
             "doj": {"dataType":"string"},
             "roles": {"dataType":"array","array":{"dataType":"string"}},
             "nic": {"dataType":"string"},
             "contactNumber": {"dataType":"string"},
+            "id": {"dataType":"double"},
         },
         "additionalProperties": false,
     },
@@ -54,8 +54,16 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"double"},
-            "date": {"dataType":"datetime","required":true},
+            "date": {"dataType":"string","required":true},
             "time": {"dataType":"double","required":true},
+            "status": {"dataType":"string"},
+            "duration": {"dataType":"double"},
+            "deleted": {"dataType":"boolean"},
+            "start": {"dataType":"string","required":true},
+            "end": {"dataType":"string","required":true},
+            "price": {"dataType":"double","required":true},
+            "customer": {"dataType":"any"},
+            "service": {"dataType":"array","array":{"dataType":"any"}},
         },
         "additionalProperties": false,
     },
@@ -128,7 +136,6 @@ const models: TsoaRoute.Models = {
             "image": {"dataType":"string"},
             "price": {"dataType":"double","required":true},
             "duration": {"dataType":"double","required":true},
-            "employeeName": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -220,25 +227,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Appointment": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"double","required":true},
-            "date": {"dataType":"datetime","required":true},
-            "time": {"dataType":"double","required":true},
-            "payments": {"dataType":"array","array":{"dataType":"refObject","ref":"Payment"},"required":true},
-            "appointmentHistories": {"dataType":"array","array":{"dataType":"refObject","ref":"AppointmentHistory"},"required":true},
-            "services": {"dataType":"array","array":{"dataType":"refObject","ref":"Service"},"required":true},
-            "customer": {"ref":"Customer","required":true},
-            "customerId": {"dataType":"double","required":true},
-            "employee": {"ref":"Employee","required":true},
-            "employeeId": {"dataType":"double","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"datetime","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Employee": {
         "dataType": "refObject",
         "properties": {
@@ -247,9 +235,6 @@ const models: TsoaRoute.Models = {
             "userId": {"dataType":"double","required":true},
             "designation": {"dataType":"string"},
             "gender": {"dataType":"string","required":true},
-            "appointment": {"dataType":"array","array":{"dataType":"refObject","ref":"Appointment"},"required":true},
-            "appointmentHistories": {"dataType":"array","array":{"dataType":"refObject","ref":"AppointmentHistory"},"required":true},
-            "payments": {"dataType":"array","array":{"dataType":"refObject","ref":"Payment"},"required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "updatedAt": {"dataType":"datetime","required":true},
             "address": {"dataType":"any","required":true},
@@ -258,31 +243,70 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Customer": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"double","required":true},
+            "gender": {"dataType":"string","required":true},
+            "age": {"dataType":"double","required":true},
+            "address": {"dataType":"string","required":true},
+            "user": {"ref":"User","required":true},
+            "userId": {"dataType":"double","required":true},
+            "review": {"dataType":"array","array":{"dataType":"refObject","ref":"Review"},"required":true},
+            "appointment": {"dataType":"array","array":{"dataType":"refObject","ref":"Appointment"},"required":true},
+            "payments": {"dataType":"array","array":{"dataType":"refObject","ref":"Payment"},"required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Review": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"double","required":true},
+            "comment": {"dataType":"string","required":true},
+            "rate": {"dataType":"double","required":true},
+            "customer": {"ref":"Customer","required":true},
+            "customerId": {"dataType":"double","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Appointment": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"double","required":true},
+            "date": {"dataType":"string","required":true},
+            "price": {"dataType":"double","required":true},
+            "duration": {"dataType":"double","required":true},
+            "status": {"dataType":"string","required":true},
+            "start": {"dataType":"string","required":true},
+            "end": {"dataType":"string","required":true},
+            "deleted": {"dataType":"boolean","required":true},
+            "payments": {"dataType":"array","array":{"dataType":"refObject","ref":"Payment"},"required":true},
+            "appointmentHistories": {"dataType":"array","array":{"dataType":"refObject","ref":"AppointmentHistory"},"required":true},
+            "services": {"dataType":"array","array":{"dataType":"refObject","ref":"Service"},"required":true},
+            "customer": {"ref":"Customer","required":true},
+            "customerId": {"dataType":"double","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Payment": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"double","required":true},
-            "type": {"dataType":"string","required":true},
-            "description": {"dataType":"string","required":true},
+            "orderId": {"dataType":"double","required":true},
             "price": {"dataType":"double","required":true},
-            "card_expiry": {"dataType":"string"},
-            "card_holder_name": {"dataType":"string"},
-            "card_no": {"dataType":"string"},
-            "md5sig": {"dataType":"string"},
-            "merchant_id": {"dataType":"string"},
-            "method": {"dataType":"string"},
-            "order_id": {"dataType":"string"},
-            "payhere_amount": {"dataType":"string"},
-            "payhere_currency": {"dataType":"string"},
-            "payment_id": {"dataType":"string"},
-            "recurring": {"dataType":"string"},
-            "status_code": {"dataType":"string"},
-            "status_message": {"dataType":"string"},
-            "transaction": {"dataType":"boolean","required":true},
             "appointment": {"ref":"Appointment","required":true},
             "appointmentId": {"dataType":"double","required":true},
-            "employee": {"ref":"Employee","required":true},
-            "employeeId": {"dataType":"double","required":true},
+            "customer": {"ref":"Customer","required":true},
+            "customerId": {"dataType":"double","required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "updatedAt": {"dataType":"datetime","required":true},
         },
@@ -299,8 +323,6 @@ const models: TsoaRoute.Models = {
             "services": {"dataType":"array","array":{"dataType":"refObject","ref":"Service"},"required":true},
             "appointment": {"ref":"Appointment","required":true},
             "appointmentId": {"dataType":"double","required":true},
-            "employee": {"ref":"Employee","required":true},
-            "employeeId": {"dataType":"double","required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "updatedAt": {"dataType":"datetime","required":true},
         },
@@ -316,40 +338,8 @@ const models: TsoaRoute.Models = {
             "image": {"dataType":"string"},
             "price": {"dataType":"double","required":true},
             "duration": {"dataType":"double","required":true},
-            "employeeName": {"dataType":"string"},
             "appointments": {"dataType":"array","array":{"dataType":"refObject","ref":"Appointment"},"required":true},
             "appointmentHistories": {"dataType":"array","array":{"dataType":"refObject","ref":"AppointmentHistory"},"required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"datetime","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Customer": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"double","required":true},
-            "gender": {"dataType":"string","required":true},
-            "age": {"dataType":"double","required":true},
-            "address": {"dataType":"string","required":true},
-            "user": {"ref":"User","required":true},
-            "userId": {"dataType":"double","required":true},
-            "review": {"dataType":"array","array":{"dataType":"refObject","ref":"Review"},"required":true},
-            "appointment": {"dataType":"array","array":{"dataType":"refObject","ref":"Appointment"},"required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"datetime","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Review": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"double","required":true},
-            "comment": {"dataType":"string","required":true},
-            "rate": {"dataType":"double","required":true},
-            "customer": {"ref":"Customer","required":true},
-            "customerId": {"dataType":"double","required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "updatedAt": {"dataType":"datetime","required":true},
         },
@@ -542,7 +532,7 @@ export function RegisterRoutes(app: Router) {
             function AdminController_editAdmin(request: any, response: any, next: any) {
             const args = {
                     id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"UserCreationParams"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"dataType":"any"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
@@ -589,12 +579,68 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/appointment/calender/all',
+            authenticateMiddleware([{"jwt":["customer"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AppointmentController)),
+            ...(fetchMiddlewares<RequestHandler>(AppointmentController.prototype.getCalenderAll)),
+
+            function AppointmentController_getCalenderAll(request: any, response: any, next: any) {
+            const args = {
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AppointmentController();
+
+
+              const promise = controller.getCalenderAll.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/appointment/calender',
+            authenticateMiddleware([{"jwt":["admin","employee"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AppointmentController)),
+            ...(fetchMiddlewares<RequestHandler>(AppointmentController.prototype.getCalenderAppointment)),
+
+            function AppointmentController_getCalenderAppointment(request: any, response: any, next: any) {
+            const args = {
+                    page: {"in":"query","name":"page","dataType":"double"},
+                    size: {"in":"query","name":"size","dataType":"double"},
+                    search: {"in":"query","name":"search","dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AppointmentController();
+
+
+              const promise = controller.getCalenderAppointment.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/v1/appointment/all',
+            authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(AppointmentController)),
             ...(fetchMiddlewares<RequestHandler>(AppointmentController.prototype.getAll)),
 
             function AppointmentController_getAll(request: any, response: any, next: any) {
             const args = {
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -642,13 +688,13 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/api/v1/appointment',
-            authenticateMiddleware([{"jwt":["admin"]}]),
+            authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(AppointmentController)),
             ...(fetchMiddlewares<RequestHandler>(AppointmentController.prototype.addAppointment)),
 
             function AppointmentController_addAppointment(request: any, response: any, next: any) {
             const args = {
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"AppointmentData"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"dataType":"any"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
@@ -1447,13 +1493,13 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/api/v1/payment',
-            authenticateMiddleware([{"jwt":["admin","employee"]}]),
+            authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(PaymentController)),
             ...(fetchMiddlewares<RequestHandler>(PaymentController.prototype.addPayment)),
 
             function PaymentController_addPayment(request: any, response: any, next: any) {
             const args = {
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"PaymentData"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"dataType":"any"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
@@ -1552,8 +1598,33 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/review/user',
+            authenticateMiddleware([{"jwt":["customer"]}]),
+            ...(fetchMiddlewares<RequestHandler>(ReviewController)),
+            ...(fetchMiddlewares<RequestHandler>(ReviewController.prototype.getUser)),
+
+            function ReviewController_getUser(request: any, response: any, next: any) {
+            const args = {
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new ReviewController();
+
+
+              const promise = controller.getUser.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/v1/review',
-            authenticateMiddleware([{"jwt":["admin"]}]),
             ...(fetchMiddlewares<RequestHandler>(ReviewController)),
             ...(fetchMiddlewares<RequestHandler>(ReviewController.prototype.getReview)),
 

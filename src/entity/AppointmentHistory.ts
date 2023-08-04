@@ -42,17 +42,6 @@ export class AppointmentHistory {
   appointmentId: number;
 
 
-  @ManyToOne(() => Employee, (employee) => employee.appointmentHistories, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn()
-  employee: Employee;
-
-  @RelationId((appointment: Appointment) => appointment.employee)
-  @Column()
-  employeeId: number;
-
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
   createdAt: Date;
 

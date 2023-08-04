@@ -31,6 +31,23 @@ export class ReviewService {
         });
     }
 
+    public async getUser(userId: number) {
+        const qb = await DatabaseService.getInstance()
+            .getRepository(Review)
+            .createQueryBuilder('review')
+            .leftJoinAndSelect('review.customer', 'customer')
+            .leftJoinAndSelect('customer.user', 'user')
+            .andWhere('user.id = :userID',{ userID: userId })
+            .getOne();
+
+        return Responses.ok({
+            data:  {
+                comment: qb?.comment ?? '',
+                rate: qb?.rate ?? 1,
+            },
+        });
+    }
+
     public async getReview(page?: number, size?: number, search?: string) {
         const qb = DatabaseService.getInstance()
             .getRepository(Review)
@@ -65,7 +82,7 @@ export class ReviewService {
         const queryRunner = DatabaseService.getInstance().createQueryRunner();
         await queryRunner.startTransaction();
         try {
-            const qb = DatabaseService.getInstance()
+            const qb = await DatabaseService.getInstance()
             .getRepository(Review)
             .createQueryBuilder('review')
             .leftJoinAndSelect('review.customer', 'customer')
@@ -80,13 +97,23 @@ export class ReviewService {
             .where('user.id = :userID',{ userID: userId })
             .getOne();
 
-            const newReview = new Review();
-            newReview.comment = requestBody.comment;
-            newReview.rate = requestBody.rate;
-            newReview.customer = qb1;
-            await queryRunner.manager.save(newReview);
+            if(!!qb) {
+                qb.comment = requestBody.comment;
+                qb.rate = requestBody.rate;
+                await queryRunner.manager.save(qb);
 
-            requestBody.id = newReview.id;
+                requestBody.id = qb.id;
+            } else {
+                const newReview = new Review();
+                newReview.comment = requestBody.comment;
+                newReview.rate = requestBody.rate;
+                newReview.customer = qb1;
+                await queryRunner.manager.save(newReview);
+
+                requestBody.id = newReview.id;
+            }
+
+
             await queryRunner.commitTransaction();
             return Responses.ok(requestBody);
         } catch (e) {

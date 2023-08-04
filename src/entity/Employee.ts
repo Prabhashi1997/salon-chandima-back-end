@@ -1,12 +1,12 @@
 import {
     Entity,
-    PrimaryGeneratedColumn, 
-    OneToOne, 
-    JoinColumn, 
-    RelationId, 
-    CreateDateColumn, 
-    UpdateDateColumn, 
-    OneToMany, 
+    PrimaryGeneratedColumn,
+    OneToOne,
+    JoinColumn,
+    RelationId,
+    CreateDateColumn,
+    UpdateDateColumn,
+    OneToMany,
     Column,
 } from 'typeorm';
 import {User} from "./User";
@@ -31,19 +31,6 @@ export class Employee {
 
     @Column()
     gender: string;
-
-    @OneToMany(() => Appointment, (appointment) => appointment.employee)
-    @JoinColumn()
-    appointment: Appointment[];
-
-    @OneToMany(() => AppointmentHistory, (appointmentHistory) => appointmentHistory.employee)
-    @JoinColumn()
-    appointmentHistories: AppointmentHistory[];
-
-
-    @OneToMany(() => Payment, (payment) => payment.employee)
-    @JoinColumn()
-    payments: Payment[];
 
 
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })

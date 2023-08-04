@@ -64,7 +64,7 @@ export class AdminController extends ControllerBase {
     @Patch('{id}')
     public async editAdmin(
         @Path() id: number,
-        @Body() requestBody: UserCreationParams,
+        @Body() requestBody: any,
         @Request() request: any,
     ): Promise<any> {
         return this.exec(async () => {

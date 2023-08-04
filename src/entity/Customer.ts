@@ -7,6 +7,7 @@ import {
 import {User} from "./User";
 import {Review} from "./Review";
 import {Appointment} from "./Appointment";
+import {Payment} from "./Payment";
 
 
 @Entity()
@@ -39,6 +40,10 @@ export class Customer {
     @OneToMany(() => Appointment, (appointment) => appointment.customer)
     @JoinColumn()
     appointment: Appointment[];
+
+    @OneToMany(() => Payment, (payment) => payment.customer)
+    @JoinColumn()
+    payments: Payment[];
 
 
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })

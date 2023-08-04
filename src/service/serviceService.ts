@@ -21,9 +21,7 @@ export class ServiceService {
                     description: item.description,
                     price: item.price,
                     image: item.image,
-                    // category: item.category,
                     duration: item.duration,
-                    employeeName: item.employeeName,
                 };
             }),
             total,
@@ -43,9 +41,7 @@ export class ServiceService {
                 description: qb.description,
                 price: qb.price,
                 image: qb.image,
-                // category: qb.category,
                 duration: qb.duration,
-                employeeName: qb.employeeName,
             }
         };
     }
@@ -82,15 +78,11 @@ export class ServiceService {
             newService.name = requestBody.name;
             newService.duration = requestBody.duration;
             newService.price = requestBody.price;
-            // newService.category = requestBody.category;
             if (!!requestBody.image) {
                 newService.image = requestBody.image;
             }
             if (!!requestBody.description) {
                 newService.description = requestBody.description;
-            }
-            if (!!requestBody.employeeName) {
-                newService.employeeName = requestBody.employeeName;
             }
             await queryRunner.manager.save(newService);
 
@@ -144,9 +136,7 @@ export class ServiceService {
             service.description = data.description;
             service.price = data.price;
             service.image = data.image;
-            // service.category = data.category;
             service.duration = data.duration;
-            service.employeeName = data.employeeName;
 
             await queryRunner.manager.save(service);
             await queryRunner.commitTransaction();

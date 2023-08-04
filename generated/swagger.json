@@ -14,7 +14,6 @@
 					"lastName": {
 						"type": "string"
 					},
-					"designation": {},
 					"email": {
 						"type": "string"
 					},
@@ -35,6 +34,10 @@
 					},
 					"contactNumber": {
 						"type": "string"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
@@ -52,17 +55,44 @@
 						"format": "double"
 					},
 					"date": {
-						"type": "string",
-						"format": "date-time"
+						"type": "string"
 					},
 					"time": {
 						"type": "number",
 						"format": "double"
+					},
+					"status": {
+						"type": "string"
+					},
+					"duration": {
+						"type": "number",
+						"format": "double"
+					},
+					"deleted": {
+						"type": "boolean"
+					},
+					"start": {
+						"type": "string"
+					},
+					"end": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"customer": {},
+					"service": {
+						"items": {},
+						"type": "array"
 					}
 				},
 				"required": [
 					"date",
-					"time"
+					"time",
+					"start",
+					"end",
+					"price"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -235,9 +265,6 @@
 					"duration": {
 						"type": "number",
 						"format": "double"
-					},
-					"employeeName": {
-						"type": "string"
 					}
 				},
 				"required": [
@@ -488,78 +515,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Appointment": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"date": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"time": {
-						"type": "number",
-						"format": "double"
-					},
-					"payments": {
-						"items": {
-							"$ref": "#/components/schemas/Payment"
-						},
-						"type": "array"
-					},
-					"appointmentHistories": {
-						"items": {
-							"$ref": "#/components/schemas/AppointmentHistory"
-						},
-						"type": "array"
-					},
-					"services": {
-						"items": {
-							"$ref": "#/components/schemas/Service"
-						},
-						"type": "array"
-					},
-					"customer": {
-						"$ref": "#/components/schemas/Customer"
-					},
-					"customerId": {
-						"type": "number",
-						"format": "double"
-					},
-					"employee": {
-						"$ref": "#/components/schemas/Employee"
-					},
-					"employeeId": {
-						"type": "number",
-						"format": "double"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"date",
-					"time",
-					"payments",
-					"appointmentHistories",
-					"services",
-					"customer",
-					"customerId",
-					"employee",
-					"employeeId",
-					"createdAt",
-					"updatedAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"Employee": {
 				"properties": {
 					"id": {
@@ -579,24 +534,6 @@
 					"gender": {
 						"type": "string"
 					},
-					"appointment": {
-						"items": {
-							"$ref": "#/components/schemas/Appointment"
-						},
-						"type": "array"
-					},
-					"appointmentHistories": {
-						"items": {
-							"$ref": "#/components/schemas/AppointmentHistory"
-						},
-						"type": "array"
-					},
-					"payments": {
-						"items": {
-							"$ref": "#/components/schemas/Payment"
-						},
-						"type": "array"
-					},
 					"createdAt": {
 						"type": "string",
 						"format": "date-time"
@@ -613,233 +550,10 @@
 					"user",
 					"userId",
 					"gender",
-					"appointment",
-					"appointmentHistories",
-					"payments",
 					"createdAt",
 					"updatedAt",
 					"address",
 					"age"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Payment": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"type": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"card_expiry": {
-						"type": "string"
-					},
-					"card_holder_name": {
-						"type": "string"
-					},
-					"card_no": {
-						"type": "string"
-					},
-					"md5sig": {
-						"type": "string"
-					},
-					"merchant_id": {
-						"type": "string"
-					},
-					"method": {
-						"type": "string"
-					},
-					"order_id": {
-						"type": "string"
-					},
-					"payhere_amount": {
-						"type": "string"
-					},
-					"payhere_currency": {
-						"type": "string"
-					},
-					"payment_id": {
-						"type": "string"
-					},
-					"recurring": {
-						"type": "string"
-					},
-					"status_code": {
-						"type": "string"
-					},
-					"status_message": {
-						"type": "string"
-					},
-					"transaction": {
-						"type": "boolean"
-					},
-					"appointment": {
-						"$ref": "#/components/schemas/Appointment"
-					},
-					"appointmentId": {
-						"type": "number",
-						"format": "double"
-					},
-					"employee": {
-						"$ref": "#/components/schemas/Employee"
-					},
-					"employeeId": {
-						"type": "number",
-						"format": "double"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"type",
-					"description",
-					"price",
-					"transaction",
-					"appointment",
-					"appointmentId",
-					"employee",
-					"employeeId",
-					"createdAt",
-					"updatedAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"AppointmentHistory": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"dateAndTime": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"status": {
-						"type": "string"
-					},
-					"duration": {
-						"type": "number",
-						"format": "double"
-					},
-					"services": {
-						"items": {
-							"$ref": "#/components/schemas/Service"
-						},
-						"type": "array"
-					},
-					"appointment": {
-						"$ref": "#/components/schemas/Appointment"
-					},
-					"appointmentId": {
-						"type": "number",
-						"format": "double"
-					},
-					"employee": {
-						"$ref": "#/components/schemas/Employee"
-					},
-					"employeeId": {
-						"type": "number",
-						"format": "double"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"dateAndTime",
-					"status",
-					"duration",
-					"services",
-					"appointment",
-					"appointmentId",
-					"employee",
-					"employeeId",
-					"createdAt",
-					"updatedAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Service": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"image": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"duration": {
-						"type": "number",
-						"format": "double"
-					},
-					"employeeName": {
-						"type": "string"
-					},
-					"appointments": {
-						"items": {
-							"$ref": "#/components/schemas/Appointment"
-						},
-						"type": "array"
-					},
-					"appointmentHistories": {
-						"items": {
-							"$ref": "#/components/schemas/AppointmentHistory"
-						},
-						"type": "array"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"description",
-					"price",
-					"duration",
-					"appointments",
-					"appointmentHistories",
-					"createdAt",
-					"updatedAt"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -879,6 +593,12 @@
 						},
 						"type": "array"
 					},
+					"payments": {
+						"items": {
+							"$ref": "#/components/schemas/Payment"
+						},
+						"type": "array"
+					},
 					"createdAt": {
 						"type": "string",
 						"format": "date-time"
@@ -897,6 +617,7 @@
 					"userId",
 					"review",
 					"appointment",
+					"payments",
 					"createdAt",
 					"updatedAt"
 				],
@@ -938,6 +659,251 @@
 					"rate",
 					"customer",
 					"customerId",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Appointment": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"date": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"duration": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"type": "string"
+					},
+					"start": {
+						"type": "string"
+					},
+					"end": {
+						"type": "string"
+					},
+					"deleted": {
+						"type": "boolean"
+					},
+					"payments": {
+						"items": {
+							"$ref": "#/components/schemas/Payment"
+						},
+						"type": "array"
+					},
+					"appointmentHistories": {
+						"items": {
+							"$ref": "#/components/schemas/AppointmentHistory"
+						},
+						"type": "array"
+					},
+					"services": {
+						"items": {
+							"$ref": "#/components/schemas/Service"
+						},
+						"type": "array"
+					},
+					"customer": {
+						"$ref": "#/components/schemas/Customer"
+					},
+					"customerId": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"date",
+					"price",
+					"duration",
+					"status",
+					"start",
+					"end",
+					"deleted",
+					"payments",
+					"appointmentHistories",
+					"services",
+					"customer",
+					"customerId",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Payment": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"orderId": {
+						"type": "number",
+						"format": "double"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"appointment": {
+						"$ref": "#/components/schemas/Appointment"
+					},
+					"appointmentId": {
+						"type": "number",
+						"format": "double"
+					},
+					"customer": {
+						"$ref": "#/components/schemas/Customer"
+					},
+					"customerId": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"orderId",
+					"price",
+					"appointment",
+					"appointmentId",
+					"customer",
+					"customerId",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AppointmentHistory": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"dateAndTime": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"status": {
+						"type": "string"
+					},
+					"duration": {
+						"type": "number",
+						"format": "double"
+					},
+					"services": {
+						"items": {
+							"$ref": "#/components/schemas/Service"
+						},
+						"type": "array"
+					},
+					"appointment": {
+						"$ref": "#/components/schemas/Appointment"
+					},
+					"appointmentId": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"dateAndTime",
+					"status",
+					"duration",
+					"services",
+					"appointment",
+					"appointmentId",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Service": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"image": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"duration": {
+						"type": "number",
+						"format": "double"
+					},
+					"appointments": {
+						"items": {
+							"$ref": "#/components/schemas/Appointment"
+						},
+						"type": "array"
+					},
+					"appointmentHistories": {
+						"items": {
+							"$ref": "#/components/schemas/AppointmentHistory"
+						},
+						"type": "array"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"description",
+					"price",
+					"duration",
+					"appointments",
+					"appointmentHistories",
 					"createdAt",
 					"updatedAt"
 				],
@@ -1199,9 +1165,7 @@
 					"required": true,
 					"content": {
 						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UserCreationParams"
-							}
+							"schema": {}
 						}
 					}
 				}
@@ -1238,6 +1202,70 @@
 				]
 			}
 		},
+		"/api/v1/appointment/calender/all": {
+			"get": {
+				"operationId": "GetCalenderAll",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/v1/appointment/calender": {
+			"get": {
+				"operationId": "GetCalenderAppointment",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"employee"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "size",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/api/v1/appointment/all": {
 			"get": {
 				"operationId": "GetAll",
@@ -1246,7 +1274,13 @@
 						"description": "No content"
 					}
 				},
-				"security": [],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
 				"parameters": []
 			}
 		},
@@ -1310,7 +1344,7 @@
 				"security": [
 					{
 						"jwt": [
-							"admin"
+							"customer"
 						]
 					}
 				],
@@ -1319,9 +1353,7 @@
 					"required": true,
 					"content": {
 						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/AppointmentData"
-							}
+							"schema": {}
 						}
 					}
 				}
@@ -2303,8 +2335,7 @@
 				"security": [
 					{
 						"jwt": [
-							"admin",
-							"employee"
+							"customer"
 						]
 					}
 				],
@@ -2313,9 +2344,7 @@
 					"required": true,
 					"content": {
 						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/PaymentData"
-							}
+							"schema": {}
 						}
 					}
 				}
@@ -2409,9 +2438,9 @@
 				"parameters": []
 			}
 		},
-		"/api/v1/review": {
+		"/api/v1/review/user": {
 			"get": {
-				"operationId": "GetReview",
+				"operationId": "GetUser",
 				"responses": {
 					"204": {
 						"description": "No content"
@@ -2420,10 +2449,22 @@
 				"security": [
 					{
 						"jwt": [
-							"admin"
+							"customer"
 						]
 					}
 				],
+				"parameters": []
+			}
+		},
+		"/api/v1/review": {
+			"get": {
+				"operationId": "GetReview",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
 				"parameters": [
 					{
 						"in": "query",

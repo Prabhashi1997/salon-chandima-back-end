@@ -15,7 +15,18 @@ export class ReviewController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['admin'])
+    @Security('jwt', ['customer'])
+    @Get('user')
+    public async getUser( @Request() request: any): Promise<void> {
+        return this.exec(async () => {
+            const response = await new ReviewService().getUser(+request.user.userId);
+            return Responses.ok(response.body);
+        });
+    }
+
+
+
+
     @Get()
     public async getReview(@Query() page?: number, @Query() size?: number, @Query() search?: string): Promise<void> {
         return this.exec(async () => {
