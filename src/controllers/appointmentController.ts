@@ -56,7 +56,7 @@ export class AppointmentController extends ControllerBase {
     @Patch('{id}')
     public async editAppointment(
         @Path() id: number,
-        @Body() requestBody: AppointmentData,
+        @Body() requestBody: any,
         @Request() request: any,
     ): Promise<any> {
         return this.exec(async () => {

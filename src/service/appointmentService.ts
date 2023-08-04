@@ -244,7 +244,7 @@ export class AppointmentService {
             await queryRunner.release();
         }
     }
-    public async editAppointment(id: number, data: AppointmentData): Promise<{ body: any; statusCode: number }> {
+    public async editAppointment(id: number, data: any): Promise<{ body: any; statusCode: number }> {
         const appointment = await DatabaseService.getInstance()
             .getRepository(Appointment)
             .findOne({ where: { id: id } });

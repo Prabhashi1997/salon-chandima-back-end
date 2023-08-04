@@ -50,24 +50,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AppointmentData": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"double"},
-            "date": {"dataType":"string","required":true},
-            "time": {"dataType":"double","required":true},
-            "status": {"dataType":"string"},
-            "duration": {"dataType":"double"},
-            "deleted": {"dataType":"boolean"},
-            "start": {"dataType":"string","required":true},
-            "end": {"dataType":"string","required":true},
-            "price": {"dataType":"double","required":true},
-            "customer": {"dataType":"any"},
-            "service": {"dataType":"array","array":{"dataType":"any"}},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ConfigData": {
         "dataType": "refObject",
         "properties": {
@@ -722,7 +704,7 @@ export function RegisterRoutes(app: Router) {
             function AppointmentController_editAppointment(request: any, response: any, next: any) {
             const args = {
                     id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"AppointmentData"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"dataType":"any"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 

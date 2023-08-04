@@ -48,55 +48,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"AppointmentData": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"date": {
-						"type": "string"
-					},
-					"time": {
-						"type": "number",
-						"format": "double"
-					},
-					"status": {
-						"type": "string"
-					},
-					"duration": {
-						"type": "number",
-						"format": "double"
-					},
-					"deleted": {
-						"type": "boolean"
-					},
-					"start": {
-						"type": "string"
-					},
-					"end": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"customer": {},
-					"service": {
-						"items": {},
-						"type": "array"
-					}
-				},
-				"required": [
-					"date",
-					"time",
-					"start",
-					"end",
-					"price"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"ConfigData": {
 				"properties": {
 					"id": {
@@ -1395,9 +1346,7 @@
 					"required": true,
 					"content": {
 						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/AppointmentData"
-							}
+							"schema": {}
 						}
 					}
 				}
