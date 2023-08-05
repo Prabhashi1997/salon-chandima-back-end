@@ -35,7 +35,7 @@ export class ServiceController extends ControllerBase {
 
     @Security('jwt', ['admin'])
     @Post()
-    public async addService(@Body() requestBody: ServiceData, @Request() request: any) {
+    public async addService(@Body() requestBody: any, @Request() request: any) {
         return this.exec(async () => {
             const response = await new ServiceService().addService(requestBody);
             return Responses.ok(response.body);
@@ -46,7 +46,7 @@ export class ServiceController extends ControllerBase {
     @Patch('{id}')
     public async editService(
         @Path() id: number,
-        @Body() requestBody: ServiceData,
+        @Body() requestBody: any,
         @Request() request: any,
     ): Promise<any> {
         return this.exec(async () => {
@@ -63,4 +63,5 @@ export class ServiceController extends ControllerBase {
             return service?.body ?? service;
         });
     }
+
 }

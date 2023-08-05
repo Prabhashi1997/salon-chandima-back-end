@@ -194,38 +194,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ServiceData": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"image": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"duration": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"name",
-					"price",
-					"duration"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"Responses": {
 				"properties": {},
 				"type": "object",
@@ -1153,6 +1121,40 @@
 				]
 			}
 		},
+		"/api/v1/admin/messages/{id}": {
+			"delete": {
+				"operationId": "DeleteMessage",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"employee"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
 		"/api/v1/appointment/calender/all": {
 			"get": {
 				"operationId": "GetCalenderAll",
@@ -1398,7 +1400,84 @@
 				"security": [
 					{
 						"jwt": [
-							"admin"
+							"admin",
+							"employee"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/appointment/{id}/data": {
+			"patch": {
+				"operationId": "EditAppointmentData",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"employee"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/appointment/{id}/done": {
+			"patch": {
+				"operationId": "DoneAppointment",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin",
+							"employee"
 						]
 					}
 				],
@@ -1885,6 +1964,31 @@
 						}
 					}
 				]
+			}
+		},
+		"/api/v1/customer/register": {
+			"post": {
+				"operationId": "Register",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {}
+						}
+					}
+				}
 			}
 		},
 		"/api/v1/employee/all": {
@@ -2662,9 +2766,7 @@
 					"required": true,
 					"content": {
 						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ServiceData"
-							}
+							"schema": {}
 						}
 					}
 				}
@@ -2733,9 +2835,7 @@
 					"required": true,
 					"content": {
 						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ServiceData"
-							}
+							"schema": {}
 						}
 					}
 				}
@@ -2859,9 +2959,8 @@
 					{
 						"jwt": [
 							"admin",
-							"user",
-							"hr",
-							"manager"
+							"customer",
+							"employee"
 						]
 					}
 				],
@@ -2975,8 +3074,8 @@
 					{
 						"jwt": [
 							"admin",
-							"hr",
-							"manager"
+							"customer",
+							"employee"
 						]
 					}
 				],
@@ -3099,9 +3198,8 @@
 					{
 						"jwt": [
 							"admin",
-							"user",
-							"hr",
-							"manager"
+							"customer",
+							"employee"
 						]
 					}
 				],
@@ -3118,7 +3216,7 @@
 				]
 			}
 		},
-		"/api/v1/users/password-change/{userId}": {
+		"/api/v1/users/password": {
 			"patch": {
 				"operationId": "ChangePassword",
 				"responses": {
@@ -3130,39 +3228,24 @@
 					{
 						"jwt": [
 							"admin",
-							"user",
-							"hr",
-							"manager"
+							"customer",
+							"employee"
 						]
 					}
 				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "userId",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				],
+				"parameters": [],
 				"requestBody": {
 					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
 								"properties": {
-									"newPassword": {
-										"type": "string"
-									},
-									"currentPassword": {
+									"password": {
 										"type": "string"
 									}
 								},
 								"required": [
-									"newPassword",
-									"currentPassword"
+									"password"
 								],
 								"type": "object"
 							}
@@ -3183,7 +3266,7 @@
 					{
 						"jwt": [
 							"admin",
-							"hr"
+							"employee"
 						]
 					}
 				],

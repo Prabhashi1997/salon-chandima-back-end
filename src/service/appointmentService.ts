@@ -50,6 +50,7 @@ export class AppointmentService {
             .getRepository(Appointment)
             .createQueryBuilder('appointment')
             .leftJoinAndSelect('appointment.customer','customer')
+            .leftJoinAndSelect('appointment.services','services')
             .leftJoinAndSelect('customer.user','user')
             .andWhere('appointment.status != :astatus', {
                 astatus: 'Pending',
@@ -75,6 +76,7 @@ export class AppointmentService {
         return Responses.ok({
             appointments: appointments.map((item) => {
                 return {
+                    services: item.services.map((e) => e.id),
                     title: item.customer.user.firstName + ' ' + item.customer.user.lastName,
                     color: customers.find((x) => x.id === item.customerId).color,
                     id: item.id,
@@ -306,6 +308,59 @@ export class AppointmentService {
             await queryRunner.release();
         }
     }
+
+    public async editAppointmentData(id: number, data: any): Promise<{ body: any; statusCode: number }> {
+        const appointment = await DatabaseService.getInstance()
+            .getRepository(Appointment)
+            .findOne({ where: { id: id } });
+        const queryRunner = DatabaseService.getInstance().createQueryRunner();
+        await queryRunner.startTransaction();
+        const services = await DatabaseService.getInstance()
+            .getRepository(Service)
+            .find({ where: { id: In(data.service) } });
+
+        try {
+            appointment.services = services;
+            appointment.price = data.price;
+            appointment.duration = data.duration;
+            appointment.end = data.end;
+
+            await queryRunner.manager.save(appointment);
+            await queryRunner.commitTransaction();
+            return Responses.ok(appointment);
+        } catch (e) {
+            // since we have errors let's rollback changes we made
+            await queryRunner.rollbackTransaction();
+        } finally {
+            // you need to release query runner which is manually created:
+            await queryRunner.release();
+        }
+    }
+
+    public async doneAppointment(id: number): Promise<{ body: any; statusCode: number }> {
+        const appointment = await DatabaseService.getInstance()
+            .getRepository(Appointment)
+            .findOne({ where: { id: id } });
+        const queryRunner = DatabaseService.getInstance().createQueryRunner();
+        await queryRunner.startTransaction();
+
+
+        try {
+            appointment.status = 'Done';
+
+            await queryRunner.manager.save(appointment);
+            await queryRunner.commitTransaction();
+            return Responses.ok(appointment);
+        } catch (e) {
+            // since we have errors let's rollback changes we made
+            await queryRunner.rollbackTransaction();
+        } finally {
+            // you need to release query runner which is manually created:
+            await queryRunner.release();
+        }
+    }
+
+
 
     // async addDiscount(data: any){
     //     const appointment = await DatabaseService.getInstance()

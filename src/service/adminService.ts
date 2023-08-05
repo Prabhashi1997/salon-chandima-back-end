@@ -295,4 +295,29 @@ export class AdminService {
             await queryRunner.release();
         }
     }
+
+    public async deleteMessage(id: number): Promise<{ body: any; statusCode: number }>  {
+        const queryRunner = DatabaseService.getInstance().createQueryRunner();
+        await queryRunner.startTransaction();
+
+        try {
+            const customerMessage = await queryRunner.manager
+                .getRepository(CustomerMessage)
+                .findOne({ where: { id: id } });
+
+            if (customerMessage) {
+                await queryRunner.manager.delete(CustomerMessage, { id: id });
+            }
+
+            await queryRunner.commitTransaction();
+            return Responses.ok(id);
+        } catch (e) {
+            // since we have errors let's rollback changes we made
+            // console.log(e);
+            await queryRunner.rollbackTransaction();
+        } finally {
+            // you need to release query runner which is manually created:
+            await queryRunner.release();
+        }
+    }
 }

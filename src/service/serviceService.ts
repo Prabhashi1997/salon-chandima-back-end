@@ -42,6 +42,7 @@ export class ServiceService {
                 price: qb.price,
                 image: qb.image,
                 duration: qb.duration,
+
             }
         };
     }
@@ -64,7 +65,9 @@ export class ServiceService {
 
         return Responses.ok({
             services: services.map((item) => {
-                return {...item};
+                return {
+                    ...item,
+                };
             }),
             total,
         });
@@ -149,4 +152,5 @@ export class ServiceService {
             await queryRunner.release();
         }
     }
+
 }

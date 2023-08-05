@@ -12,7 +12,7 @@ import { DataTableResponse } from '../common/Definitions';
 @Route('api/v1/users')
 export class UsersController extends ControllerBase {
   // 1.2.0
-  @Security('jwt', ['admin', 'user', 'hr', 'manager'])
+  @Security('jwt', ['admin', 'customer', 'employee'])
   @Response<ErrorJson>(500, 'internal server error', {
     code: '500',
     message: 'internal server error',
@@ -70,7 +70,7 @@ export class UsersController extends ControllerBase {
 
 
   // 1.2.0
-  @Security('jwt', ['admin', 'hr', 'manager'])
+  @Security('jwt', ['admin', 'customer', 'employee'])
   @Get()
   public async getUsers(
     @Query() page?: number,
@@ -120,7 +120,7 @@ export class UsersController extends ControllerBase {
   }
 
   // 1.2.0
-  @Security('jwt', ['admin', 'user', 'hr', 'manager'])
+  @Security('jwt', ['admin', 'customer', 'employee'])
   @Get('refresh-token/{userId}')
   public async refreshToken(@Path() userId: number, @Request() request: any): Promise<void> {
     return await this.exec(async () => {
@@ -130,25 +130,23 @@ export class UsersController extends ControllerBase {
   }
 
   // 1.2.0
-  @Security('jwt', ['admin', 'user', 'hr', 'manager'])
-  @Patch('password-change/{userId}')
+  @Security('jwt', ['admin', 'customer', 'employee'])
+  @Patch('password')
   public async changePassword(
-    @Path() userId: number,
-    @Body() value: { currentPassword: string; newPassword: string },
+    @Body() value: { password: string; },
     @Request() request: any,
   ): Promise<void> {
     return await this.exec(async () => {
       const response = await new UsersService().passwordChange(
+          value,
         +request.user.userId,
-        value.currentPassword,
-        value.newPassword,
       );
       return Responses.ok({ response });
     });
   }
 
   // 1.2.0
-  @Security('jwt', ['admin', 'hr'])
+  @Security('jwt', ['admin', 'employee'])
   @Patch('password-reset/{userId}')
   public async resetPassword(@Path() userId: number, @Body() value: { newPassword: string }): Promise<void> {
     return await this.exec(async () => {

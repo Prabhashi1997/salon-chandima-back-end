@@ -5,7 +5,7 @@ export interface CustomerData extends UserCreationParams{
     gender: string;
     age: number,
     address: string;
-
+    password?: string;
 }
 
 export interface CustomerMessageType {

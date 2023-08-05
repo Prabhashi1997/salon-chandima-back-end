@@ -51,6 +51,14 @@ export class CustomerController extends ControllerBase {
         });
     }
 
+    @Post('register')
+    public async register(@Body() requestBody: any, @Request() request: any) {
+        return this.exec(async () => {
+            const response = await new CustomerService().register(requestBody);
+            return Responses.ok(response);
+        });
+    }
+    
     @Security('jwt', ['admin', 'employee', 'customer'])
     @Patch('{id}')
     public async editCustomer(

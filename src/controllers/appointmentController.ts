@@ -60,7 +60,7 @@ export class AppointmentController extends ControllerBase {
             return Responses.ok(response);
         });
     }
-
+    
     @Security('jwt', ['admin', 'employee'])
     @Patch('{id}')
     public async editAppointment(
@@ -74,7 +74,32 @@ export class AppointmentController extends ControllerBase {
         });
     }
 
-    @Security('jwt', ['admin'])
+    @Security('jwt', ['admin', 'employee'])
+    @Patch('{id}/data')
+    public async editAppointmentData(
+        @Path() id: number,
+        @Body() requestBody: any,
+        @Request() request: any,
+    ): Promise<any> {
+        return this.exec(async () => {
+            const designation = await new AppointmentService().editAppointmentData(id, requestBody);
+            return designation.body;
+        });
+    }
+
+    @Security('jwt', ['admin', 'employee'])
+    @Patch('{id}/done')
+    public async doneAppointment(
+        @Path() id: number,
+        @Request() request: any,
+    ): Promise<any> {
+        return this.exec(async () => {
+            const designation = await new AppointmentService().doneAppointment(id);
+            return designation.body;
+        });
+    }
+
+    @Security('jwt', ['admin','employee'])
     @Delete('{id}')
     public async deleteAppointment(@Path() id: number, @Request() request: any): Promise<any> {
         return this.exec(async () => {
@@ -82,6 +107,7 @@ export class AppointmentController extends ControllerBase {
             return designation?.body ?? designation;
         });
     }
+
 
     // @Security('jwt', ['admin', 'employee'])
     // @Post('discount')

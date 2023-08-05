@@ -82,4 +82,13 @@ export class AdminController extends ControllerBase {
         });
     }
 
+    @Security('jwt', ['admin', 'employee'])
+    @Delete('messages/{id}')
+    public async deleteMessage(@Path() id:number) {
+        return this.exec(async () => {
+            const message = await new AdminService().deleteMessage(id);
+            return Responses.ok(message?.body ?? message);
+        });
+    }
+
 }

@@ -120,6 +120,7 @@ export class CustomerService {
         delete params.gender;
         delete params.age;
         delete params.address;
+        delete params?.password;
 
         try {
             const user =  await queryRunner.manager
@@ -129,6 +130,7 @@ export class CustomerService {
                 .getOne();
             if(!user) {
                 // create user for admin
+                // @ts-ignore
                 const result = await queryRunner.manager.insert(UserEntity, {
                     ...params,
                     roles: ['customer'],
@@ -339,5 +341,108 @@ export class CustomerService {
             }),
             total,
         });
+    }
+
+    public async register(params: CustomerData): Promise<{ done: boolean; }> {
+        const salt = bcrypt.genSaltSync(10);
+        const password = params.password;
+        const hash = bcrypt.hashSync(password, salt);
+
+        const queryRunner = DatabaseService.getInstance().createQueryRunner();
+        await queryRunner.startTransaction();
+
+        const gender = params.gender;
+        const age = params.age;
+        const address = params.address;
+        delete params.gender;
+        delete params.age;
+        delete params.address;
+        delete params.password;
+
+        try {
+            const user =  await queryRunner.manager
+                .getRepository(UserEntity)
+                .createQueryBuilder('user')
+                .where('email =:email OR nic =:nic', { email: params.email, nic: params.nic })
+                .getOne();
+            if(!user) {
+                // create user for admin
+                // @ts-ignore
+                const result = await queryRunner.manager.insert(UserEntity, {
+                    ...params,
+                    roles: ['customer'],
+                    email: params.email.toLowerCase(),
+                    name: `${params.firstName} ${params.lastName}`.toLowerCase()
+                });
+                await queryRunner.manager.insert(PasswordEntity, {
+                    user: result.identifiers[0].id,
+                    password: hash,
+                });
+            } else {
+
+                const user1 =  await queryRunner.manager
+                    .getRepository(UserEntity)
+                    .createQueryBuilder('user')
+                    .where('email =:email AND nic =:nic', { email: params.email, nic: params.nic })
+                    .getOne();
+                if (!!user1) {
+                    if (!!user1.customerId) {
+                        throw new ServiceError(
+                            ResponseCode.conflict,
+                            'Duplicate entry',
+                            { msg: `Already have customer for ${user.email === params.email.toLowerCase() ? 'this email' : 'this nic' }`}
+                        );
+                    }
+                    const result = await queryRunner.manager.update(UserEntity, user1.id, {
+                        roles: [...user1.roles,'customer'],
+                    });
+                } else {
+                    throw new ServiceError(
+                        ResponseCode.conflict,
+                        'Duplicate entry',
+                        { msg: `Already have user for ${user.email === params.email.toLowerCase() ? 'this email' : 'this nic' }`}
+                    );
+                }
+            }
+
+            const userx = await queryRunner.manager
+                .getRepository(UserEntity)
+                .createQueryBuilder('user')
+                .where('email =:email OR nic =:nic', { email: params.email, nic: params.nic })
+                .getOne();
+
+            // create new Customer
+
+            const newCustomer = new Customer();
+            newCustomer.gender = gender;
+            newCustomer.age = age;
+            newCustomer.address = address;
+            newCustomer.user = userx;
+            const x = await queryRunner.manager.save(newCustomer);
+
+            userx.customer = newCustomer;
+            await queryRunner.manager.save(userx);
+
+            // commit transaction now:
+            await queryRunner.commitTransaction();
+            return { done: true };
+        } catch (e) {
+            // since we have errors let's rollback changes we made
+            await queryRunner.rollbackTransaction();
+            // since we have errors let's rollback changes we made
+            await queryRunner.rollbackTransaction();
+            if (e instanceof QueryFailedError) {
+                const err: any = e;
+                if (err.code === '23505') {
+                    throw new ServiceError(ResponseCode.conflict, 'Duplicate entry', {
+                        errors: Utils.getIndexErrorMessage(UserEntity.Index, err.constraint),
+                    });
+                }
+                throw new ServiceError(ResponseCode.forbidden, 'Unprocessable entity');
+            }
+        } finally {
+            // you need to release query runner which is manually created:
+            await queryRunner.release();
+        }
     }
 }

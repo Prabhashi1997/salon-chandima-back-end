@@ -194,33 +194,6 @@ export class UsersService {
     }
   }
 
-  public async passwordChange(userId: number, currentPassword: string, newPassword: string) {
-    const user = await DatabaseService.getInstance()
-      .getRepository(UserEntity)
-      .findOne({
-        where: [{ id: userId }],
-      });
-
-    const password = await DatabaseService.getInstance()
-      .getRepository(PasswordEntity)
-      .findOne({
-        where: [{ user: user }],
-        order: { id: 'DESC' },
-      });
-    if (!password || !bcrypt.compareSync(currentPassword, password.password)) {
-      throw new ServiceError(ResponseCode.forbidden, 'Invalid Current Password');
-    }
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(newPassword, salt);
-
-    await DatabaseService.getInstance().manager.update(PasswordEntity, password.id, {
-      user: user,
-      password: hash,
-    });
-
-    return Responses.ok();
-  }
-
   public async resetPassword(userId: number, newPassword: string) {
     const user = await DatabaseService.getInstance()
       .getRepository(UserEntity)
@@ -335,5 +308,49 @@ export class UsersService {
     });
 
     return Responses.ok();
+  }
+
+  public async passwordChange(params: any, userId: number): Promise<{ done: boolean; }> {
+    const salt = bcrypt.genSaltSync(10);
+    const password = params.password;
+    const hash = bcrypt.hashSync(password, salt);
+
+    const queryRunner = DatabaseService.getInstance().createQueryRunner();
+    await queryRunner.startTransaction();
+
+    try {
+      const user = await DatabaseService.getInstance()
+          .getRepository(UserEntity)
+          .findOne({ where: { id: userId } });
+      if(!!user) {
+        // create user for admin
+        await queryRunner.manager.insert(PasswordEntity, {
+          user: user,
+          password: hash,
+        });
+      }
+
+
+      // commit transaction now:
+      await queryRunner.commitTransaction();
+      return { done: true };
+    } catch (e) {
+      // since we have errors let's rollback changes we made
+      await queryRunner.rollbackTransaction();
+      // since we have errors let's rollback changes we made
+      await queryRunner.rollbackTransaction();
+      if (e instanceof QueryFailedError) {
+        const err: any = e;
+        if (err.code === '23505') {
+          throw new ServiceError(ResponseCode.conflict, 'Duplicate entry', {
+            errors: Utils.getIndexErrorMessage(UserEntity.Index, err.constraint),
+          });
+        }
+        throw new ServiceError(ResponseCode.forbidden, 'Unprocessable entity');
+      }
+    } finally {
+      // you need to release query runner which is manually created:
+      await queryRunner.release();
+    }
   }
 }

@@ -1,10 +1,11 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  Column, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinColumn,
+  Column, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinColumn, OneToMany,
 } from 'typeorm';
 import {Appointment} from "./Appointment";
 import {AppointmentHistory} from "./AppointmentHistory";
+import { Payment } from './Payment';
 
   @Entity()
   export class Service {
@@ -30,7 +31,6 @@ import {AppointmentHistory} from "./AppointmentHistory";
     @ManyToMany(() => Appointment, (appointment) => appointment.services)
     @JoinColumn()
     appointments: Appointment[];
-
 
     @ManyToMany(() => AppointmentHistory, (appointmentHistory) => appointmentHistory.services)
     @JoinColumn()
